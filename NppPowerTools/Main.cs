@@ -4,8 +4,8 @@ using NppPowerTools.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace NppPowerTools
@@ -21,7 +21,7 @@ namespace NppPowerTools
 
         internal static void CommandMenuInit()
         {
-            PluginBase.SetCommand(0, "Execute", Process, new ShortcutKey(true, false, true, Keys.E));
+            PluginBase.SetCommand(0, "Process", Process, new ShortcutKey(true, false, true, Keys.E));
         }
 
         internal static void Process()
