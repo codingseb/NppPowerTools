@@ -1,12 +1,11 @@
 using CodingSeb.ExpressionEvaluator;
 using NppPowerTools.PluginInfrastructure;
+using NppPowerTools.Utils;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace NppPowerTools
@@ -14,63 +13,26 @@ namespace NppPowerTools
     class Main
     {
         internal const string PluginName = "Npp Power Tools";
-        static string iniFilePath = null;
-        static bool someSetting = false;
-        static frmMyDlg frmMyDlg = null;
-        static int idMyDlg = -1;
-        static Bitmap tbBmp = Properties.Resources.star;
-        static Bitmap tbBmp_tbTab = Properties.Resources.star_bmp;
-        static Icon tbIcon = null;
+        private static readonly Regex loremIspumVariableEvalRegex = new Regex(@"^li(l(?<lines>\d+)|w(?<words>\d+)|wl(?<wordsPerLine>\d+)|(?<language>fr|en|la))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex loopVariableEvalRegex = new Regex(@"^lp|loop(f(?<from>\d+)|(t()?<to>\d+)|[nc]?(?<count>\d+)))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static void OnNotification(ScNotification notification)
-        {  
-            // This method is invoked whenever something is happening in notepad++
-            // use eg. as
-            // if (notification.Header.Code == (uint)NppMsg.NPPN_xxx)
-            // { ... }
-            // or
-            //
-            // if (notification.Header.Code == (uint)SciMsg.SCNxxx)
-            // { ... }
-        }
+        { }
 
         internal static void CommandMenuInit()
         {
-            StringBuilder sbIniFilePath = new StringBuilder(Win32.MAX_PATH);
-            Win32.SendMessage(PluginBase.nppData._nppHandle, (uint) NppMsg.NPPM_GETPLUGINSCONFIGDIR, Win32.MAX_PATH, sbIniFilePath);
-            iniFilePath = sbIniFilePath.ToString();
-            if (!Directory.Exists(iniFilePath)) Directory.CreateDirectory(iniFilePath);
-            iniFilePath = Path.Combine(iniFilePath, PluginName + ".ini");
-            someSetting = (Win32.GetPrivateProfileInt("SomeSection", "SomeKey", 0, iniFilePath) != 0);
-
-            PluginBase.SetCommand(0, "Process", ProcessSelection, new ShortcutKey(true, false, true, Keys.E));
-            //PluginBase.SetCommand(1, "MyDockableDialog", myDockableDialog); idMyDlg = 1;
+            PluginBase.SetCommand(0, "Execute", Process, new ShortcutKey(true, false, true, Keys.E));
         }
 
-        internal static void SetToolBarIcon()
+        internal static void Process()
         {
-            //toolbarIcons tbIcons = new toolbarIcons
-            //{
-            //    hToolbarBmp = tbBmp.GetHbitmap()
-            //};
-            //IntPtr pTbIcons = Marshal.AllocHGlobal(Marshal.SizeOf(tbIcons));
-            //Marshal.StructureToPtr(tbIcons, pTbIcons, false);
-            //Win32.SendMessage(PluginBase.nppData._nppHandle, (uint) NppMsg.NPPM_ADDTOOLBARICON, PluginBase._funcItems.Items[idMyDlg]._cmdID, pTbIcons);
-            //Marshal.FreeHGlobal(pTbIcons);
-        }
+            ExpressionEvaluator evaluator = new ExpressionEvaluator();
 
-        internal static void PluginCleanUp()
-        {
-            //Win32.WritePrivateProfileString("SomeSection", "SomeKey", someSetting ? "1" : "0", iniFilePath);
-        }
+            evaluator.EvaluateFunction += Evaluator_EvaluateFunction;
+            evaluator.EvaluateVariable += Evaluator_EvaluateVariable;
 
-
-        internal static void ProcessSelection()
-        {
             try
             {
-                ExpressionEvaluator evaluator = new ExpressionEvaluator();
-
                 if (BNpp.SelectionLength <= 0)
                 {
                     IScintillaGateway scintilla = new ScintillaGateway(PluginBase.GetCurrentScintilla());
@@ -86,42 +48,65 @@ namespace NppPowerTools
             {
                 MessageBox.Show(exception.Message);
             }
+            finally
+            {
+                evaluator.EvaluateFunction -= Evaluator_EvaluateFunction;
+                evaluator.EvaluateVariable -= Evaluator_EvaluateVariable;
+            }
         }
 
-        internal static void myDockableDialog()
+        private static void Evaluator_EvaluateVariable(object sender, VariableEvaluationEventArg e)
         {
-            if (frmMyDlg == null)
-            {
-                frmMyDlg = new frmMyDlg();
+            Match loremIspumVariableEvalMatch = loremIspumVariableEvalRegex.Match(e.Name);
 
-                using (Bitmap newBmp = new Bitmap(16, 16))
+            if(loremIspumVariableEvalMatch.Success)
+            {
+                LoremIpsum li = new LoremIpsum();
+
+                if (loremIspumVariableEvalMatch.Groups["language"].Success)
+                    li.CurrentLanguage = loremIspumVariableEvalMatch.Groups["language"].Value.ToLower();
+
+                int wordPerLine = loremIspumVariableEvalMatch.Groups["wordsPerLine"].Success ? int.Parse(loremIspumVariableEvalMatch.Groups["wordsPerLine"].Value, CultureInfo.InvariantCulture) : 10;
+
+                if (loremIspumVariableEvalMatch.Groups["words"].Success)
+                    e.Value = li.GetWords(int.Parse(loremIspumVariableEvalMatch.Groups["words"].Value, CultureInfo.InvariantCulture), wordPerLine);
+                else if (loremIspumVariableEvalMatch.Groups["lines"].Success)
+                    e.Value = li.GetLines(int.Parse(loremIspumVariableEvalMatch.Groups["lines"].Value, CultureInfo.InvariantCulture), wordPerLine);
+                else
+                    e.Value = li.GetWords(100, wordPerLine);
+            }
+        }
+
+        private static void Evaluator_EvaluateFunction(object sender, FunctionEvaluationEventArg e)
+        {
+            Match loopVariableEvalMatch = loopVariableEvalRegex.Match(e.Name);
+
+            if(loopVariableEvalMatch.Success)
+            {
+                List<string> results = new List<string>();
+
+                int from = loopVariableEvalMatch.Groups["from"].Success ? int.Parse(loopVariableEvalMatch.Groups["from"].Value, CultureInfo.InvariantCulture) : 0;
+
+                if(loopVariableEvalMatch.Groups["to"].Success)
                 {
-                    Graphics g = Graphics.FromImage(newBmp);
-                    ColorMap[] colorMap = new ColorMap[1];
-                    colorMap[0] = new ColorMap();
-                    colorMap[0].OldColor = Color.Fuchsia;
-                    colorMap[0].NewColor = Color.FromKnownColor(KnownColor.ButtonFace);
-                    ImageAttributes attr = new ImageAttributes();
-                    attr.SetRemapTable(colorMap);
-                    g.DrawImage(tbBmp_tbTab, new Rectangle(0, 0, 16, 16), 0, 0, 16, 16, GraphicsUnit.Pixel, attr);
-                    tbIcon = Icon.FromHandle(newBmp.GetHicon());
+                    for (int i = from; i <= int.Parse(loopVariableEvalMatch.Groups["to"].Value, CultureInfo.InvariantCulture); i++)
+                    {
+                        e.Evaluator.Variables["i"] = i;
+                        results.Add(e.Evaluator.Evaluate(e.Args[0]).ToString());
+                    }
+                }
+                else
+                {
+                    int count = loopVariableEvalMatch.Groups["count"].Success ? int.Parse(loopVariableEvalMatch.Groups["count"].Value, CultureInfo.InvariantCulture) : 10;
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        e.Evaluator.Variables["i"] = i + from;
+                        results.Add(e.Evaluator.Evaluate(e.Args[0]).ToString());
+                    }
                 }
 
-                NppTbData _nppTbData = new NppTbData();
-                _nppTbData.hClient = frmMyDlg.Handle;
-                _nppTbData.pszName = "My dockable dialog";
-                _nppTbData.dlgID = idMyDlg;
-                _nppTbData.uMask = NppTbMsg.DWS_DF_CONT_RIGHT | NppTbMsg.DWS_ICONTAB | NppTbMsg.DWS_ICONBAR;
-                _nppTbData.hIconTab = (uint)tbIcon.Handle;
-                _nppTbData.pszModuleName = PluginName;
-                IntPtr _ptrNppTbData = Marshal.AllocHGlobal(Marshal.SizeOf(_nppTbData));
-                Marshal.StructureToPtr(_nppTbData, _ptrNppTbData, false);
-
-                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint) NppMsg.NPPM_DMMREGASDCKDLG, 0, _ptrNppTbData);
-            }
-            else
-            {
-                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint) NppMsg.NPPM_DMMSHOW, 0, frmMyDlg.Handle);
+                e.Value = string.Join(e.Args.Count > 1 ? e.EvaluateArg(1).ToString() : string.Empty, results);
             }
         }
     }
