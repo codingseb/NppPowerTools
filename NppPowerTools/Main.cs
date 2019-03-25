@@ -4,6 +4,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -42,7 +43,7 @@ namespace NppPowerTools
             iniFilePath = Path.Combine(iniFilePath, PluginName + ".ini");
             someSetting = (Win32.GetPrivateProfileInt("SomeSection", "SomeKey", 0, iniFilePath) != 0);
 
-            PluginBase.SetCommand(0, "Process", ProcessSelection, new ShortcutKey(true, true, false, Keys.P));
+            PluginBase.SetCommand(0, "Process", ProcessSelection, new ShortcutKey(true, false, true, Keys.E));
             //PluginBase.SetCommand(1, "MyDockableDialog", myDockableDialog); idMyDlg = 1;
         }
 
@@ -70,10 +71,16 @@ namespace NppPowerTools
             {
                 ExpressionEvaluator evaluator = new ExpressionEvaluator();
 
-                if (BNpp.SelectionLength > 0)
+                if (BNpp.SelectionLength <= 0)
                 {
-                    BNpp.SelectedText = evaluator.Evaluate(BNpp.SelectedText).ToString();
+                    IScintillaGateway scintilla = new ScintillaGateway(PluginBase.GetCurrentScintilla());
+                    int start = scintilla.GetCurrentPos();
+                    int line = scintilla.GetCurrentLineNumber();
+                    int lineStart = scintilla.PositionFromLine(line);
+                    scintilla.SetSel(new Position(lineStart), new Position(start));
                 }
+
+                BNpp.SelectedText = evaluator.Evaluate(BNpp.SelectedText).ToString();
             }
             catch (Exception exception)
             {
