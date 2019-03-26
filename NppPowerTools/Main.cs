@@ -15,7 +15,31 @@ namespace NppPowerTools
 
         internal static void CommandMenuInit()
         {
-            PluginBase.SetCommand(0, "Process", Process, new ShortcutKey(true, false, true, Keys.E));
+            PluginBase.SetCommand(0, "Execute", Process, new ShortcutKey(true, false, false, Keys.E));
+            RefreshCommands();
+        }
+
+        private static void RefreshCommands()
+        {
+            for (int i = 0; i < Config.Instance.ResultOuts.Count; i++)
+            {
+                int value = i;
+                PluginBase.SetCommand(i + 1, Config.Instance.ResultOuts[i].Name, () =>
+                {
+                    try
+                    {
+                        Config.Instance.CurrentResultOutIndex = value;
+                        Config.Instance.Save();
+
+                        MessageBox.Show($"Result output : \"{Config.Instance.ResultOuts[value].Name }\" selected.", "Info", MessageBoxButtons.OK);
+                        RefreshCommands();
+                    }
+                    catch (Exception exception)
+                    {
+                        MessageBox.Show($"{exception.Message}\r\n{exception.StackTrace}{(exception.InnerException == null ? string.Empty : $"\r\nInner Exception :\r\n{exception.InnerException.Message}\r\n{exception.InnerException.StackTrace}")}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }, new ShortcutKey(false, true, false, Keys.NumPad1 + i), i == Config.Instance.CurrentResultOutIndex);
+            }
         }
 
         internal static void Process()
@@ -36,7 +60,7 @@ namespace NppPowerTools
                     scintilla.SetSel(new Position(lineStart), new Position(start));
                 }
 
-                BNpp.SelectedText = evaluator.Evaluate(BNpp.SelectedText).ToString();
+                Config.Instance.CurrentResultOut.SetResult(evaluator.Evaluate(BNpp.SelectedText).ToString());
             }
             catch (Exception exception)
             {

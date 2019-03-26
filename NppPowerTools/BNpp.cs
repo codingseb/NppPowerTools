@@ -8,6 +8,8 @@ namespace NppPowerTools
     {
         public static NotepadPPGateway NotepadPP { get; private set; } = new NotepadPPGateway();
 
+        public static ScintillaGateway Scintilla => new ScintillaGateway(PluginBase.GetCurrentScintilla());
+
         /// <summary>
         /// Récupère les caractères de fin de lignes courant
         /// !!! Attention pour le moment bug. !!! Enlève la coloration syntaxique du fichier courant
