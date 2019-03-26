@@ -16,11 +16,6 @@ namespace NppPowerTools
         internal static void CommandMenuInit()
         {
             PluginBase.SetCommand(0, "Execute", Process, new ShortcutKey(true, false, false, Keys.E));
-            RefreshCommands();
-        }
-
-        private static void RefreshCommands()
-        {
             for (int i = 0; i < Config.Instance.ResultOuts.Count; i++)
             {
                 int value = i;
@@ -28,6 +23,8 @@ namespace NppPowerTools
                 {
                     try
                     {
+                        BNpp.NotepadPP.SetPluginMenuChecked(Config.Instance.CurrentResultOutIndex + 1, false);
+                        BNpp.NotepadPP.SetPluginMenuChecked(value + 1, true);
                         Config.Instance.CurrentResultOutIndex = value;
                         Config.Instance.Save();
 

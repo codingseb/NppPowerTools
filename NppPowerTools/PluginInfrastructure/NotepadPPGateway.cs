@@ -32,6 +32,11 @@ namespace NppPowerTools.PluginInfrastructure
             return Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)command, wParam, lParam);
 		}
 
+        IntPtr Send(NppMsg command, int wParam, int lParam)
+		{
+            return Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)command, wParam, lParam);
+		}
+
         IntPtr Send(NppMsg command, IntPtr wParam, IntPtr lParam)
         {
             return Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)command, wParam, lParam);
@@ -192,5 +197,10 @@ namespace NppPowerTools.PluginInfrastructure
             Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_SETCURRENTLANGTYPE, Unused, (int)language);
             return this;
 		}
+
+        public void SetPluginMenuChecked(int id, bool check)
+        {
+            Send(NppMsg.NPPM_SETMENUITEMCHECK, PluginBase._funcItems.Items[id]._cmdID, check ? 1 : 0);
+        }
 	}
 }
