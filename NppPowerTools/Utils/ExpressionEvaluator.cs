@@ -3038,7 +3038,7 @@ namespace CodingSeb.ExpressionEvaluator
 
         #endregion
 
-        #region Utils private sub classes for parsing and interpretation
+        #region Utils internal sub classes for parsing and interpretation
 
         private class ClassOrTypeName
         {
@@ -3056,6 +3056,7 @@ namespace CodingSeb.ExpressionEvaluator
             {
                 this.lambda = lambda;
             }
+
             public DelegateEncaps(object target, MethodInfo methodInfo)
             {
                 this.target = target;
