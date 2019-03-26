@@ -32,7 +32,6 @@ namespace NppPowerTools
                         Config.Instance.Save();
 
                         MessageBox.Show($"Result output : \"{Config.Instance.ResultOuts[value].Name }\" selected.", "Info", MessageBoxButtons.OK);
-                        RefreshCommands();
                     }
                     catch (Exception exception)
                     {
