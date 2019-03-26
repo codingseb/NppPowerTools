@@ -13,8 +13,8 @@ namespace NppPowerTools
     class Main
     {
         internal const string PluginName = "Npp Power Tools";
-        private static readonly Regex loremIspumVariableEvalRegex = new Regex(@"^li(l(?<lines>\d+)|w(?<words>\d+)|wl(?<wordsPerLine>\d+)|(?<language>fr|en|la))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex loopVariableEvalRegex = new Regex(@"^lp|loop(f(?<from>\d+)|(t()?<to>\d+)|[nc]?(?<count>\d+)))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex loremIspumVariableEvalRegex = new Regex(@"^(li|loremipsum|lorem|ipsum)(w(?<words>\d+)|wl(?<wordsPerLine>\d+)|(?<language>fr|en|la)|l?(?<lines>\d+))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex loopVariableEvalRegex = new Regex(@"^lp|loop(f(?<from>\d+)|(t()?<to>\d+)|[nc]?(?<count>\d+))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static void OnNotification(ScNotification notification)
         { }
@@ -106,7 +106,7 @@ namespace NppPowerTools
                     }
                 }
 
-                e.Value = string.Join(e.Args.Count > 1 ? e.EvaluateArg(1).ToString() : string.Empty, results);
+                e.Value = string.Join(e.Args.Count > 1 ? e.EvaluateArg(1).ToString() : "\r\n", results);
             }
         }
     }
