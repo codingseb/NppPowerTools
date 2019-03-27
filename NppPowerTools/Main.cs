@@ -1,8 +1,12 @@
 using CodingSeb.ExpressionEvaluator;
 using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils;
+using NppPowerTools.View;
 using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Interop;
 
 namespace NppPowerTools
 {
@@ -10,21 +14,72 @@ namespace NppPowerTools
     {
         internal const string PluginName = "Npp Power Tools";
 
+        private static System.Windows.Window optionsWindow = null;
+        private const string OPTION_WINDOW_TITLE = "Options - Npp Power Tools";
+
+        //Import the FindWindow API to find our window
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr FindWindow([MarshalAs(UnmanagedType.LPWStr)] string ClassName, [MarshalAs(UnmanagedType.LPWStr)] string WindowName);
+
+        //Import the SetForeground API to activate it
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SetForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SetWindowLong(IntPtr hWnd, int windowLongFlags, IntPtr dwNewLong);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern long SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+
+        public const int GWL_EXSTYLE = -20;
+        public const int WS_EX_LAYERED = 0x80000;
+        public const int LWA_ALPHA = 0x2;
+        public const int LWA_COLORKEY = 0x1;
+
+        private enum WindowLongFlags : int
+        {
+            GWL_EXSTYLE = -20,
+            GWLP_HINSTANCE = -6,
+            GWLP_HWNDPARENT = -8,
+            GWL_ID = -12,
+            GWL_STYLE = -16,
+            GWL_USERDATA = -21,
+            GWL_WNDPROC = -4,
+            DWLP_USER = 0x8,
+            DWLP_MSGRESULT = 0x0,
+            DWLP_DLGPROC = 0x4,
+            WS_EX_LAYERED = 0x80000
+        }
+
+        private enum LayeredWindowAttributesFlags : byte
+        {
+            LWA_COLORKEY = 0x1,
+            LWA_ALPHA = 0x2
+        }
+
         public static void OnNotification(ScNotification notification)
         { }
 
         internal static void CommandMenuInit()
         {
-            PluginBase.SetCommand(0, "Execute", Process, new ShortcutKey(true, false, false, Keys.E));
+            int menuIndex = 0;
+            PluginBase.SetCommand(menuIndex++, "Expression Execute", () => Process(false), new ShortcutKey(true, false, false, Keys.E));
+            PluginBase.SetCommand(menuIndex++, "Script Execute", () => Process(true), new ShortcutKey(true, false, true, Keys.E));
+            PluginBase.SetCommand(menuIndex++, "---", null);
+
+            int outsCommandsIndex = menuIndex;
+
             for (int i = 0; i < Config.Instance.ResultOuts.Count; i++)
             {
                 int value = i;
-                PluginBase.SetCommand(i + 1, Config.Instance.ResultOuts[i].Name, () =>
+                PluginBase.SetCommand(i + outsCommandsIndex, Config.Instance.ResultOuts[i].Name, () =>
                 {
                     try
                     {
-                        BNpp.NotepadPP.SetPluginMenuChecked(Config.Instance.CurrentResultOutIndex + 1, false);
-                        BNpp.NotepadPP.SetPluginMenuChecked(value + 1, true);
+                        BNpp.NotepadPP.SetPluginMenuChecked(Config.Instance.CurrentResultOutIndex + outsCommandsIndex, false);
+                        BNpp.NotepadPP.SetPluginMenuChecked(value + outsCommandsIndex, true);
                         Config.Instance.CurrentResultOutIndex = value;
                         Config.Instance.Save();
 
@@ -36,11 +91,20 @@ namespace NppPowerTools
                     }
                 }, new ShortcutKey(false, true, false, Keys.NumPad1 + i), i == Config.Instance.CurrentResultOutIndex);
             }
+
+            menuIndex += Config.Instance.ResultOuts.Count;
+
+            PluginBase.SetCommand(menuIndex++, "---", null);
+            PluginBase.SetCommand(menuIndex++, "Options", ShowOptionWindow,new ShortcutKey(true, false, true, Keys.O));
+            PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version.ToString()}\r\nAuthor : CodingSeb", "About" ));
         }
 
-        internal static void Process()
+        internal static void Process(bool script)
         {
-            ExpressionEvaluator evaluator = new ExpressionEvaluator();
+            ExpressionEvaluator evaluator = new ExpressionEvaluator()
+            {
+                OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault,
+            };
 
             evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
             evaluator.EvaluateVariable += CustomEvaluations.Evaluator_EvaluateVariable;
@@ -56,7 +120,7 @@ namespace NppPowerTools
                     scintilla.SetSel(new Position(lineStart), new Position(start));
                 }
 
-                Config.Instance.CurrentResultOut.SetResult(evaluator.Evaluate(BNpp.SelectedText).ToString());
+                Config.Instance.CurrentResultOut.SetResult((script ? evaluator.ScriptEvaluate(BNpp.SelectedText) : evaluator.Evaluate(BNpp.SelectedText)).ToString());
             }
             catch (Exception exception)
             {
@@ -67,6 +131,42 @@ namespace NppPowerTools
                 evaluator.EvaluateFunction -= CustomEvaluations.Evaluator_EvaluateFunction;
                 evaluator.EvaluateVariable -= CustomEvaluations.Evaluator_EvaluateVariable;
             }
+        }
+
+        internal static void ShowOptionWindow()
+        {
+            IntPtr hWnd = FindWindow(null, OPTION_WINDOW_TITLE);
+
+            if (hWnd.ToInt64() > 0)
+            {
+                SetForegroundWindow(hWnd);
+            }
+            else
+            {
+                if (optionsWindow == null)
+                {
+                    optionsWindow = new System.Windows.Window
+                    {
+                        Title = OPTION_WINDOW_TITLE,
+                        SizeToContent = System.Windows.SizeToContent.WidthAndHeight,
+                        Content = new OptionsWindowContent()
+                    };
+
+                    optionsWindow.Closed += OptionsWindow_Closed;
+                }
+            }
+
+            optionsWindow.Show();
+
+            SetWindowLong(new WindowInteropHelper(optionsWindow).Handle, (int)WindowLongFlags.GWLP_HWNDPARENT, PluginBase.nppData._nppHandle);
+            SetLayeredWindowAttributes(new WindowInteropHelper(optionsWindow).Handle, 0, 128, LWA_ALPHA);
+        }
+
+        private static void OptionsWindow_Closed(object sender, EventArgs e)
+        {
+            optionsWindow.Closed -= OptionsWindow_Closed;
+            optionsWindow = null;
+            Config.Instance.Save();
         }
     }
 }

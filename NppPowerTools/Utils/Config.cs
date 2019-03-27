@@ -43,6 +43,8 @@ namespace NppPowerTools.Utils
 
         public int CurrentResultOutIndex { get; set; } = 0;
 
+        public bool OptionForceIntegerNumbersEvaluationsAsDoubleByDefault { get; set; } = false;
+
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];
 

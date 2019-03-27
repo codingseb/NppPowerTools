@@ -54,6 +54,10 @@ namespace NppPowerTools.Utils
             {
                 e.Value = $"0b{Convert.ToString(intBinValue, 2)}";
             }
+            else if(e.Name.ToLower().Equals("guid"))
+            {
+                e.Value = Guid.NewGuid().ToString();
+            }
         }
 
         public static void Evaluator_EvaluateFunction(object sender, FunctionEvaluationEventArg e)
