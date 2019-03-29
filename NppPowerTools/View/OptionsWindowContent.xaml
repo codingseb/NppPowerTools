@@ -22,11 +22,14 @@
                    Target="{Binding ElementName=OutputsComboBox}"/>
             <ComboBox x:Name="OutputsComboBox"
                       ItemsSource="{Binding ResultOuts}"
-                      SelectedIndex="{Binding CurrentResultOutIndex}"
+                      SelectedIndex="{Binding CompleteCurrentResultOutIndexSelection}"
                       DisplayMemberPath="Name"/>
             <CheckBox Grid.ColumnSpan="2"
                       Content="_Force integer numbers evaluation as double by default"
                       IsChecked="{Binding OptionForceIntegerNumbersEvaluationsAsDoubleByDefault}" />
+            <CheckBox Grid.ColumnSpan="2"
+                      Content="_Case sensitive"
+                      IsChecked="{Binding CaseSensitive}" />
         </st:AutoGrid>
     </DockPanel>
 </UserControl>

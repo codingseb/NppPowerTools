@@ -45,8 +45,23 @@ namespace NppPowerTools.Utils
 
         public bool OptionForceIntegerNumbersEvaluationsAsDoubleByDefault { get; set; } = false;
 
+        public bool CaseSensitive { get; set; } = true;
+
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];
+
+        [JsonIgnore]
+        public int CompleteCurrentResultOutIndexSelection
+        {
+            get
+            {
+                return CurrentResultOutIndex;
+            }
+            set
+            {
+                Main.SetEvaluationOutput(value);
+            }
+        }
 
         #region Json singleton
 

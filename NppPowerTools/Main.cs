@@ -17,6 +17,8 @@ namespace NppPowerTools
         private static System.Windows.Window optionsWindow = null;
         private const string OPTION_WINDOW_TITLE = "Options - Npp Power Tools";
 
+        private static int outsCommandsIndex;
+
         //Import the FindWindow API to find our window
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr FindWindow([MarshalAs(UnmanagedType.LPWStr)] string ClassName, [MarshalAs(UnmanagedType.LPWStr)] string WindowName);
@@ -60,7 +62,9 @@ namespace NppPowerTools
         }
 
         public static void OnNotification(ScNotification notification)
-        { }
+        {
+
+        }
 
         internal static void CommandMenuInit()
         {
@@ -69,27 +73,16 @@ namespace NppPowerTools
             PluginBase.SetCommand(menuIndex++, "Script Execute", () => Process(true), new ShortcutKey(true, false, true, Keys.E));
             PluginBase.SetCommand(menuIndex++, "---", null);
 
-            int outsCommandsIndex = menuIndex;
+            outsCommandsIndex = menuIndex;
 
             for (int i = 0; i < Config.Instance.ResultOuts.Count; i++)
             {
                 int value = i;
-                PluginBase.SetCommand(i + outsCommandsIndex, Config.Instance.ResultOuts[i].Name, () =>
-                {
-                    try
-                    {
-                        BNpp.NotepadPP.SetPluginMenuChecked(Config.Instance.CurrentResultOutIndex + outsCommandsIndex, false);
-                        BNpp.NotepadPP.SetPluginMenuChecked(value + outsCommandsIndex, true);
-                        Config.Instance.CurrentResultOutIndex = value;
-                        Config.Instance.Save();
-
-                        MessageBox.Show($"Result output : \"{Config.Instance.ResultOuts[value].Name }\" selected.", "Info", MessageBoxButtons.OK);
-                    }
-                    catch (Exception exception)
-                    {
-                        MessageBox.Show($"{exception.Message}\r\n{exception.StackTrace}{(exception.InnerException == null ? string.Empty : $"\r\nInner Exception :\r\n{exception.InnerException.Message}\r\n{exception.InnerException.StackTrace}")}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }, new ShortcutKey(false, true, false, Keys.NumPad1 + i), i == Config.Instance.CurrentResultOutIndex);
+                PluginBase.SetCommand(i + outsCommandsIndex, 
+                    Config.Instance.ResultOuts[i].Name, 
+                    () => SetEvaluationOutput(value), 
+                    new ShortcutKey(false, true, false, Keys.NumPad1 + i), 
+                    i == Config.Instance.CurrentResultOutIndex);
             }
 
             menuIndex += Config.Instance.ResultOuts.Count;
@@ -99,11 +92,29 @@ namespace NppPowerTools
             PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version.ToString()}\r\nAuthor : CodingSeb", "About" ));
         }
 
+        public static void SetEvaluationOutput(int value)
+        {
+            try
+            {
+                BNpp.NotepadPP.SetPluginMenuChecked(Config.Instance.CurrentResultOutIndex + outsCommandsIndex, false);
+                BNpp.NotepadPP.SetPluginMenuChecked(value + outsCommandsIndex, true);
+                Config.Instance.CurrentResultOutIndex = value;
+                Config.Instance.Save();
+
+                MessageBox.Show($"Result output : \"{Config.Instance.ResultOuts[value].Name }\" selected.", "Info", MessageBoxButtons.OK);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"{exception.Message}\r\n{exception.StackTrace}{(exception.InnerException == null ? string.Empty : $"\r\nInner Exception :\r\n{exception.InnerException.Message}\r\n{exception.InnerException.StackTrace}")}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         internal static void Process(bool script)
         {
             ExpressionEvaluator evaluator = new ExpressionEvaluator()
             {
                 OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault,
+                OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive
             };
 
             evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
@@ -120,7 +131,7 @@ namespace NppPowerTools
                     scintilla.SetSel(new Position(lineStart), new Position(start));
                 }
 
-                Config.Instance.CurrentResultOut.SetResult((script ? evaluator.ScriptEvaluate(BNpp.SelectedText) : evaluator.Evaluate(BNpp.SelectedText)).ToString());
+                Config.Instance.CurrentResultOut.SetResult((script ? evaluator.ScriptEvaluate(BNpp.SelectedText) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'))).ToString());
             }
             catch (Exception exception)
             {

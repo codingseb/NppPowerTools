@@ -92,7 +92,20 @@ namespace NppPowerTools.PluginInfrastructure
         {
             try
             {
-                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_SWITCHTOFILE, 0, tabPath);
+                ShowTab(GetAllOpenedDocuments.IndexOf(tabPath));
+                // NPPM_SWITCHTOFILE not reliable
+                //Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_SWITCHTOFILE, 0, tabPath);
+            }
+            catch { }
+
+            return this;
+        }
+
+        public NotepadPPGateway ShowTab(int index)
+        {
+            try
+            {
+                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_ACTIVATEDOC, 0, index);
             }
             catch { }
 

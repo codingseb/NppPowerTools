@@ -1,9 +1,11 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using Newtonsoft.Json;
+using NppPowerTools.PluginInfrastructure;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace NppPowerTools.Utils
 {
@@ -11,12 +13,14 @@ namespace NppPowerTools.Utils
     {
         private static readonly Regex loremIspumVariableEvalRegex = new Regex(@"^(li|loremipsum|lorem|ipsum)(w(?<words>\d+)|wl(?<wordsPerLine>\d+)|(?<language>fr|en|la)|l?(?<lines>\d+))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex loopVariableEvalRegex = new Regex(@"^(lp|loop)((?<join>j)|f(?<from>\d+)|(t()?<to>\d+)|[nc]?(?<count>\d+))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex tabVarRegex = new Regex(@"tab((?<tabIndex>\d+)|(?<all>all))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static Random random = new Random();
 
         public static void Evaluator_EvaluateVariable(object sender, VariableEvaluationEventArg e)
         {
             Match loremIspumVariableEvalMatch = loremIspumVariableEvalRegex.Match(e.Name);
+            Match tabVarMatch = tabVarRegex.Match(e.Name);
 
             if (loremIspumVariableEvalMatch.Success)
             {
@@ -33,6 +37,33 @@ namespace NppPowerTools.Utils
                     e.Value = li.GetLines(int.Parse(loremIspumVariableEvalMatch.Groups["lines"].Value, CultureInfo.InvariantCulture), wordPerLine);
                 else
                     e.Value = li.GetWords(100, wordPerLine);
+            }
+            else if(tabVarMatch.Success)
+            {
+                string currentTab = BNpp.NotepadPP.CurrentFileName;
+
+                if(tabVarMatch.Groups["all"].Success)
+                {
+                    List<string> texts = new List<string>();
+
+                    BNpp.NotepadPP.GetAllOpenedDocuments.ForEach(tabName =>
+                    {
+                        BNpp.NotepadPP.ShowOpenedDocument(tabName);
+                        texts.Add(BNpp.Text);
+                    });
+
+                    BNpp.NotepadPP.ShowOpenedDocument(currentTab);
+                    e.Value = string.Join("\r\n", texts);
+                }
+                else if(tabVarMatch.Groups["tabIndex"].Success)
+                {
+                    BNpp.NotepadPP.ShowTab(int.Parse(tabVarMatch.Groups["tabIndex"].Value));
+                    string text = BNpp.Text;
+                    BNpp.NotepadPP.ShowOpenedDocument(currentTab);
+                    string doNothingWithItText = BNpp.Text;
+                    e.Value = text;
+                }
+
             }
             else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is List<object> list)
             {
