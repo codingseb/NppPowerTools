@@ -47,6 +47,8 @@ namespace NppPowerTools.Utils
 
         public bool CaseSensitive { get; set; } = true;
 
+
+
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];
 

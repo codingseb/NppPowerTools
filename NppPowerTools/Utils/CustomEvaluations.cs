@@ -1,11 +1,9 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using Newtonsoft.Json;
-using NppPowerTools.PluginInfrastructure;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace NppPowerTools.Utils
 {
@@ -65,7 +63,7 @@ namespace NppPowerTools.Utils
                 }
 
             }
-            else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is List<object> list)
+            else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is IEnumerable<object> list)
             {
                 e.Value = string.Join(BNpp.CurrentEOL, list);
             }

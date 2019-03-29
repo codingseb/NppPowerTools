@@ -132,7 +132,7 @@ namespace NppPowerTools
 
                     if (script)
                     {
-
+                        // TODO special start script tag
                     }
                     else
                     {
@@ -143,7 +143,7 @@ namespace NppPowerTools
                     scintilla.SetSel(new Position(start), new Position(end));
                 }
 
-                Config.Instance.CurrentResultOut.SetResult((script ? evaluator.ScriptEvaluate(BNpp.SelectedText) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'))).ToString());
+                Config.Instance.CurrentResultOut.SetResult((script ? evaluator.ScriptEvaluate(evaluator.RemoveComments(BNpp.SelectedText)) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'))).ToString());
             }
             catch (Exception exception)
             {
