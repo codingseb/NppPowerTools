@@ -95,7 +95,6 @@ namespace NppPowerTools.Utils
 
             if (loopVariableEvalMatch.Success)
             {
-                bool join = loopVariableEvalMatch.Groups["join"].Success;
                 List<object> results = new List<object>();
 
                 int from = loopVariableEvalMatch.Groups["from"].Success ? int.Parse(loopVariableEvalMatch.Groups["from"].Value, CultureInfo.InvariantCulture) : 1;
@@ -121,7 +120,7 @@ namespace NppPowerTools.Utils
 
                 e.Value = results;
             }
-            else if (e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j"))
+            else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && (e.This is IEnumerable<object> || e.Args.Count > 1 && e.EvaluateArg(1) is List<object>))
             {
                 if (e.This is List<object> list)
                 {
