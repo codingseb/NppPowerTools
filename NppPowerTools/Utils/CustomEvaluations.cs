@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace NppPowerTools.Utils
 {
@@ -71,7 +72,7 @@ namespace NppPowerTools.Utils
             {
                 e.Value = JsonConvert.SerializeObject(e.This); 
             }
-            else if(e.Name.ToLower().Equals("random") || e.Name.ToLower().Equals("rand") || e.Name.ToLower().Equals("rnd"))
+            else if(e.Name.Equals("random") || e.Name.ToLower().Equals("rand") || e.Name.ToLower().Equals("rnd"))
             {
                 e.Value = random;
             }
@@ -83,10 +84,15 @@ namespace NppPowerTools.Utils
             {
                 e.Value = $"0b{Convert.ToString(intBinValue, 2)}";
             }
-            else if(e.Name.ToLower().Equals("guid"))
+            else if(e.Name.Equals("guid"))
             {
                 e.Value = Guid.NewGuid().ToString();
             }
+            else if (e.Name.Equals("clipboard") || e.Name.ToLower().Equals("cb"))
+            {
+                e.Value =  Clipboard.GetText();
+            }
+
         }
 
         public static void Evaluator_EvaluateFunction(object sender, FunctionEvaluationEventArg e)

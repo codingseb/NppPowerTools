@@ -41,6 +41,15 @@ namespace NppPowerTools.Utils
             },
             new ResultOut()
             {
+                Name = "Result in a MessageBox",
+                SetResult = result =>
+                {
+                    BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd());
+                    MessageBox.Show(result, "Result");
+                }
+            },
+            new ResultOut()
+            {
                 Name = "No output for result",
                 SetResult = result =>
                 {
