@@ -31,14 +31,22 @@ namespace NppPowerTools.Utils
             },
             new ResultOut()
             {
-                Name = "In a new tab",
+                Name = "Result in a new tab",
                 SetResult = result =>
                 {
                     BNpp.NotepadPP.FileNew();
                     BNpp.Text = result;
                     BNpp.Scintilla.DocumentEnd();
                 }
-            }
+            },
+            new ResultOut()
+            {
+                Name = "No output for result",
+                SetResult = result =>
+                {
+                    BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd());
+                }
+            },
         };
 
         public int CurrentResultOutIndex { get; set; } = 0;
