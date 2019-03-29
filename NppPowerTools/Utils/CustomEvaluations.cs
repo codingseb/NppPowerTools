@@ -53,7 +53,7 @@ namespace NppPowerTools.Utils
                     });
 
                     BNpp.NotepadPP.ShowOpenedDocument(currentTab);
-                    e.Value = string.Join("\r\n", texts);
+                    e.Value = string.Join(BNpp.CurrentEOL, texts);
                 }
                 else if(tabVarMatch.Groups["tabIndex"].Success)
                 {
@@ -67,7 +67,7 @@ namespace NppPowerTools.Utils
             }
             else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is List<object> list)
             {
-                e.Value = string.Join("\r\n", list);
+                e.Value = string.Join(BNpp.CurrentEOL, list);
             }
             else if(e.Name.ToLower().Equals("json") && e.This != null)
             {

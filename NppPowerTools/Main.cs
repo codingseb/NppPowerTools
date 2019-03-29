@@ -114,8 +114,10 @@ namespace NppPowerTools
             ExpressionEvaluator evaluator = new ExpressionEvaluator()
             {
                 OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault,
-                OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive
+                OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive,
             };
+
+            evaluator.Namespaces.Add("NppPowerTools");
 
             evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
             evaluator.EvaluateVariable += CustomEvaluations.Evaluator_EvaluateVariable;
@@ -125,10 +127,20 @@ namespace NppPowerTools
                 if (BNpp.SelectionLength <= 0)
                 {
                     IScintillaGateway scintilla = new ScintillaGateway(PluginBase.GetCurrentScintilla());
-                    int start = scintilla.GetCurrentPos();
-                    int line = scintilla.GetCurrentLineNumber();
-                    int lineStart = scintilla.PositionFromLine(line);
-                    scintilla.SetSel(new Position(lineStart), new Position(start));
+                    int end = scintilla.GetCurrentPos();
+                    int start = 0;
+
+                    if (script)
+                    {
+
+                    }
+                    else
+                    {
+                        int line = scintilla.GetCurrentLineNumber();
+                        start = scintilla.PositionFromLine(line);                        
+                    }
+
+                    scintilla.SetSel(new Position(start), new Position(end));
                 }
 
                 Config.Instance.CurrentResultOut.SetResult((script ? evaluator.ScriptEvaluate(BNpp.SelectedText) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'))).ToString());
