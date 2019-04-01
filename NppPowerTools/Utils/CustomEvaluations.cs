@@ -80,9 +80,17 @@ namespace NppPowerTools.Utils
             {
                 e.Value = $"0x{intHexValue.ToString("X")}";
             }
+            else if(e.Name.ToLower().Equals("hex") && e.This is double doubleHexValue)
+            {
+                e.Value = $"0x{((int)doubleHexValue).ToString("X")}";
+            }
             else if(e.Name.ToLower().Equals("bin") && e.This is int intBinValue)
             {
                 e.Value = $"0b{Convert.ToString(intBinValue, 2)}";
+            }
+            else if(e.Name.ToLower().Equals("bin") && e.This is double doubleBinValue)
+            {
+                e.Value = $"0b{Convert.ToString((int)doubleBinValue, 2)}";
             }
             else if(e.Name.Equals("guid"))
             {
