@@ -19,21 +19,21 @@ namespace NppPowerTools
             get
             {
                 string eol = "\n";
-                int value = Win32.SendMessage(PluginBase.nppData._nppHandle, SciMsg.SCI_GETEOLMODE, 0, 0).ToInt32();
+                int value = Scintilla.GetEOLMode();
 
-                switch (value)
+                switch ((SciMsg)value)
                 {
-                    case 0:
+                    case SciMsg.SC_EOL_CRLF:
                         eol = "\r\n";
                         break;
-                    case 1:
+                    case SciMsg.SC_EOL_CR:
                         eol = "\r";
                         break;
                     default:
                         break;
                 }
 
-                return "\r\n"; //  eol;
+                return eol;
             }
         }
 

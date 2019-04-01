@@ -16,16 +16,8 @@ namespace NppPowerTools.Utils
         private static readonly Regex tabVarRegex = new Regex(@"tab((?<tabIndex>\d+)|(?<all>all))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Random random = new Random();
-        private static string print;
 
-        public static string Print
-        {
-            get { return print; }
-            set
-            {
-                print = value;
-            }
-        }
+        public static string Print { get; set; }
 
         public static void Evaluator_EvaluateVariable(object sender, VariableEvaluationEventArg e)
         {
