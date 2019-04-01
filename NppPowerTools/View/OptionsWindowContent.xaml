@@ -24,6 +24,9 @@
                       ItemsSource="{Binding ResultOuts}"
                       SelectedIndex="{Binding CompleteCurrentResultOutIndexSelection}"
                       DisplayMemberPath="Name"/>
+            <Label Content="Text when result is _null"/>
+            <TextBox x:Name="TextWhenResultIsNullTextBox"
+                     Text="{Binding TextWhenResultIsNull}" />
             <CheckBox Grid.ColumnSpan="2"
                       Content="_Force integer numbers evaluation as double by default"
                       IsChecked="{Binding OptionForceIntegerNumbersEvaluationsAsDoubleByDefault}" />

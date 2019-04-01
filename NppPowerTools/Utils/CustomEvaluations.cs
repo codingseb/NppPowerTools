@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -14,7 +15,17 @@ namespace NppPowerTools.Utils
         private static readonly Regex loopVariableEvalRegex = new Regex(@"^(lp|loop)((?<join>j)|f(?<from>\d+)|(t()?<to>\d+)|[nc]?(?<count>\d+))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex tabVarRegex = new Regex(@"tab((?<tabIndex>\d+)|(?<all>all))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static Random random = new Random();
+        private static readonly Random random = new Random();
+        private static string print;
+
+        public static string Print
+        {
+            get { return print; }
+            set
+            {
+                print = value;
+            }
+        }
 
         public static void Evaluator_EvaluateVariable(object sender, VariableEvaluationEventArg e)
         {
@@ -64,6 +75,10 @@ namespace NppPowerTools.Utils
                 }
 
             }
+            else if(e.Name.ToLower().Equals("hw") && e.This == null)
+            {
+                e.Value = "!!! Hello World !!!";
+            }
             else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is IEnumerable<object> list)
             {
                 e.Value = string.Join(BNpp.CurrentEOL, list);
@@ -100,7 +115,6 @@ namespace NppPowerTools.Utils
             {
                 e.Value =  Clipboard.GetText();
             }
-
         }
 
         public static void Evaluator_EvaluateFunction(object sender, FunctionEvaluationEventArg e)
@@ -144,6 +158,15 @@ namespace NppPowerTools.Utils
                 {
                     e.Value = string.Join(e.EvaluateArg<string>(0), list2);
                 }
+            }
+            else if(e.Name.ToLower().Equals("print") && e.This == null)
+            {
+                if (e.Args.Count > 1)
+                    Print += string.Format(e.EvaluateArg(0).ToString(), e.Args.Skip(1).ToArray()) + BNpp.CurrentEOL;
+                else
+                    Print += e.EvaluateArg(0).ToString() + BNpp.CurrentEOL;
+
+                e.Value = null;
             }
         }
     }

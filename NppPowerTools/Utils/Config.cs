@@ -60,11 +60,11 @@ namespace NppPowerTools.Utils
 
         public int CurrentResultOutIndex { get; set; } = 0;
 
+        public string TextWhenResultIsNull { get; set; } = string.Empty;
+
         public bool OptionForceIntegerNumbersEvaluationsAsDoubleByDefault { get; set; } = false;
 
         public bool CaseSensitive { get; set; } = true;
-
-
 
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];
@@ -139,6 +139,7 @@ namespace NppPowerTools.Utils
         public virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.Save();
         }
 
         #endregion

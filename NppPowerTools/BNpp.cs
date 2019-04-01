@@ -33,7 +33,7 @@ namespace NppPowerTools
                         break;
                 }
 
-                return eol;
+                return "\r\n"; //  eol;
             }
         }
 

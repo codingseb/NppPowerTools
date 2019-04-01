@@ -119,6 +119,8 @@ namespace NppPowerTools
 
             evaluator.Namespaces.Add("NppPowerTools");
 
+            CustomEvaluations.Print = string.Empty;
+
             evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
             evaluator.EvaluateVariable += CustomEvaluations.Evaluator_EvaluateVariable;
 
@@ -143,11 +145,18 @@ namespace NppPowerTools
                     scintilla.SetSel(new Position(start), new Position(end));
                 }
 
-                Config.Instance.CurrentResultOut.SetResult((script ? evaluator.ScriptEvaluate(evaluator.RemoveComments(BNpp.SelectedText)) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'))).ToString());
+                object result = script ? evaluator.ScriptEvaluate(evaluator.RemoveComments(BNpp.SelectedText)) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'));
+                string sResult = result?.ToString() ?? Config.Instance.TextWhenResultIsNull;
+                string completeOutput = CustomEvaluations.Print + sResult;
+
+                Config.Instance.CurrentResultOut.SetResult(completeOutput);
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
+
+                if (!string.IsNullOrEmpty(CustomEvaluations.Print))
+                    Config.Instance.CurrentResultOut.SetResult(CustomEvaluations.Print);
             }
             finally
             {
