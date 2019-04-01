@@ -1,6 +1,7 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -71,9 +72,9 @@ namespace NppPowerTools.Utils
             {
                 e.Value = "!!! Hello World !!!";
             }
-            else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is IEnumerable<object> list)
+            else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is IEnumerable enumerableForJoin)
             {
-                e.Value = string.Join(BNpp.CurrentEOL, list);
+                e.Value = string.Join(BNpp.CurrentEOL, enumerableForJoin.Cast<object>());
             }
             else if(e.Name.ToLower().Equals("json") && e.This != null)
             {
@@ -159,6 +160,20 @@ namespace NppPowerTools.Utils
                     Print += e.EvaluateArg(0).ToString() + BNpp.CurrentEOL;
 
                 e.Value = null;
+            }
+            else if(e.Name.ToLower().Equals("range") && e.This == null)
+            {
+                if(e.Args.Count == 2)
+                    e.Value = Enumerable.Range((int)e.EvaluateArg(0), (int)e.EvaluateArg(1)).Cast<object>();
+                else if(e.Args.Count == 1)
+                    e.Value = Enumerable.Range(1, (int)e.EvaluateArg(1)).Cast<object>();
+            }
+            else if(e.Name.ToLower().Equals("repeat"))
+            {
+                if(e.Args.Count == 2 && e.This == null)
+                    e.Value = Enumerable.Repeat(e.EvaluateArg(0), (int)e.EvaluateArg(1)).Cast<object>();
+                else if(e.Args.Count == 1 && e.This != null)
+                    e.Value = Enumerable.Repeat(e.This, (int)e.EvaluateArg(1)).Cast<object>();
             }
         }
     }
