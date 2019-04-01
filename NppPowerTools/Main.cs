@@ -129,7 +129,8 @@ namespace NppPowerTools
                 if (BNpp.SelectionLength <= 0)
                 {
                     IScintillaGateway scintilla = new ScintillaGateway(PluginBase.GetCurrentScintilla());
-                    int end = scintilla.GetCurrentPos();
+                    int line = scintilla.GetCurrentLineNumber();
+                    int end = scintilla.GetLineEndPosition(line);
                     int start = 0;
 
                     if (script)
@@ -138,8 +139,14 @@ namespace NppPowerTools
                     }
                     else
                     {
-                        int line = scintilla.GetCurrentLineNumber();
-                        start = scintilla.PositionFromLine(line);                        
+                        int i;
+                        for (i = line; i > 0 && scintilla.GetLine(line).TrimStart().StartsWith("."); i--);
+
+                        start = scintilla.PositionFromLine(i);
+
+                        for (i = line; i < scintilla.GetLineCount() && scintilla.GetLine(line).TrimStart().StartsWith("."); i++) ;
+
+                        end = scintilla.PositionFromLine(i);
                     }
 
                     scintilla.SetSel(new Position(start), new Position(end));
