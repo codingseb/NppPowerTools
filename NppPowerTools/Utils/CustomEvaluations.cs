@@ -76,21 +76,21 @@ namespace NppPowerTools.Utils
             {
                 e.Value = random;
             }
-            else if(e.Name.ToLower().Equals("hex") && e.This is int intHexValue)
+            else if((e.Name.ToLower().Equals("hex") || e.Name.ToLower().Equals("hexd")) && e.This is int intHexValue)
             {
-                e.Value = $"0x{intHexValue.ToString("X")}";
+                e.Value = $"{(e.Name.ToLower().EndsWith("d") ? string.Empty : "0x")}{intHexValue.ToString("X")}";
             }
-            else if(e.Name.ToLower().Equals("hex") && e.This is double doubleHexValue)
+            else if((e.Name.ToLower().Equals("hex") || e.Name.ToLower().Equals("hexd")) && e.This is double doubleHexValue)
             {
-                e.Value = $"0x{((int)doubleHexValue).ToString("X")}";
+                e.Value = $"{(e.Name.ToLower().EndsWith("d") ? string.Empty : "0x")}{((int)doubleHexValue).ToString("X")}";
             }
-            else if(e.Name.ToLower().Equals("bin") && e.This is int intBinValue)
+            else if((e.Name.ToLower().Equals("bin") || e.Name.ToLower().Equals("bind")) && e.This is int intBinValue)
             {
-                e.Value = $"0b{Convert.ToString(intBinValue, 2)}";
+                e.Value = $"{(e.Name.ToLower().EndsWith("d") ? string.Empty : "0b")}{Convert.ToString(intBinValue, 2)}";
             }
-            else if(e.Name.ToLower().Equals("bin") && e.This is double doubleBinValue)
+            else if((e.Name.ToLower().Equals("bin") || e.Name.ToLower().Equals("bind")) && e.This is double doubleBinValue)
             {
-                e.Value = $"0b{Convert.ToString((int)doubleBinValue, 2)}";
+                e.Value = $"{(e.Name.ToLower().EndsWith("d") ? string.Empty : "0b")}{Convert.ToString((int)doubleBinValue, 2)}";
             }
             else if(e.Name.Equals("guid"))
             {
