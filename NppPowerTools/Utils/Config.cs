@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -65,6 +66,24 @@ namespace NppPowerTools.Utils
         public bool OptionForceIntegerNumbersEvaluationsAsDoubleByDefault { get; set; } = false;
 
         public bool CaseSensitive { get; set; } = true;
+
+        public bool UseProxy { get; set; } = false;
+
+        public bool UseDefaultProxy { get; set; } = false;
+
+        public string ProxyAddress { get; set; } = string.Empty;
+
+        public int? ProxyPort { get; set; } = null;
+
+        public bool ProxyBypassOnLocal { get; set; } = false;
+
+        public string ProxyBypassList { get; set; } = string.Empty;
+
+        public bool UseDefaultCredentials { get; set; } = true;
+
+        public string ProxyUserName { get; set; } = string.Empty;
+
+        public string ProxyPassword { get; set; } = string.Empty;
 
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];

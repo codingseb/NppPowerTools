@@ -1,7 +1,6 @@
 using CodingSeb.ExpressionEvaluator;
 using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils;
-using NppPowerTools.View;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -146,7 +145,7 @@ namespace NppPowerTools
 
                         for (i = line; i < scintilla.GetLineCount() && scintilla.GetLine(line).TrimStart().StartsWith("."); i++) ;
 
-                        end = scintilla.PositionFromLine(i);
+                        end = scintilla.GetLineEndPosition(i);
                     }
 
                     scintilla.SetSel(new Position(start), new Position(end));
@@ -187,8 +186,10 @@ namespace NppPowerTools
                     optionsWindow = new System.Windows.Window
                     {
                         Title = OPTION_WINDOW_TITLE,
+                        MinWidth = 450,
+                        MinHeight = 350,
                         SizeToContent = System.Windows.SizeToContent.WidthAndHeight,
-                        Content = new OptionsWindowContent()
+                        Content = new OptionsWindowContent(),
                     };
 
                     optionsWindow.Closed += OptionsWindow_Closed;
