@@ -8,10 +8,11 @@ namespace NppPowerTools.Utils.Evaluations
 {
     public class HttpEvaluation : IFunctionEvaluation
     {
-        public bool CanEvaluate(object sender, FunctionEvaluationEventArg e) => e.Name.ToLower().StartsWith("http") && (e.This != null || e.Args.Count > 0);
-
-        public void Evaluate(object sender, FunctionEvaluationEventArg e)
+        public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
+            if (!(e.Name.ToLower().StartsWith("http") && (e.This != null || e.Args.Count > 0)))
+                return false;
+
             HttpClientHandler httpClientHandler = new HttpClientHandler();
 
             if (Config.Instance.UseProxy)
@@ -73,6 +74,8 @@ namespace NppPowerTools.Utils.Evaluations
                     e.Value = exception;
                 }
             }
+
+            return true;
         }
     }
 

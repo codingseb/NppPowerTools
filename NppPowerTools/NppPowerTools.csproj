@@ -141,6 +141,7 @@
     <Compile Include="Utils\Evaluations\LoopEvaluation.cs" />
     <Compile Include="Utils\Evaluations\LoremIspumEvaluation.cs" />
     <Compile Include="Utils\Evaluations\NppTabEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\StringJoinEvaluation.cs" />
     <Compile Include="Utils\LoremIpsum.cs" />
     <Compile Include="Utils\ResultOut.cs" />
     <Compile Include="View\OptionsWindowContent.xaml.cs">

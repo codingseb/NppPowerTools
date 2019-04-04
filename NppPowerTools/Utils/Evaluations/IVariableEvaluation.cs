@@ -4,8 +4,6 @@ namespace NppPowerTools.Utils.Evaluations
 {
     interface IVariableEvaluation
     {
-        bool CanEvaluate(object sender, VariableEvaluationEventArg e);
-
-        void Evaluate(object sender, VariableEvaluationEventArg e);
+        bool TryEvaluate(object sender, VariableEvaluationEventArg e);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using NppPowerTools.Utils.Evaluations;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -16,13 +15,15 @@ namespace NppPowerTools.Utils
         {
             new LoremIspumEvaluation(),
             new NppTabEvaluation(),
-            new JsonEvaluation()
+            new JsonEvaluation(),
+            new StringJoinEvaluation(),
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
         {
             new LoopEvaluation(),
             new HttpEvaluation(),
+            new StringJoinEvaluation(),
         };
 
         public static string Print { get; set; }
@@ -32,10 +33,6 @@ namespace NppPowerTools.Utils
             if (e.Name.ToLower().Equals("hw") && e.This == null)
             {
                 e.Value = "!!! Hello World !!!";
-            }
-            else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is IEnumerable enumerableForJoin)
-            {
-                e.Value = string.Join(BNpp.CurrentEOL, enumerableForJoin.Cast<object>());
             }
             else if (e.Name.Equals("random") || e.Name.ToLower().Equals("rand") || e.Name.ToLower().Equals("rnd"))
             {
@@ -66,23 +63,12 @@ namespace NppPowerTools.Utils
                 e.Value = Clipboard.GetText();
             }
             else
-                variablesEvaluations.FirstOrDefault(eval => eval.CanEvaluate(sender, e))?.Evaluate(sender, e);
+                variablesEvaluations.FirstOrDefault(eval => eval.TryEvaluate(sender, e));
         }
 
         public static void Evaluator_EvaluateFunction(object sender, FunctionEvaluationEventArg e)
         {
-            if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && (e.This is IEnumerable<object> || e.Args.Count > 1 && e.EvaluateArg(1) is List<object>))
-            {
-                if (e.This is List<object> list)
-                {
-                    e.Value = string.Join(e.Args.Count > 0 ? e.EvaluateArg<string>(0) : "\r\n", list);
-                }
-                else if (e.Args.Count > 1 && e.EvaluateArg(1) is List<object> list2)
-                {
-                    e.Value = string.Join(e.EvaluateArg<string>(0), list2);
-                }
-            }
-            else if(e.Name.ToLower().Equals("print") && e.This == null)
+            if(e.Name.ToLower().Equals("print") && e.This == null)
             {
                 if (e.Args.Count > 1)
                     Print += string.Format(e.EvaluateArg(0).ToString(), e.Args.Skip(1).ToArray()) + BNpp.CurrentEOL;
@@ -106,7 +92,7 @@ namespace NppPowerTools.Utils
                     e.Value = Enumerable.Repeat(e.This, (int)e.EvaluateArg(1)).Cast<object>();
             }
             else
-                functionsEvaluations.FirstOrDefault(eval => eval.CanEvaluate(sender, e))?.Evaluate(sender, e);            
+                functionsEvaluations.FirstOrDefault(eval => eval.TryEvaluate(sender, e));
         }
     }
 }
