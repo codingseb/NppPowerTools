@@ -1,5 +1,4 @@
 ﻿using CodingSeb.ExpressionEvaluator;
-using Newtonsoft.Json;
 using NppPowerTools.Utils.Evaluations;
 using System;
 using System.Collections;
@@ -17,6 +16,7 @@ namespace NppPowerTools.Utils
         {
             new LoremIspumEvaluation(),
             new NppTabEvaluation(),
+            new JsonEvaluation()
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -36,10 +36,6 @@ namespace NppPowerTools.Utils
             else if ((e.Name.ToLower().Equals("sjoin") || e.Name.ToLower().Equals("sj") || e.Name.ToLower().Equals("j")) && e.This is IEnumerable enumerableForJoin)
             {
                 e.Value = string.Join(BNpp.CurrentEOL, enumerableForJoin.Cast<object>());
-            }
-            else if (e.Name.ToLower().Equals("json") && e.This != null)
-            {
-                e.Value = JsonConvert.SerializeObject(e.This, Formatting.Indented);
             }
             else if (e.Name.Equals("random") || e.Name.ToLower().Equals("rand") || e.Name.ToLower().Equals("rnd"))
             {

@@ -137,6 +137,7 @@
     <Compile Include="Utils\Evaluations\HttpEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IFunctionEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IVariableEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\JsonEvaluation.cs" />
     <Compile Include="Utils\Evaluations\LoopEvaluation.cs" />
     <Compile Include="Utils\Evaluations\LoremIspumEvaluation.cs" />
     <Compile Include="Utils\Evaluations\NppTabEvaluation.cs" />
