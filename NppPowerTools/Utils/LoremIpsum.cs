@@ -31,7 +31,7 @@ namespace NppPowerTools.Utils
 
             for (int i = 0; i < NumWords; i++)
             {
-                Result.Append((((i) % NumWordsPerLine) == 0 && i > 0 ? "\r\n" : (i > 0 ? " " : "")) + words[random.Next(words.Length - 1)]);
+                Result.Append((i % NumWordsPerLine) == 0 && i > 0 ? "\r\n" : (i > 0 ? " " : "")).Append(words[random.Next(words.Length - 1)]);
             }
 
             Result.Append(".");
@@ -53,7 +53,7 @@ namespace NppPowerTools.Utils
 
                 for (int j = 0; j < NumWordsPerLine; j++)
                 {
-                    Result.Append((j > 0 ? " " : "") + words[random.Next(words.Length - 1)]);
+                    Result.Append(j > 0 ? " " : "").Append(words[random.Next(words.Length - 1)]);
                 }
             }
 
