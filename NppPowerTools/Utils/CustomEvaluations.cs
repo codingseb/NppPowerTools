@@ -24,6 +24,7 @@ namespace NppPowerTools.Utils
             new LoopEvaluation(),
             new HttpEvaluation(),
             new StringJoinEvaluation(),
+            new ExcelEvaluation()
         };
 
         public static string Print { get; set; }
