@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace NppPowerTools.Utils
 {
-    internal class CustomEvaluations
+    internal static class CustomEvaluations
     {
         private static readonly Random random = new Random();
 
@@ -30,45 +30,47 @@ namespace NppPowerTools.Utils
 
         public static void Evaluator_EvaluateVariable(object sender, VariableEvaluationEventArg e)
         {
-            if (e.Name.ToLower().Equals("hw") && e.This == null)
+            if (e.Name.Equals("hw", StringComparison.OrdinalIgnoreCase) && e.This == null)
             {
                 e.Value = "!!! Hello World !!!";
             }
-            else if (e.Name.Equals("random") || e.Name.ToLower().Equals("rand") || e.Name.ToLower().Equals("rnd"))
+            else if (e.Name.Equals("random") || e.Name.Equals("rand", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("rnd", StringComparison.OrdinalIgnoreCase))
             {
                 e.Value = random;
             }
-            else if ((e.Name.ToLower().Equals("hex") || e.Name.ToLower().Equals("hexd")) && e.This is int intHexValue)
+            else if ((e.Name.Equals("hex", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("hexd", StringComparison.OrdinalIgnoreCase)) && e.This is int intHexValue)
             {
-                e.Value = $"{(e.Name.ToLower().EndsWith("d") ? string.Empty : "0x")}{intHexValue.ToString("X")}";
+                e.Value = $"{(e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0x")}{intHexValue.ToString("X")}";
             }
-            else if ((e.Name.ToLower().Equals("hex") || e.Name.ToLower().Equals("hexd")) && e.This is double doubleHexValue)
+            else if ((e.Name.Equals("hex", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("hexd", StringComparison.OrdinalIgnoreCase)) && e.This is double doubleHexValue)
             {
-                e.Value = $"{(e.Name.ToLower().EndsWith("d") ? string.Empty : "0x")}{((int)doubleHexValue).ToString("X")}";
+                e.Value = $"{(e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0x")}{((int)doubleHexValue).ToString("X")}";
             }
-            else if ((e.Name.ToLower().Equals("bin") || e.Name.ToLower().Equals("bind")) && e.This is int intBinValue)
+            else if ((e.Name.Equals("bin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("bind", StringComparison.OrdinalIgnoreCase)) && e.This is int intBinValue)
             {
-                e.Value = $"{(e.Name.ToLower().EndsWith("d") ? string.Empty : "0b")}{Convert.ToString(intBinValue, 2)}";
+                e.Value = $"{(e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0b")}{Convert.ToString(intBinValue, 2)}";
             }
-            else if ((e.Name.ToLower().Equals("bin") || e.Name.ToLower().Equals("bind")) && e.This is double doubleBinValue)
+            else if ((e.Name.Equals("bin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("bind", StringComparison.OrdinalIgnoreCase)) && e.This is double doubleBinValue)
             {
-                e.Value = $"{(e.Name.ToLower().EndsWith("d") ? string.Empty : "0b")}{Convert.ToString((int)doubleBinValue, 2)}";
+                e.Value = $"{(e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0b")}{Convert.ToString((int)doubleBinValue, 2)}";
             }
             else if (e.Name.Equals("guid"))
             {
                 e.Value = Guid.NewGuid().ToString();
             }
-            else if (e.Name.Equals("clipboard") || e.Name.ToLower().Equals("cb"))
+            else if (e.Name.Equals("clipboard") || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
             {
                 e.Value = Clipboard.GetText();
             }
             else
-                variablesEvaluations.FirstOrDefault(eval => eval.TryEvaluate(sender, e));
+            {
+                _ = variablesEvaluations.Find(eval => eval.TryEvaluate(sender, e));
+            }
         }
 
         public static void Evaluator_EvaluateFunction(object sender, FunctionEvaluationEventArg e)
         {
-            if(e.Name.ToLower().Equals("print") && e.This == null)
+            if (e.Name.Equals("print", StringComparison.OrdinalIgnoreCase) && e.This == null)
             {
                 if (e.Args.Count > 1)
                     Print += string.Format(e.EvaluateArg(0).ToString(), e.Args.Skip(1).ToArray()) + BNpp.CurrentEOL;
@@ -77,22 +79,24 @@ namespace NppPowerTools.Utils
 
                 e.Value = null;
             }
-            else if(e.Name.ToLower().Equals("range") && e.This == null)
+            else if (e.Name.Equals("range", StringComparison.OrdinalIgnoreCase) && e.This == null)
             {
-                if(e.Args.Count == 2)
+                if (e.Args.Count == 2)
                     e.Value = Enumerable.Range((int)e.EvaluateArg(0), (int)e.EvaluateArg(1)).Cast<object>();
-                else if(e.Args.Count == 1)
+                else if (e.Args.Count == 1)
                     e.Value = Enumerable.Range(1, (int)e.EvaluateArg(1)).Cast<object>();
             }
-            else if(e.Name.ToLower().Equals("repeat"))
+            else if (e.Name.Equals("repeat", StringComparison.OrdinalIgnoreCase))
             {
-                if(e.Args.Count == 2 && e.This == null)
+                if (e.Args.Count == 2 && e.This == null)
                     e.Value = Enumerable.Repeat(e.EvaluateArg(0), (int)e.EvaluateArg(1)).Cast<object>();
-                else if(e.Args.Count == 1 && e.This != null)
+                else if (e.Args.Count == 1 && e.This != null)
                     e.Value = Enumerable.Repeat(e.This, (int)e.EvaluateArg(1)).Cast<object>();
             }
             else
-                functionsEvaluations.FirstOrDefault(eval => eval.TryEvaluate(sender, e));
+            {
+                _ = functionsEvaluations.Find(eval => eval.TryEvaluate(sender, e));
+            }
         }
     }
 }

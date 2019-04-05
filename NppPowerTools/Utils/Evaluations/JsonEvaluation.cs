@@ -7,14 +7,16 @@ namespace NppPowerTools.Utils.Evaluations
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
-            if (e.Name.ToLower().Equals("json") && e.This != null)
+            if (e.Name.Equals("json", System.StringComparison.OrdinalIgnoreCase) && e.This != null)
             {
                 e.Value = JsonConvert.SerializeObject(e.This, Formatting.Indented);
 
                 return true;
             }
             else
+            {
                 return false;
+            }
         }
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)

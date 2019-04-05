@@ -52,10 +52,7 @@ namespace NppPowerTools.Utils
             new ResultOut()
             {
                 Name = "No output for result",
-                SetResult = result =>
-                {
-                    BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd());
-                }
+                SetResult = _ => BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd())
             },
         };
 

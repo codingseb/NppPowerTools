@@ -15,10 +15,11 @@ namespace NppPowerTools.Utils.Evaluations
 
             if (loopVariableEvalMatch.Success)
             {
-
                 List<object> results = new List<object>();
 
-                int from = loopVariableEvalMatch.Groups["from"].Success ? int.Parse(loopVariableEvalMatch.Groups["from"].Value, CultureInfo.InvariantCulture) : 1;
+                int from = loopVariableEvalMatch.Groups["from"].Success
+                    ? int.Parse(loopVariableEvalMatch.Groups["from"].Value, CultureInfo.InvariantCulture)
+                    : 1;
 
                 if (loopVariableEvalMatch.Groups["to"].Success)
                 {
@@ -30,7 +31,9 @@ namespace NppPowerTools.Utils.Evaluations
                 }
                 else
                 {
-                    int count = loopVariableEvalMatch.Groups["count"].Success ? int.Parse(loopVariableEvalMatch.Groups["count"].Value, CultureInfo.InvariantCulture) : 10;
+                    int count = loopVariableEvalMatch.Groups["count"].Success
+                        ? int.Parse(loopVariableEvalMatch.Groups["count"].Value, CultureInfo.InvariantCulture)
+                        : 10;
 
                     for (int i = 0; i < count; i++)
                     {
@@ -44,7 +47,9 @@ namespace NppPowerTools.Utils.Evaluations
                 return true;
             }
             else
+            {
                 return false;
+            }
         }
     }
 }

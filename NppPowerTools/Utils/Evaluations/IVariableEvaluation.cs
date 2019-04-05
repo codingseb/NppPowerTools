@@ -2,7 +2,7 @@
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    interface IVariableEvaluation
+    public interface IVariableEvaluation
     {
         bool TryEvaluate(object sender, VariableEvaluationEventArg e);
     }

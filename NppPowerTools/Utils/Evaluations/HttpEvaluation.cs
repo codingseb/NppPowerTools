@@ -10,32 +10,28 @@ namespace NppPowerTools.Utils.Evaluations
     {
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
-            if (!(e.Name.ToLower().StartsWith("http") && (e.This != null || e.Args.Count > 0)))
+            if (!(e.Name.StartsWith("http", StringComparison.OrdinalIgnoreCase) && (e.This != null || e.Args.Count > 0)))
                 return false;
 
             HttpClientHandler httpClientHandler = new HttpClientHandler();
 
             if (Config.Instance.UseProxy)
             {
-                if (Config.Instance.UseDefaultProxy)
-                    httpClientHandler.Proxy = WebRequest.GetSystemWebProxy();
-                else
-                {
-                    httpClientHandler.Proxy = new WebProxy(Config.Instance.ProxyPort == null ? Config.Instance.ProxyAddress : $"{Config.Instance.ProxyAddress}:{Config.Instance.ProxyPort}",
+                httpClientHandler.Proxy = Config.Instance.UseDefaultProxy
+                    ? WebRequest.GetSystemWebProxy()
+                    : new WebProxy(Config.Instance.ProxyPort == null ? Config.Instance.ProxyAddress : $"{Config.Instance.ProxyAddress}:{Config.Instance.ProxyPort}",
                         Config.Instance.ProxyBypassOnLocal)
                     {
                         BypassList = Config.Instance.ProxyBypassList.Split(';'),
                         UseDefaultCredentials = Config.Instance.UseDefaultCredentials
                     };
-                }
 
                 if (!Config.Instance.UseDefaultCredentials && !string.IsNullOrEmpty(Config.Instance.ProxyUserName))
                 {
                     string[] UserAndDomains = Config.Instance.ProxyUserName.Split('\\');
-                    if (UserAndDomains.Length > 1)
-                        httpClientHandler.Proxy.Credentials = new NetworkCredential(UserAndDomains.Last(), Config.Instance.ProxyPassword, UserAndDomains[0]);
-                    else
-                        httpClientHandler.Proxy.Credentials = new NetworkCredential(Config.Instance.ProxyUserName, Config.Instance.ProxyPassword);
+                    httpClientHandler.Proxy.Credentials = UserAndDomains.Length > 1
+                        ? new NetworkCredential(UserAndDomains.Last(), Config.Instance.ProxyPassword, UserAndDomains[0])
+                        : new NetworkCredential(Config.Instance.ProxyUserName, Config.Instance.ProxyPassword);
                 }
             }
 
@@ -45,29 +41,42 @@ namespace NppPowerTools.Utils.Evaluations
 
             string url = e.This?.ToString() ?? e.EvaluateArg(0).ToString();
 
-            if (e.Name.ToLower().Equals("httppost"))
+            if (e.Name.Equals("httppost", StringComparison.OrdinalIgnoreCase))
+            {
                 httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-            else if (e.Name.ToLower().Equals("httpput"))
+            }
+            else if (e.Name.Equals("httpput", StringComparison.OrdinalIgnoreCase))
+            {
                 httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, url);
-            else if (e.Name.ToLower().Equals("httpoptions"))
+            }
+            else if (e.Name.Equals("httpoptions", StringComparison.OrdinalIgnoreCase))
+            {
                 httpRequestMessage = new HttpRequestMessage(HttpMethod.Options, url);
-            else if (e.Name.ToLower().Equals("httphead"))
+            }
+            else if (e.Name.Equals("httphead", StringComparison.OrdinalIgnoreCase))
+            {
                 httpRequestMessage = new HttpRequestMessage(HttpMethod.Head, url);
-            else if (e.Name.ToLower().Equals("httpdelete"))
+            }
+            else if (e.Name.Equals("httpdelete", StringComparison.OrdinalIgnoreCase))
+            {
                 httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, url);
-            else if (e.Name.ToLower().Equals("httptrace"))
+            }
+            else if (e.Name.Equals("httptrace", StringComparison.OrdinalIgnoreCase))
+            {
                 httpRequestMessage = new HttpRequestMessage(HttpMethod.Trace, url);
-            else if (e.Name.ToLower().Equals("http") || e.Name.ToLower().Equals("httpget"))
+            }
+            else if (e.Name.Equals("http", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("httpget", StringComparison.OrdinalIgnoreCase))
+            {
                 httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+            }
 
             if (httpRequestMessage != null)
             {
                 try
                 {
-                    if (e.Args.Last().Trim().ToLower().Equals("f"))
-                        e.Value = client.SendAsync(httpRequestMessage).Result;
-                    else
-                        e.Value = client.SendAsync(httpRequestMessage).Result.Content.ReadAsStringAsync().Result;
+                    e.Value = e.Args.Last().Trim().Equals("f", StringComparison.OrdinalIgnoreCase)
+                        ? client.SendAsync(httpRequestMessage).Result
+                        : (object)client.SendAsync(httpRequestMessage).Result.Content.ReadAsStringAsync().Result;
                 }
                 catch (Exception exception)
                 {
@@ -78,5 +87,4 @@ namespace NppPowerTools.Utils.Evaluations
             return true;
         }
     }
-
 }

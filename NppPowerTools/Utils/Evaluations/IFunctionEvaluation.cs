@@ -2,7 +2,7 @@
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    interface IFunctionEvaluation
+    public interface IFunctionEvaluation
     {
         bool TryEvaluate(object sender, FunctionEvaluationEventArg e);
     }
