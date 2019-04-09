@@ -17,6 +17,7 @@ namespace NppPowerTools.Utils
             new NppTabEvaluation(),
             new JsonEvaluation(),
             new StringJoinEvaluation(),
+            new ExcelEvaluation(),
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -24,7 +25,7 @@ namespace NppPowerTools.Utils
             new LoopEvaluation(),
             new HttpEvaluation(),
             new StringJoinEvaluation(),
-            new ExcelEvaluation()
+            new ExcelEvaluation(),
         };
 
         public static string Print { get; set; }
@@ -65,7 +66,7 @@ namespace NppPowerTools.Utils
             }
             else
             {
-                _ = variablesEvaluations.Find(eval => eval.TryEvaluate(sender, e));
+                variablesEvaluations.Find(eval => eval.TryEvaluate(sender, e));
             }
         }
 
@@ -96,7 +97,7 @@ namespace NppPowerTools.Utils
             }
             else
             {
-                _ = functionsEvaluations.Find(eval => eval.TryEvaluate(sender, e));
+                functionsEvaluations.Find(eval => eval.TryEvaluate(sender, e));
             }
         }
     }

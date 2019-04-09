@@ -82,9 +82,11 @@ namespace NppPowerTools.Utils.Evaluations
                 {
                     e.Value = exception;
                 }
+
+                return true;
             }
 
-            return true;
+            return false;
         }
     }
 }

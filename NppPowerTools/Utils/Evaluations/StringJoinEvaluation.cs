@@ -17,7 +17,7 @@ namespace NppPowerTools.Utils.Evaluations
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
