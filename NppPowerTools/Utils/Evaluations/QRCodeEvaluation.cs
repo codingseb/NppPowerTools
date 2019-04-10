@@ -28,7 +28,7 @@ namespace NppPowerTools.Utils.Evaluations
                 if (qrMatch.Groups["size"].Success)
                     size = int.Parse(qrMatch.Groups["size"].Value);
 
-                e.Value = qrCode.GetGraphic(size.CompareTo,).BitmapToImageSource();
+                e.Value = qrCode.GetGraphic(size).BitmapToImageSource();
 
                 return true;
             }
