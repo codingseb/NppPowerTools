@@ -1,11 +1,14 @@
 ﻿using System.Drawing;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 
 namespace NppPowerTools.Utils
 {
     public static class ImagesExtensions
     {
+        private static Regex hexColorRegex = new Regex("^[#][0-9a-f]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public static BitmapImage BitmapToImageSource(this Bitmap bitmap)
         {
             using (MemoryStream memory = new MemoryStream())
@@ -20,6 +23,20 @@ namespace NppPowerTools.Utils
 
                 return bitmapimage;
             }
+        }
+
+        public static Color ToColor(this string sColor)
+        {
+            string tmp = sColor.Trim();
+
+            if (hexColorRegex.IsMatch(tmp))
+            {
+                tmp = tmp.TrimStart('#').PadLeft(6, '0').PadLeft(8, 'F');
+
+                return Color.FromArgb(int.Parse(tmp, System.Globalization.NumberStyles.HexNumber));
+            }
+            else
+                return Color.FromName(tmp);
         }
     }
 }
