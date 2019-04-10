@@ -14,7 +14,7 @@ namespace NppPowerTools.Utils
         private static readonly List<IVariableEvaluation> variablesEvaluations = new List<IVariableEvaluation>
         {
             new LoremIspumEvaluation(),
-            new NppTabEvaluation(),
+            new NppAccessEvaluation(),
             new JsonEvaluation(),
             new StringJoinEvaluation(),
             new ExcelEvaluation(),
@@ -26,6 +26,7 @@ namespace NppPowerTools.Utils
             new HttpEvaluation(),
             new StringJoinEvaluation(),
             new ExcelEvaluation(),
+            new QRCodeEvaluation(),
         };
 
         public static string Print { get; set; }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -18,7 +17,7 @@ namespace NppPowerTools.Utils
             new ResultOut
             {
                 Name = "Replace expression by result",
-                SetResult = result => BNpp.SelectedText = result
+                SetResult = result => BNpp.SelectedText = result.ToStringOutput(),
             },
             new ResultOut
             {
@@ -27,7 +26,7 @@ namespace NppPowerTools.Utils
                 {
                     BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd());
                     BNpp.Scintilla.NewLine();
-                    BNpp.Scintilla.InsertTextAndMoveCursor(result);
+                    BNpp.Scintilla.InsertTextAndMoveCursor(result.ToStringOutput());
                 }
             },
             new ResultOut
@@ -36,7 +35,7 @@ namespace NppPowerTools.Utils
                 SetResult = result =>
                 {
                     BNpp.NotepadPP.FileNew();
-                    BNpp.Text = result;
+                    BNpp.Text = result.ToStringOutput();
                     BNpp.Scintilla.DocumentEnd();
                 }
             },
@@ -46,16 +45,13 @@ namespace NppPowerTools.Utils
                 SetResult = result =>
                 {
                     BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd());
-                    MessageBox.Show(result, "Result");
+                    MessageBox.Show(result.ToStringOutput(), "Result");
                 }
             },
             new ResultOut
             {
                 Name = "Result in specific panel/windows",
-                SetResult = result =>
-                {
-                    EvaluationsResultPanelViewModel.Instance.ShowResult(result);
-                }
+                SetResult = result => EvaluationsResultPanelViewModel.Instance.ShowResult(result)
             },
             new ResultOut
             {
@@ -71,6 +67,8 @@ namespace NppPowerTools.Utils
         public bool OptionForceIntegerNumbersEvaluationsAsDoubleByDefault { get; set; } = false;
 
         public bool CaseSensitive { get; set; } = true;
+
+        public bool ReverseSortingInResultsWindow { get; set; } = false;
 
         public bool UseProxy { get; set; } = false;
 
@@ -89,6 +87,8 @@ namespace NppPowerTools.Utils
         public string ProxyUserName { get; set; } = string.Empty;
 
         public string ProxyPassword { get; set; } = string.Empty;
+
+        public int QrCodeDefaultSize { get; set; } = 5;
 
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];

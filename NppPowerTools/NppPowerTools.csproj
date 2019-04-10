@@ -145,8 +145,11 @@
     <Compile Include="Utils\Evaluations\LoopEvaluation.cs" />
     <Compile Include="Utils\Evaluations\LoremIspumEvaluation.cs" />
     <Compile Include="Utils\Evaluations\NppTabEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\QRCodeEvaluation.cs" />
     <Compile Include="Utils\Evaluations\StringJoinEvaluation.cs" />
+    <Compile Include="Utils\ImagesExtensions.cs" />
     <Compile Include="Utils\LoremIpsum.cs" />
+    <Compile Include="Utils\ResultExtention.cs" />
     <Compile Include="Utils\ResultOut.cs" />
     <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />

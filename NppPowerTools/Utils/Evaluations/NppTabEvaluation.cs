@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class NppTabEvaluation : IVariableEvaluation
+    public class NppAccessEvaluation : IVariableEvaluation
     {
         private static readonly Regex tabVarRegex = new Regex(@"tab((?<tabIndex>\d+)|(?<all>all))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 

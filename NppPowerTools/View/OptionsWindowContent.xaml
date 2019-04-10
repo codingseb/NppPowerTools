@@ -38,6 +38,13 @@
                           IsChecked="{Binding CaseSensitive}" />
                 </st:AutoGrid>
             </TabItem>
+            <TabItem Header="_QR Codes" >
+                <st:AutoGrid Columns="Auto,*" ChildMargin="3">
+                    <Label Content="_Square default size"
+                           Target="{Binding ElementName=QrCodeDefaultSizeTextBox}"/>
+                    <TextBox x:Name="QrCodeDefaultSizeTextBox" Text="{Binding QrCodeDefaultSize, UpdateSourceTrigger=PropertyChanged}" />
+                </st:AutoGrid>
+            </TabItem>
             <TabItem Header="Pro_xy for http requests" >
                 <DockPanel>
                     <DockPanel.Resources>

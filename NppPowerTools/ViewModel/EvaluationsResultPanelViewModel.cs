@@ -1,6 +1,10 @@
 ﻿using NppPowerTools.PluginInfrastructure;
+using NppPowerTools.Utils;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
@@ -8,19 +12,32 @@ using System.Windows.Interop;
 
 namespace NppPowerTools
 {
-    public class EvaluationsResultPanelViewModel
+    public class EvaluationsResultPanelViewModel : INotifyPropertyChanged
     {
         private Window resultWindow = null;
 
-        public ObservableCollection<string> Results { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<object> Results { get; set; } = new ObservableCollection<object>();
 
         public ICommand ClearCommand { get; set; }
 
-        public void ShowResult(string result)
+        public bool ReverseSorting
+        {
+            get { return Config.Instance.ReverseSortingInResultsWindow; }
+            set
+            {
+                Config.Instance.ReverseSortingInResultsWindow = value;
+                Results = new ObservableCollection<object>(Results.Reverse());
+            }
+        }
+
+        public void ShowResult(object result)
         {
             ShowResultsWindow();
 
-            Results.Add(result);
+            if (ReverseSorting)
+                Results.Insert(0, result);
+            else
+                Results.Add(result);
         }
 
         public void ShowResultsWindow()
@@ -56,9 +73,16 @@ namespace NppPowerTools
             }
         }
 
-        #region Singleton
+        #region Singleton and propertyChanged
 
         private static EvaluationsResultPanelViewModel instance = null;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public static EvaluationsResultPanelViewModel Instance
         {

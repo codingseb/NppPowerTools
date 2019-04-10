@@ -4,9 +4,9 @@ using System.Text;
 
 namespace NppPowerTools
 {
-    public class BNpp
+    public static class BNpp
     {
-        public static NotepadPPGateway NotepadPP { get; private set; } = new NotepadPPGateway();
+        public static NotepadPPGateway NotepadPP { get; } = new NotepadPPGateway();
 
         public static ScintillaGateway Scintilla => new ScintillaGateway(PluginBase.GetCurrentScintilla());
 
@@ -53,7 +53,7 @@ namespace NppPowerTools
             set
             {
                 IScintillaGateway scintilla = new ScintillaGateway(PluginBase.GetCurrentScintilla());
-                string text = BEncoding.GetScintillaTextFromUtf8Text(value, out int length);
+                string text = BEncoding.GetScintillaTextFromUtf8Text(value, out _);
                 scintilla.SetText(text);
             }
         }
@@ -87,7 +87,7 @@ namespace NppPowerTools
                 int curPos = (int)Win32.SendMessage(PluginBase.GetCurrentScintilla(), SciMsg.SCI_GETSELECTIONEND, 0, 0);
                 IScintillaGateway scintilla = new ScintillaGateway(PluginBase.GetCurrentScintilla());
                 string beginingText = scintilla.GetText(curPos);
-                string text = BEncoding.GetScintillaTextFromUtf8Text(beginingText, out int length);
+                BEncoding.GetScintillaTextFromUtf8Text(beginingText, out int length);
                 return length;
             }
 
@@ -106,7 +106,7 @@ namespace NppPowerTools
                 }
 
                 string afterText = allText.Substring(0, endToUse);
-                string afterTextInDefaultEncoding = BEncoding.GetScintillaTextFromUtf8Text(afterText, out int defaultEnd);
+                BEncoding.GetScintillaTextFromUtf8Text(afterText, out int defaultEnd);
 
                 Win32.SendMessage(PluginBase.GetCurrentScintilla(), SciMsg.SCI_SETSELECTIONEND, defaultEnd, 0);
             }
@@ -186,9 +186,9 @@ namespace NppPowerTools
             }
 
             string beforeText = allText.Substring(0, startToUse);
-            string beforeTextInDefaultEncoding = BEncoding.GetScintillaTextFromUtf8Text(beforeText, out int defaultStart);
+            BEncoding.GetScintillaTextFromUtf8Text(beforeText, out int defaultStart);
             string endText = allText.Substring(0, endToUse);
-            string endTextInDefaultEncoding = BEncoding.GetScintillaTextFromUtf8Text(endText, out int defaultEnd);
+            BEncoding.GetScintillaTextFromUtf8Text(endText, out int defaultEnd);
 
             Win32.SendMessage(PluginBase.GetCurrentScintilla(), SciMsg.SCI_GOTOPOS, defaultStart, 0);
             Win32.SendMessage(PluginBase.GetCurrentScintilla(), SciMsg.SCI_SETSELECTIONEND, defaultEnd, 0);
@@ -230,13 +230,12 @@ namespace NppPowerTools
             }
 
             string beforeText = allText.Substring(0, startToUse);
-            string beforeTextInDefaultEncoding = BEncoding.GetScintillaTextFromUtf8Text(beforeText, out int defaultStart);
+            BEncoding.GetScintillaTextFromUtf8Text(beforeText, out int defaultStart);
             string endText = allText.Substring(0, endToUse);
-            string endTextInDefaultEncoding = BEncoding.GetScintillaTextFromUtf8Text(endText, out int defaultEnd);
+            BEncoding.GetScintillaTextFromUtf8Text(endText, out int defaultEnd);
 
             Win32.SendMessage(PluginBase.GetCurrentScintilla(), SciMsg.SCI_ADDSELECTION, defaultStart, defaultEnd);
         }
-
 
         /// <summary>
         /// Récupère le texte de la ligne spécifiée
@@ -263,32 +262,25 @@ namespace NppPowerTools
     /// </summary>
     internal static class BEncoding
     {
-        private static Encoding utf8 = Encoding.UTF8;
+        private static readonly Encoding utf8 = Encoding.UTF8;
 
         /// <summary>
         /// Convertit le texte spécifier de l'encodage du document Notepad++ courant à l'encodage C# (UTF8)
         /// </summary>
         public static string GetUtf8TextFromScintillaText(string scText)
         {
-            string result = "";
-            int iEncoding = (int)Win32.SendMessage(PluginBase.nppData._nppHandle, SciMsg.SCI_GETCODEPAGE, 0, 0);
-
-            switch (iEncoding)
+            switch ((int)Win32.SendMessage(PluginBase.nppData._nppHandle, SciMsg.SCI_GETCODEPAGE, 0, 0))
             {
                 case 65001: // UTF8
-                    result = utf8.GetString(Encoding.Default.GetBytes(scText));
-                    break;
+                    return utf8.GetString(Encoding.Default.GetBytes(scText));
                 default:
                     Encoding ANSI = Encoding.GetEncoding(1252);
 
                     byte[] ansiBytes = ANSI.GetBytes(scText);
                     byte[] utf8Bytes = Encoding.Convert(ANSI, Encoding.UTF8, ansiBytes);
 
-                    result = Encoding.UTF8.GetString(utf8Bytes);
-                    break;
+                    return Encoding.UTF8.GetString(utf8Bytes);
             }
-
-            return result;
         }
 
         /// <summary>
@@ -296,25 +288,18 @@ namespace NppPowerTools
         /// </summary>
         public static string GetScintillaTextFromUtf8Text(string utf8Text)
         {
-            string result = "";
-            int iEncoding = (int)Win32.SendMessage(PluginBase.nppData._nppHandle, SciMsg.SCI_GETCODEPAGE, 0, 0);
-
-            switch (iEncoding)
+            switch ((int)Win32.SendMessage(PluginBase.nppData._nppHandle, SciMsg.SCI_GETCODEPAGE, 0, 0))
             {
                 case 65001: // UTF8
-                    result = Encoding.Default.GetString(utf8.GetBytes(utf8Text));
-                    break;
+                    return Encoding.Default.GetString(utf8.GetBytes(utf8Text));
                 default:
                     Encoding ANSI = Encoding.GetEncoding(1252);
 
                     byte[] utf8Bytes = utf8.GetBytes(utf8Text);
                     byte[] ansiBytes = Encoding.Convert(Encoding.UTF8, ANSI, utf8Bytes);
 
-                    result = ANSI.GetString(ansiBytes);
-                    break;
+                    return ANSI.GetString(ansiBytes);
             }
-
-            return result;
         }
 
         /// <summary>
@@ -322,25 +307,18 @@ namespace NppPowerTools
         /// </summary>
         public static string GetScintillaTextFromUtf8Text(string utf8Text, out int length)
         {
-            string result = "";
-            int iEncoding = (int)Win32.SendMessage(PluginBase.nppData._nppHandle, SciMsg.SCI_GETCODEPAGE, 0, 0);
-
             byte[] utf8Bytes = utf8.GetBytes(utf8Text);
             length = utf8Bytes.Length;
 
-            switch (iEncoding)
+            switch ((int)Win32.SendMessage(PluginBase.nppData._nppHandle, SciMsg.SCI_GETCODEPAGE, 0, 0))
             {
                 case 65001: // UTF8
-                    result = Encoding.Default.GetString(utf8.GetBytes(utf8Text));
-                    break;
+                    return Encoding.Default.GetString(utf8.GetBytes(utf8Text));
                 default:
                     Encoding ANSI = Encoding.GetEncoding(1252);
                     byte[] ansiBytes = Encoding.Convert(Encoding.UTF8, ANSI, utf8Bytes);
-                    result = ANSI.GetString(ansiBytes);
-                    break;
+                    return ANSI.GetString(ansiBytes);
             }
-
-            return result;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace NppPowerTools.Utils
         public string Name { get; set; }
 
         [JsonIgnore]
-        public Action<string> SetResult { get; set; }
+        public Action<object> SetResult { get; set; }
 
         #region NotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

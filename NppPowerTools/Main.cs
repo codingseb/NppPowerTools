@@ -9,7 +9,7 @@ using System.Windows.Interop;
 
 namespace NppPowerTools
 {
-    class Main
+    internal static class Main
     {
         internal const string PluginName = "Npp Power Tools";
 
@@ -152,10 +152,8 @@ namespace NppPowerTools
                 }
 
                 object result = script ? evaluator.ScriptEvaluate(evaluator.RemoveComments(BNpp.SelectedText)) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'));
-                string sResult = result?.ToString() ?? Config.Instance.TextWhenResultIsNull;
-                string completeOutput = CustomEvaluations.Print + sResult;
 
-                Config.Instance.CurrentResultOut.SetResult(completeOutput);
+                Config.Instance.CurrentResultOut.SetResult(result);
             }
             catch (Exception exception)
             {

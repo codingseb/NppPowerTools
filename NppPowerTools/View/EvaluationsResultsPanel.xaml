@@ -3,15 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:st="http://schemas.spicytaco.io/"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:NppPowerTools"
              mc:Ignorable="d" 
              Background="WhiteSmoke"
              d:DataContext="{x:Static local:EvaluationsResultPanelViewModel.Instance}"
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
-        <WrapPanel DockPanel.Dock="Top">
+        <st:StackPanel DockPanel.Dock="Top"
+                       Margin="3"
+                       Orientation="Horizontal"
+                       MarginBetweenChildren="5">
             <Button Content="_Clear" Command="{Binding ClearCommand}"/>
-        </WrapPanel>
-        <ListBox ItemsSource="{Binding Results}" />
+            <CheckBox Content="_Reverse sorting" 
+                      IsChecked="{Binding ReverseSorting}"
+                      VerticalAlignment="Center"/>
+        </st:StackPanel>
+        <ListBox Background="White" 
+                 ItemsSource="{Binding Results}"
+                 PreviewKeyDown="ListBox_PreviewKeyDown" >
+            <ListBox.Resources>
+                <DataTemplate DataType="{x:Type BitmapImage}">
+                    <Image Source="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
+                           Margin="10"/>
+                </DataTemplate>
+                <!--<DataTemplate DataType="{x:Type sys:String}">
+                    <TextBox Text="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
+                             IsReadOnly="True"
+                             BorderBrush="White"
+                             BorderThickness="0"
+                             Padding="1"/>
+                </DataTemplate>-->
+            </ListBox.Resources>
+        </ListBox>
     </DockPanel>
 </UserControl>
