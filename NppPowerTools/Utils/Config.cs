@@ -15,12 +15,12 @@ namespace NppPowerTools.Utils
         [JsonIgnore]
         public List<ResultOut> ResultOuts { get; set; } = new List<ResultOut>()
         {
-            new ResultOut()
+            new ResultOut
             {
                 Name = "Replace expression by result",
                 SetResult = result => BNpp.SelectedText = result
             },
-            new ResultOut()
+            new ResultOut
             {
                 Name = "Add result on a new line after expression",
                 SetResult = result =>
@@ -30,7 +30,7 @@ namespace NppPowerTools.Utils
                     BNpp.Scintilla.InsertTextAndMoveCursor(result);
                 }
             },
-            new ResultOut()
+            new ResultOut
             {
                 Name = "Result in a new tab",
                 SetResult = result =>
@@ -40,7 +40,7 @@ namespace NppPowerTools.Utils
                     BNpp.Scintilla.DocumentEnd();
                 }
             },
-            new ResultOut()
+            new ResultOut
             {
                 Name = "Result in a MessageBox",
                 SetResult = result =>
@@ -49,7 +49,15 @@ namespace NppPowerTools.Utils
                     MessageBox.Show(result, "Result");
                 }
             },
-            new ResultOut()
+            new ResultOut
+            {
+                Name = "Result in specific panel/windows",
+                SetResult = result =>
+                {
+                    EvaluationsResultPanelViewModel.Instance.ShowResult(result);
+                }
+            },
+            new ResultOut
             {
                 Name = "No output for result",
                 SetResult = _ => BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd())

@@ -77,10 +77,10 @@ namespace NppPowerTools
             for (int i = 0; i < Config.Instance.ResultOuts.Count; i++)
             {
                 int value = i;
-                PluginBase.SetCommand(i + outsCommandsIndex, 
-                    Config.Instance.ResultOuts[i].Name, 
-                    () => SetEvaluationOutput(value), 
-                    new ShortcutKey(false, true, false, Keys.NumPad1 + i), 
+                PluginBase.SetCommand(i + outsCommandsIndex,
+                    Config.Instance.ResultOuts[i].Name,
+                    () => SetEvaluationOutput(value),
+                    new ShortcutKey(false, true, false, Keys.NumPad1 + i),
                     i == Config.Instance.CurrentResultOutIndex);
             }
 
@@ -88,7 +88,7 @@ namespace NppPowerTools
 
             PluginBase.SetCommand(menuIndex++, "---", null);
             PluginBase.SetCommand(menuIndex++, "Options", ShowOptionWindow,new ShortcutKey(true, false, true, Keys.O));
-            PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version.ToString()}\r\nAuthor : CodingSeb", "About" ));
+            PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version}\r\nAuthor : CodingSeb", "About" ));
         }
 
         public static void SetEvaluationOutput(int value)

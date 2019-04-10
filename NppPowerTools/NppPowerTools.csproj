@@ -148,6 +148,11 @@
     <Compile Include="Utils\Evaluations\StringJoinEvaluation.cs" />
     <Compile Include="Utils\LoremIpsum.cs" />
     <Compile Include="Utils\ResultOut.cs" />
+    <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />
+    <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="View\EvaluationsResultsPanel.xaml.cs">
+      <DependentUpon>EvaluationsResultsPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\OptionsWindowContent.xaml.cs">
       <DependentUpon>OptionsWindowContent.xaml</DependentUpon>
     </Compile>
@@ -176,6 +181,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\EvaluationsResultsPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\OptionsWindowContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
