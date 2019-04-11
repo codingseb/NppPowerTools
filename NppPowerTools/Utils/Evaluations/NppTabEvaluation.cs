@@ -6,12 +6,12 @@ namespace NppPowerTools.Utils.Evaluations
 {
     public class NppAccessEvaluation : IVariableEvaluation
     {
-        private static readonly Regex tabVarRegex = new Regex(@"tab((?<tabIndex>\d+)|(?<all>all))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex tabVarRegex = new Regex(@"^tab(?<pos>(?<tabIndex>\d+)|(?<all>all))?(?<fileName>filename|fn|f|n)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
             Match tabVarMatch = tabVarRegex.Match(e.Name);
-            if (tabVarMatch.Success)
+            if (tabVarMatch.Success && (tabVarMatch.Groups["pos"].Success || tabVarMatch.Groups["fileName"].Success))
             {
                 string currentTab = BNpp.NotepadPP.CurrentFileName;
 
@@ -21,12 +21,25 @@ namespace NppPowerTools.Utils.Evaluations
 
                     BNpp.NotepadPP.GetAllOpenedDocuments.ForEach(tabName =>
                     {
-                        BNpp.NotepadPP.ShowOpenedDocument(tabName);
-                        texts.Add(BNpp.Text);
+                        if (tabVarMatch.Groups["fileName"].Success)
+                        {
+                            texts.Add(tabName);
+                        }
+                        else
+                        {
+                            BNpp.NotepadPP.ShowOpenedDocument(tabName);
+                            texts.Add(BNpp.Text);
+                        }
                     });
 
                     BNpp.NotepadPP.ShowOpenedDocument(currentTab);
                     e.Value = string.Join(BNpp.CurrentEOL, texts);
+                }
+                else if (tabVarMatch.Groups["fileName"].Success)
+                {
+                    e.Value = tabVarMatch.Groups["tabIndex"].Success
+                        ? BNpp.NotepadPP.GetAllOpenedDocuments[int.Parse(tabVarMatch.Groups["tabIndex"].Value)]
+                        : currentTab;
                 }
                 else if (tabVarMatch.Groups["tabIndex"].Success)
                 {
@@ -34,6 +47,7 @@ namespace NppPowerTools.Utils.Evaluations
                     string text = BNpp.Text;
                     BNpp.NotepadPP.ShowOpenedDocument(currentTab);
                     string doNothingWithItText = BNpp.Text;
+
                     e.Value = text;
                 }
 
