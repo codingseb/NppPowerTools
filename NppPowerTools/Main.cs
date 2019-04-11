@@ -1,4 +1,3 @@
-using CodingSeb.ExpressionEvaluator;
 using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils;
 using System;
@@ -68,8 +67,8 @@ namespace NppPowerTools
         internal static void CommandMenuInit()
         {
             int menuIndex = 0;
-            PluginBase.SetCommand(menuIndex++, "Expression Execute", () => Process(false), new ShortcutKey(true, false, false, Keys.E));
-            PluginBase.SetCommand(menuIndex++, "Script Execute", () => Process(true), new ShortcutKey(true, false, true, Keys.E));
+            PluginBase.SetCommand(menuIndex++, "Expression Execute", () => Evaluation.Process(false), new ShortcutKey(true, false, false, Keys.E));
+            PluginBase.SetCommand(menuIndex++, "Script Execute", () => Evaluation.Process(true), new ShortcutKey(true, false, true, Keys.E));
             PluginBase.SetCommand(menuIndex++, "---", null);
 
             outsCommandsIndex = menuIndex;
@@ -87,9 +86,12 @@ namespace NppPowerTools
             menuIndex += Config.Instance.ResultOuts.Count;
 
             PluginBase.SetCommand(menuIndex++, "---", null);
-            PluginBase.SetCommand(menuIndex++, "Options", ShowOptionWindow,new ShortcutKey(true, false, true, Keys.O));
-            PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version}\r\nAuthor : CodingSeb", "About" ));
+            PluginBase.SetCommand(menuIndex++, "Reset variables", () => Evaluation.ResetVariables(), new ShortcutKey(false, true, false, Keys.Delete));
+            PluginBase.SetCommand(menuIndex++, "---", null);
+            PluginBase.SetCommand(menuIndex++, "Options", ShowOptionWindow, new ShortcutKey(true, false, true, Keys.O));
+            PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version}\r\nAuthor : CodingSeb", "About"));
         }
+
 
         public static void SetEvaluationOutput(int value)
         {
@@ -105,67 +107,6 @@ namespace NppPowerTools
             catch (Exception exception)
             {
                 MessageBox.Show($"{exception.Message}\r\n{exception.StackTrace}{(exception.InnerException == null ? string.Empty : $"\r\nInner Exception :\r\n{exception.InnerException.Message}\r\n{exception.InnerException.StackTrace}")}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        internal static void Process(bool script)
-        {
-            ExpressionEvaluator evaluator = new ExpressionEvaluator()
-            {
-                OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault,
-                OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive,
-            };
-
-            evaluator.Namespaces.Add("NppPowerTools");
-
-            CustomEvaluations.Print = string.Empty;
-
-            evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
-            evaluator.EvaluateVariable += CustomEvaluations.Evaluator_EvaluateVariable;
-
-            try
-            {
-                if (BNpp.SelectionLength <= 0)
-                {
-                    IScintillaGateway scintilla = new ScintillaGateway(PluginBase.GetCurrentScintilla());
-                    int line = scintilla.GetCurrentLineNumber();
-                    int end = scintilla.GetLineEndPosition(line);
-                    int start = 0;
-
-                    if (script)
-                    {
-                        // TODO special start script tag
-                    }
-                    else
-                    {
-                        int i;
-                        for (i = line; i > 0 && scintilla.GetLine(line).TrimStart().StartsWith("."); i--);
-
-                        start = scintilla.PositionFromLine(i);
-
-                        for (i = line; i < scintilla.GetLineCount() && scintilla.GetLine(line).TrimStart().StartsWith("."); i++) ;
-
-                        end = scintilla.GetLineEndPosition(i);
-                    }
-
-                    scintilla.SetSel(new Position(start), new Position(end));
-                }
-
-                object result = script ? evaluator.ScriptEvaluate(evaluator.RemoveComments(BNpp.SelectedText)) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'));
-
-                Config.Instance.CurrentResultOut.SetResult(result);
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message);
-
-                if (!string.IsNullOrEmpty(CustomEvaluations.Print))
-                    Config.Instance.CurrentResultOut.SetResult(CustomEvaluations.Print);
-            }
-            finally
-            {
-                evaluator.EvaluateFunction -= CustomEvaluations.Evaluator_EvaluateFunction;
-                evaluator.EvaluateVariable -= CustomEvaluations.Evaluator_EvaluateVariable;
             }
         }
 

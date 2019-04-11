@@ -33,9 +33,12 @@
                     <CheckBox Grid.ColumnSpan="2"
                           Content="_Force integer numbers evaluation as double by default"
                           IsChecked="{Binding OptionForceIntegerNumbersEvaluationsAsDoubleByDefault}" />
-                        <CheckBox Grid.ColumnSpan="2"
+                    <CheckBox Grid.ColumnSpan="2"
                           Content="_Case sensitive"
                           IsChecked="{Binding CaseSensitive}" />
+                    <CheckBox Grid.ColumnSpan="2"
+                          Content="_Keep Variables between evaluations"
+                          IsChecked="{Binding KeepVariablesBetweenEvaluations}" />
                 </st:AutoGrid>
             </TabItem>
             <TabItem Header="_QR Codes" >

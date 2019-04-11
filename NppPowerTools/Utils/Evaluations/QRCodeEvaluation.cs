@@ -56,7 +56,7 @@ namespace NppPowerTools.Utils.Evaluations
                 if(e.Args.Count > 2)
                     lightColor = GetColor(2);
 
-                e.Value = qrCode.GetGraphic(size, darkColor, lightColor, true).BitmapToImageSource();
+                e.Value = qrCode.GetGraphic(size, darkColor, lightColor, true);
 
                 return true;
             }

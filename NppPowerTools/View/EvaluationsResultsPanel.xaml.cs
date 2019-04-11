@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using NppPowerTools.Utils;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace NppPowerTools
@@ -20,5 +21,11 @@ namespace NppPowerTools
                 EvaluationsResultPanelViewModel.Instance.Results.RemoveAt(listBox.SelectedIndex);
             }
         }
+
+        private void Reset_Variables_Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Evaluation.ResetVariables();
+        }
+
     }
 }

@@ -51,7 +51,11 @@ namespace NppPowerTools.Utils
             new ResultOut
             {
                 Name = "Result in specific panel/windows",
-                SetResult = result => EvaluationsResultPanelViewModel.Instance.ShowResult(result)
+                SetResult = result => 
+                {
+                    BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd());
+                    EvaluationsResultPanelViewModel.Instance.ShowResult(result);
+                }
             },
             new ResultOut
             {
@@ -67,6 +71,8 @@ namespace NppPowerTools.Utils
         public bool OptionForceIntegerNumbersEvaluationsAsDoubleByDefault { get; set; } = false;
 
         public bool CaseSensitive { get; set; } = true;
+
+        public bool KeepVariablesBetweenEvaluations { get; set; } = false;
 
         public bool ReverseSortingInResultsWindow { get; set; } = false;
 
