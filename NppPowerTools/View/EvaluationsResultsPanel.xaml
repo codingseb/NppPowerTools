@@ -43,6 +43,12 @@
         <ListBox Background="White" 
                  ItemsSource="{Binding Results}"
                  PreviewKeyDown="ListBox_PreviewKeyDown"
-                 ItemTemplateSelector="{StaticResource ResultTemplateSelector}"/>
+                 ItemTemplateSelector="{StaticResource ResultTemplateSelector}">
+            <ListBox.CommandBindings>
+                <CommandBinding Command="ApplicationCommands.Copy"
+                                CanExecute="ListBox_Copy_CommandBinding_CanExecute"
+                                Executed="ListBox_Copy_CommandBinding_Executed"/>
+            </ListBox.CommandBindings>
+        </ListBox>
     </DockPanel>
 </UserControl>

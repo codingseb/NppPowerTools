@@ -2,6 +2,7 @@
 using NppPowerTools.Utils.Evaluations;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows;
 
@@ -61,7 +62,7 @@ namespace NppPowerTools.Utils
             {
                 e.Value = Guid.NewGuid().ToString();
             }
-            else if (e.Name.Equals("clipboard") || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
+            else if (e.Name.Equals("clipboard", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
             {
                 e.Value = Clipboard.GetText();
             }
@@ -92,9 +93,23 @@ namespace NppPowerTools.Utils
             else if (e.Name.Equals("repeat", StringComparison.OrdinalIgnoreCase))
             {
                 if (e.Args.Count == 2 && e.This == null)
-                    e.Value = Enumerable.Repeat(e.EvaluateArg(0), (int)e.EvaluateArg(1)).Cast<object>();
+                    e.Value = Enumerable.Repeat(e.EvaluateArg(0), (int)e.EvaluateArg(1));
                 else if (e.Args.Count == 1 && e.This != null)
-                    e.Value = Enumerable.Repeat(e.This, (int)e.EvaluateArg(1)).Cast<object>();
+                    e.Value = Enumerable.Repeat(e.This, (int)e.EvaluateArg(1));
+            }
+            else if (e.Name.Equals("clipboard", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
+            {
+                if(e.Args.Count > 0)
+                {
+                    object arg = e.EvaluateArg(0);
+
+                    if (arg is Bitmap bitmap)
+                        Clipboard.SetDataObject(bitmap);
+                    else
+                        Clipboard.SetText(arg.ToString());
+
+                    e.Value = arg;
+                }
             }
             else
             {
