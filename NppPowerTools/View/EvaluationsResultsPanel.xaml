@@ -41,9 +41,21 @@
                       VerticalAlignment="Center"/>
         </st:StackPanel>
         <ListBox Background="White" 
+                 ScrollViewer.CanContentScroll="False"
                  ItemsSource="{Binding Results}"
                  PreviewKeyDown="ListBox_PreviewKeyDown"
                  ItemTemplateSelector="{StaticResource ResultTemplateSelector}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="ContextMenu" >
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="_Copy" Command="ApplicationCommands.Copy" />
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.CommandBindings>
                 <CommandBinding Command="ApplicationCommands.Copy"
                                 CanExecute="ListBox_Copy_CommandBinding_CanExecute"

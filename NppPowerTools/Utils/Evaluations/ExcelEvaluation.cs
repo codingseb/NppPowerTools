@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class ExcelEvaluation : IFunctionEvaluation, IVariableEvaluation
+    public class ExcelEvaluation : IFunctionEvaluation, IVariableEvaluation, IEvaluatorInitializator
     {
         private static Regex excelSheetVariableRegex = new Regex(@"^(sheet[s]?|sh)(?<index>\d+)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -45,5 +45,29 @@ namespace NppPowerTools.Utils.Evaluations
 
             return true;
         }
+
+        public void Init(ExpressionEvaluator evaluator)
+        {
+            evaluator.StaticTypesForExtensionsMethods.Add(typeof(CalculationExtension));
+        }
+
+        private static ExcelEvaluation instance = null;
+
+        public static ExcelEvaluation Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new ExcelEvaluation();
+                }
+
+                return instance;
+            }
+        }
+
+        private ExcelEvaluation()
+        { }
+
     }
 }

@@ -25,19 +25,16 @@ namespace NppPowerTools.Utils.Evaluations
                 QRCode qrCode = new QRCode(qrCodeData);
 
                 int size = Config.Instance.QrCodeDefaultSize;
-                Color darkColor = Color.Black;
-                Color lightColor = Color.White;
+                Color darkColor = Config.Instance.QRCodeDarkColor;
+                Color lightColor = Config.Instance.QRCodeLightColor;
 
                 if (qrMatch.Groups["size"].Success)
                     size = int.Parse(qrMatch.Groups["size"].Value);
 
-                Color GetColor(int i)
+                Color GetColor(int i, Color defaultColor)
                 {
                     Color temp = e.Args[i].ToColor();
-                    if (temp.A == 0
-                        && temp.R == 0
-                        && temp.G == 0
-                        && temp.B == 0)
+                    if (temp.A == 0 && temp.R == 0 && temp.G == 0 && temp.B == 0)
                     {
                         object result = e.EvaluateArg(i);
 
@@ -47,14 +44,17 @@ namespace NppPowerTools.Utils.Evaluations
                             temp = e.EvaluateArg(i).ToString().ToColor();
                     }
 
+                    if (temp.A == 0 && temp.R == 0 && temp.G == 0 && temp.B == 0)
+                        return defaultColor;
+
                     return temp;
                 }
 
                 if (e.Args.Count > 1)
-                    darkColor = GetColor(1);
+                    darkColor = GetColor(1, Config.Instance.QRCodeDarkColor);
 
                 if(e.Args.Count > 2)
-                    lightColor = GetColor(2);
+                    lightColor = GetColor(2, Config.Instance.QRCodeLightColor);
 
                 e.Value = qrCode.GetGraphic(size, darkColor, lightColor, true);
 

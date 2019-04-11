@@ -18,7 +18,7 @@ namespace NppPowerTools.Utils
             new NppAccessEvaluation(),
             new JsonEvaluation(),
             new StringJoinEvaluation(),
-            new ExcelEvaluation(),
+            ExcelEvaluation.Instance,
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -26,11 +26,22 @@ namespace NppPowerTools.Utils
             new LoopEvaluation(),
             new HttpEvaluation(),
             new StringJoinEvaluation(),
-            new ExcelEvaluation(),
+            ExcelEvaluation.Instance,
             new QRCodeEvaluation(),
         };
 
+        private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
+        {
+            ExcelEvaluation.Instance,
+        };
+
+
         public static string Print { get; set; }
+
+        public static void EvaluatorInit(ExpressionEvaluator evaluator)
+        {
+            evaluatorInitializators.ForEach(ini => ini.Init(evaluator));
+        }
 
         public static void Evaluator_EvaluateVariable(object sender, VariableEvaluationEventArg e)
         {

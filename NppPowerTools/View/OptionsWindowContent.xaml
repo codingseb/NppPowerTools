@@ -46,6 +46,13 @@
                     <Label Content="_Square default size"
                            Target="{Binding ElementName=QrCodeDefaultSizeTextBox}"/>
                     <TextBox x:Name="QrCodeDefaultSizeTextBox" Text="{Binding QrCodeDefaultSize, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Content="Dark Color" />
+                    <Label Background="{Binding QRCodeDarkColor, Converter={local:DrawingColorToWPFBrush}, Mode=TwoWay}" 
+                           BorderBrush="Black" 
+                           BorderThickness="1"
+                           MouseDown="Color_Label_MouseDown"/>
+                    <Label Content="Light Color" />
+                    <Label Background="{Binding QRCodeLightColor, Converter={local:DrawingColorToWPFBrush}}" BorderBrush="Black" BorderThickness="1"/>
                 </st:AutoGrid>
             </TabItem>
             <TabItem Header="Pro_xy for http requests" >

@@ -34,6 +34,8 @@ namespace NppPowerTools
         {
             ShowResultsWindow();
 
+            result = result ?? Config.Instance.TextWhenResultIsNull;
+
             if (ReverseSorting)
                 Results.Insert(0, result);
             else

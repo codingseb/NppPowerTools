@@ -29,6 +29,8 @@ namespace NppPowerTools.Utils
 
             evaluator.Namespaces.Add("NppPowerTools");
 
+            CustomEvaluations.EvaluatorInit(evaluator);
+
             CustomEvaluations.Print = string.Empty;
 
             evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;

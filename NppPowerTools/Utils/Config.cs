@@ -3,6 +3,7 @@ using NppPowerTools.PluginInfrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
@@ -51,7 +52,7 @@ namespace NppPowerTools.Utils
             new ResultOut
             {
                 Name = "Result in specific panel/windows",
-                SetResult = result => 
+                SetResult = result =>
                 {
                     BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd());
                     EvaluationsResultPanelViewModel.Instance.ShowResult(result);
@@ -95,6 +96,10 @@ namespace NppPowerTools.Utils
         public string ProxyPassword { get; set; } = string.Empty;
 
         public int QrCodeDefaultSize { get; set; } = 5;
+
+        public Color QRCodeDarkColor { get; set; } = Color.Black;
+
+        public Color QRCodeLightColor { get; set; } = Color.White;
 
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];
