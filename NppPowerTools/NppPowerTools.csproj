@@ -151,6 +151,7 @@
     <Compile Include="Utils\Evaluations\HttpEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IEvaluatorInitializator.cs" />
     <Compile Include="Utils\Evaluations\IFunctionEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\IniEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IVariableEvaluation.cs" />
     <Compile Include="Utils\Evaluations\JsonEvaluation.cs" />
     <Compile Include="Utils\Evaluations\LoopEvaluation.cs" />

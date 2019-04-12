@@ -2319,8 +2319,99 @@ namespace NppPowerTools.Utils
             }
             catch (Exception e)
             {
-                MessageBox.Show("Impossible de charger le fichier : \"" + fileName + "\"\nDes erreurs sont survenues.\n" + e.Message + "\nDernière section : " + currentSection + "\nDernière clé : " + currentKey);
-                return;
+                throw new Exception("Impossible de charger le fichier : \"" + fileName + "\"\nDes erreurs sont survenues.\n" + e.Message + "\nDernière section : " + currentSection + "\nDernière clé : " + currentKey, e);
+            }
+        }
+
+        public void LoadFromString(string iniString)
+        {
+            string currentSection = "";
+            string currentKey = "";
+
+            try
+            {
+                string fichier = iniString;
+
+                // split le texte du fichier en tableau de ligne
+                string[] lignes = fichier.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+
+                bool fileHeaderPossible = true;
+                string currentCommentOrEmptyLines = "";
+
+                fileHeaderCommentsOrEmptyLines = "";
+                fileFooterCommentsOrEmptyLines = "";
+
+                // Parcours des lignes du fichier
+                for (int i = 0; i < lignes.Length; i++)
+                {
+                    // splitte la ligne en 2 Code effectif/Commentaire
+                    string[] splittedCommentLine = SplitComments(lignes[i]);
+
+                    //récupère la partie effective de la ligne
+                    string ligne = SpacesStrip(splittedCommentLine[0]);
+
+                    // si la ligne déclare une nouvelle section
+                    if (ligne.StartsWith("[") && ligne.EndsWith("]"))
+                    {
+                        // Si la ligne possède un commentaire, on sauvegarde le commentaire pour la section.
+                        if (splittedCommentLine.Length > 1)
+                            linkedComments.Add(ligne, splittedCommentLine[1]);
+
+                        // Sauvegarde les commentaires et ligne vides se trouvant avant cette section
+                        beforeCodeCommentsOrEmptyLines.Add(ligne, currentCommentOrEmptyLines);
+
+                        // Créé la section en mémoire avec son nom
+                        currentSection = ligne.Substring(1, ligne.Length - 2);
+                        AddSection(currentSection);
+
+                        currentCommentOrEmptyLines = "";
+                        fileHeaderPossible = false;
+                    }
+                    else if (ligne != "" && !currentSection.Equals(""))
+                    {
+                        // split la ligne en tableau clé/valeur
+                        char[] ca = new char[1] { '=' };
+                        string[] scts = ligne.Split(ca, 2);
+
+                        currentKey = scts[0];
+
+                        // Si la ligne possède un commentaire, on sauvegarde le commentaire pour la clé de la section courante.
+                        if (splittedCommentLine.Length > 1)
+                            linkedComments.Add("[" + currentSection + "]" + scts[0], splittedCommentLine[1]);
+
+                        // Sauvegarde les commentaires et ligne vides se trouvant avant cette clé.
+                        beforeCodeCommentsOrEmptyLines.Add("[" + currentSection + "]" + scts[0], currentCommentOrEmptyLines);
+
+                        if (scts.Length == 2)
+                        {
+                            // Crée l'association clé/valeur en mémoire.
+                            this[currentSection].SetKey(currentKey, scts[1]);
+                        }
+
+                        currentCommentOrEmptyLines = "";
+                        fileHeaderPossible = false;
+                    }
+                    else
+                    {
+                        // Récupère les ligne vides ou de commentaire simple entre les clés et/ou les sections.
+                        currentCommentOrEmptyLines += lignes[i] + newline;
+
+                        if (fileHeaderPossible && lignes[i].Replace(" ", "").Replace("\t", "").Equals(""))
+                        {
+                            fileHeaderCommentsOrEmptyLines = currentCommentOrEmptyLines;
+                            currentCommentOrEmptyLines = "";
+                            fileHeaderPossible = false;
+                        }
+
+                    }
+                }
+
+                // Mémorise les éventuels commentaire en fin de fichier
+                fileFooterCommentsOrEmptyLines = currentCommentOrEmptyLines;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Impossible de charger le chaine ini \nDes erreurs sont survenues.\n" + e.Message + "\nDernière section : " + currentSection + "\nDernière clé : " + currentKey, e);
             }
         }
 
