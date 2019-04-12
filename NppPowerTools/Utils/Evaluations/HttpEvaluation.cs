@@ -1,5 +1,6 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -74,9 +75,19 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 try
                 {
-                    e.Value = e.Args.Last().Trim().Equals("f", StringComparison.OrdinalIgnoreCase)
-                        ? client.SendAsync(httpRequestMessage).Result
-                        : (object)client.SendAsync(httpRequestMessage).Result.Content.ReadAsStringAsync().Result;
+                    HttpResponseMessage response = client.SendAsync(httpRequestMessage).Result;
+
+                    if (!e.Args.Last().Trim().Equals("f", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (response.Content.Headers.ContentType.MediaType.IndexOf("image", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            e.Value = new Bitmap(response.Content.ReadAsStreamAsync().Result);
+                        }
+                        else
+                            e.Value = (object)response.Content.ReadAsStringAsync().Result;
+                    }
+                    else
+                        e.Value = response;
                 }
                 catch (Exception exception)
                 {
