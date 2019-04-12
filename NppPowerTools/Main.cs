@@ -87,6 +87,7 @@ namespace NppPowerTools
 
             PluginBase.SetCommand(menuIndex++, "---", null);
             PluginBase.SetCommand(menuIndex++, "Reset variables", () => Evaluation.ResetVariables(), new ShortcutKey(false, true, false, Keys.Delete));
+            PluginBase.SetCommand(menuIndex++, "Clear Results", () => EvaluationsResultPanelViewModel.Instance.Results.Clear(), new ShortcutKey(false, true, true, Keys.Delete));
             PluginBase.SetCommand(menuIndex++, "---", null);
             PluginBase.SetCommand(menuIndex++, "Options", ShowOptionWindow, new ShortcutKey(true, false, true, Keys.O));
             PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version}\r\nAuthor : CodingSeb", "About"));
