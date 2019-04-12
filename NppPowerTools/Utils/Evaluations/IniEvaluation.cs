@@ -47,6 +47,62 @@ namespace NppPowerTools.Utils.Evaluations
 
                 return true;
             }
+            else if ((e.Name.Equals("gv", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("v", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile)
+            {
+                if (e.Args.Count == 3)
+                {
+                    e.Value = inifile.GetValue(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1), e.EvaluateArg<string>(2));
+                    return true;
+                }
+                if (e.Args.Count == 2)
+                {
+                    e.Value = inifile.GetValue(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1));
+                    return true;
+                }
+            }
+            else if ((e.Name.Equals("gvw", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("vw", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile2)
+            {
+                if (e.Args.Count == 3)
+                {
+                    e.Value = inifile2.GetValueWithoutCreating(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1), e.EvaluateArg<string>(2));
+                    return true;
+                }
+                if (e.Args.Count == 2)
+                {
+                    e.Value = inifile2.GetValueWithoutCreating(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1));
+                    return true;
+                }
+            }
+            else if ((e.Name.Equals("gb", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("b", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile3)
+            {
+                if (e.Args.Count == 3)
+                {
+                    e.Value = inifile3.GetBool(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1), e.EvaluateArg<bool>(2));
+                    return true;
+                }
+                if (e.Args.Count == 2)
+                {
+                    e.Value = inifile3.GetBool(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1));
+                    return true;
+                }
+            }
+            else if ((e.Name.Equals("gbw", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("bw", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile4)
+            {
+                if (e.Args.Count == 3)
+                {
+                    e.Value = inifile4.GetBoolWithoutCreating(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1), e.EvaluateArg<bool>(2));
+                    return true;
+                }
+                if (e.Args.Count == 2)
+                {
+                    e.Value = inifile4.GetBoolWithoutCreating(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1));
+                    return true;
+                }
+            }
 
             return false;
         }
