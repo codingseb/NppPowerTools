@@ -15,7 +15,7 @@ namespace NppPowerTools.Utils
         private static readonly List<IVariableEvaluation> variablesEvaluations = new List<IVariableEvaluation>
         {
             new LoremIspumEvaluation(),
-            new NppAccessEvaluation(),
+            NppAccessEvaluation.Instance,
             new JsonEvaluation(),
             new StringJoinEvaluation(),
             ExcelEvaluation.Instance,
@@ -24,6 +24,7 @@ namespace NppPowerTools.Utils
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
         {
             new LoopEvaluation(),
+            NppAccessEvaluation.Instance,
             new HttpEvaluation(),
             new StringJoinEvaluation(),
             ExcelEvaluation.Instance,

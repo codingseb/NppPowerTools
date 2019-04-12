@@ -4,9 +4,10 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class NppAccessEvaluation : IVariableEvaluation
+    public class NppAccessEvaluation : IVariableEvaluation, IFunctionEvaluation
     {
-        private static readonly Regex tabVarRegex = new Regex(@"^tab(?<pos>(?<tabIndex>\d+)|(?<all>all))?(?<fileName>filename|fn|f|n)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex tabVarRegex = new Regex(@"^tab(?<pos>(?<tabIndex>\d+)|(?<all>all)|(?<count>count|c))?(?<fileName>filename|fn|f|n)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex tabFuncRegex = new Regex("^tab((?<tabIndex>index|i)|(?<fileName>filename|fn|f|n))?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
@@ -33,7 +34,11 @@ namespace NppPowerTools.Utils.Evaluations
                     });
 
                     BNpp.NotepadPP.ShowOpenedDocument(currentTab);
-                    e.Value = string.Join(BNpp.CurrentEOL, texts);
+                    e.Value = texts;
+                }
+                else if(tabVarMatch.Groups["count"].Success)
+                {
+                    e.Value = BNpp.NotepadPP.TabCount;
                 }
                 else if (tabVarMatch.Groups["fileName"].Success)
                 {
@@ -53,10 +58,72 @@ namespace NppPowerTools.Utils.Evaluations
 
                 return true;
             }
-            else
+
+            return false;
+        }
+
+        public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
+        {
+            Match tabFuncMatch = tabFuncRegex.Match(e.Name);
+
+            if(tabFuncMatch.Success)
             {
-                return false;
+                string currentTab = BNpp.NotepadPP.CurrentFileName;
+
+                if (tabFuncMatch.Groups["tabIndex"].Success)
+                {
+                    if (e.Args.Count > 0)
+                        e.Value = BNpp.NotepadPP.GetAllOpenedDocuments.FindIndex(tab => tab.Equals(e.EvaluateArg<string>(0)));
+                    else
+                        e.Value = BNpp.NotepadPP.GetAllOpenedDocuments.FindIndex(tab => tab.Equals(currentTab));
+                }
+                else if (tabFuncMatch.Groups["fileName"].Success)
+                {
+                    if (e.Args.Count > 0)
+                        e.Value = BNpp.NotepadPP.GetAllOpenedDocuments[e.EvaluateArg<int>(0)];
+                    else
+                        e.Value = currentTab;
+                }
+                else
+                {
+                    if (e.Args.Count > 0)
+                    {
+                        object arg = e.EvaluateArg(0);
+
+                        if (arg is int iArg)
+                            BNpp.NotepadPP.ShowTab(iArg);
+                        else
+                            BNpp.NotepadPP.ShowOpenedDocument(arg.ToStringOutput());
+                    }
+
+                    string text = BNpp.Text;
+                    BNpp.NotepadPP.ShowOpenedDocument(currentTab);
+                    string doNothingWithItText = BNpp.Text;
+
+                    e.Value = text;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #region singleton
+
+        private static NppAccessEvaluation instance = null;
+
+        public static NppAccessEvaluation Instance
+        {
+            get
+            {
+                return instance ?? (instance = new NppAccessEvaluation());
             }
         }
+
+        private NppAccessEvaluation()
+        { }
+
+        #endregion
     }
 }
