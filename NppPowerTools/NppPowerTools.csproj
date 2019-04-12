@@ -159,6 +159,7 @@
     <Compile Include="Utils\Evaluations\QRCodeEvaluation.cs" />
     <Compile Include="Utils\Evaluations\StringJoinEvaluation.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\IniFile.cs" />
     <Compile Include="Utils\LoremIpsum.cs" />
     <Compile Include="Utils\ResultOut.cs" />
     <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />

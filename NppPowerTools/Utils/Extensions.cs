@@ -1,5 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Imaging;
 
@@ -37,6 +40,24 @@ namespace NppPowerTools.Utils
             }
             else
                 return Color.FromName(tmp);
+        }
+
+        public static string GetNameOrHexString(this System.Windows.Media.Color color)
+        {
+            string result = "";
+
+            // Récupération de toutes les couleurs connue par réflection
+            Type ColorType = typeof(System.Windows.Media.Colors);
+            PropertyInfo[] arrPiColors = ColorType.GetProperties(BindingFlags.Public | BindingFlags.Static);
+
+            try
+            {
+                result = arrPiColors.ToList().Find(pi => ((Color)pi.GetValue(null, null)).Equals(color)).Name;
+            }
+            catch { }
+
+            // Si c'est pas une couleur connue alors on donne la version hexa
+            return ("#" + color.A.ToString("x2") + color.R.ToString("x2") + color.G.ToString("x2") + color.B.ToString("x2")).ToUpper();
         }
 
         public static string ToStringOutput(this object result)
