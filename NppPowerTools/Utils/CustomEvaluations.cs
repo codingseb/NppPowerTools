@@ -29,6 +29,7 @@ namespace NppPowerTools.Utils
             new StringJoinEvaluation(),
             ExcelEvaluation.Instance,
             new QRCodeEvaluation(),
+            new IniEvaluation(),
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>

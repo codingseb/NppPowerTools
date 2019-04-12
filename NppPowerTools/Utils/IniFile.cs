@@ -1746,67 +1746,6 @@ namespace NppPowerTools.Utils
                 if (tmpEventArg.Cancel)
                     return false;
 
-                string fichier = fileHeaderCommentsOrEmptyLines;
-                bool first = true;
-
-                //
-                // Sauver dans l'ordre spécifié par la liste ListSections
-                //
-                foreach (object okey in ListSections)
-                {
-                    if (beforeCodeCommentsOrEmptyLines.ContainsKey("[" + okey.ToString() + "]") && !beforeCodeCommentsOrEmptyLines["[" + okey.ToString() + "]"].Replace(" ", "").Replace("\t", "").Equals(""))
-                    {
-                        fichier += beforeCodeCommentsOrEmptyLines["[" + okey.ToString() + "]"];
-                    }
-                    else if (!first)
-                    {
-                        fichier += newline;
-                    }
-
-                    first = false;
-
-                    if (linkedComments.ContainsKey("[" + okey.ToString() + "]"))
-                    {
-                        fichier += "[" + okey.ToString() + "] ;" + linkedComments["[" + okey.ToString() + "]"] + newline;
-                    }
-                    else
-                    {
-                        fichier += "[" + okey.ToString() + "]" + newline;
-                    }
-
-                    Section sct = (Section)Sections[okey.ToString()];
-
-                    foreach (string key in (sct.Keys))
-                    {
-                        string value = sct[key];
-
-                        if (beforeCodeCommentsOrEmptyLines.ContainsKey("[" + okey.ToString() + "]" + key))
-                        {
-                            fichier += beforeCodeCommentsOrEmptyLines["[" + okey.ToString() + "]" + key];
-                        }
-
-                        if (sct.IsQuoted[key])
-                        {
-                            value = "\"" + value + "\"";
-                        }
-
-                        if (linkedComments.ContainsKey("[" + okey.ToString() + "]" + key))
-                        {
-                            fichier += key + "=" + value + " ;" + linkedComments["[" + okey.ToString() + "]" + key] + newline;
-                        }
-                        else
-                        {
-                            fichier += key + "=" + value + newline;
-                        }
-                    }
-                }
-
-                fichier += fileFooterCommentsOrEmptyLines;
-
-                // Pour que la fin du fichier ne soit pas de plus en plus de retour à la ligne
-                char[] removeList = { '\n', '\r', '\t', ' ' };
-
-                fichier = fichier.TrimEnd(removeList);
 
                 Monitor.Enter(lockSave);
 
@@ -1815,7 +1754,7 @@ namespace NppPowerTools.Utils
                     if (File.Exists(fileName))
                         File.Copy(fileName, fileName + "~.tmp");
 
-                    File.WriteAllText(fileName, fichier, Encoding.UTF8);
+                    File.WriteAllText(fileName, this.ToString(), Encoding.UTF8);
 
                     // Génère l'évènement qui informe que le fichier ini a été sauvé.
                     OnIniFileSaved(new EventArgs());
@@ -1838,6 +1777,73 @@ namespace NppPowerTools.Utils
                     Monitor.Exit(lockSave);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            string fichier = fileHeaderCommentsOrEmptyLines;
+            bool first = true;
+
+            //
+            // Sauver dans l'ordre spécifié par la liste ListSections
+            //
+            foreach (object okey in ListSections)
+            {
+                if (beforeCodeCommentsOrEmptyLines.ContainsKey("[" + okey.ToString() + "]") && !beforeCodeCommentsOrEmptyLines["[" + okey.ToString() + "]"].Replace(" ", "").Replace("\t", "").Equals(""))
+                {
+                    fichier += beforeCodeCommentsOrEmptyLines["[" + okey.ToString() + "]"];
+                }
+                else if (!first)
+                {
+                    fichier += newline;
+                }
+
+                first = false;
+
+                if (linkedComments.ContainsKey("[" + okey.ToString() + "]"))
+                {
+                    fichier += "[" + okey.ToString() + "] ;" + linkedComments["[" + okey.ToString() + "]"] + newline;
+                }
+                else
+                {
+                    fichier += "[" + okey.ToString() + "]" + newline;
+                }
+
+                Section sct = (Section)Sections[okey.ToString()];
+
+                foreach (string key in (sct.Keys))
+                {
+                    string value = sct[key];
+
+                    if (beforeCodeCommentsOrEmptyLines.ContainsKey("[" + okey.ToString() + "]" + key))
+                    {
+                        fichier += beforeCodeCommentsOrEmptyLines["[" + okey.ToString() + "]" + key];
+                    }
+
+                    if (sct.IsQuoted[key])
+                    {
+                        value = "\"" + value + "\"";
+                    }
+
+                    if (linkedComments.ContainsKey("[" + okey.ToString() + "]" + key))
+                    {
+                        fichier += key + "=" + value + " ;" + linkedComments["[" + okey.ToString() + "]" + key] + newline;
+                    }
+                    else
+                    {
+                        fichier += key + "=" + value + newline;
+                    }
+                }
+            }
+
+            fichier += fileFooterCommentsOrEmptyLines;
+
+            // Pour que la fin du fichier ne soit pas de plus en plus de retour à la ligne
+            char[] removeList = { '\n', '\r', '\t', ' ' };
+
+            fichier = fichier.TrimEnd(removeList);
+
+            return fichier;
         }
 
         /// <summary>
@@ -2627,7 +2633,7 @@ namespace NppPowerTools.Utils
                 get
                 {
                     if (keys.ContainsKey(key))
-                        return keys[key].ToString();
+                        return keys[key];
                     else
                     {
                         SetKey(key, "");
@@ -2639,15 +2645,6 @@ namespace NppPowerTools.Utils
                 {
                     SetKey(key, value);
                 }
-            }
-
-            /// <summary>
-            /// Retourne la version SVN du fichier de classe.
-            /// </summary>
-            /// <returns>Chaîne correspondant à la version SVN du fichier</returns>
-            static public string Version()
-            {
-                return "$Id: IniFile.cs 129 2014-06-18 08:35:16Z SGeiser $";
             }
         }
 

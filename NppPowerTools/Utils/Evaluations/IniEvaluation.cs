@@ -26,7 +26,7 @@ namespace NppPowerTools.Utils.Evaluations
 {
     public class IniEvaluation : IFunctionEvaluation
     {
-        private static readonly Regex iniVariableEvalRegex = new Regex(@"^(ini)(?<string>fromString|fs)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex iniVariableEvalRegex = new Regex(@"^(ini)(?<string>fromString|fs|s)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
@@ -44,7 +44,6 @@ namespace NppPowerTools.Utils.Evaluations
                 }
                 else
                     e.Value = new IniFile(e.EvaluateArg<string>(0));
-
 
                 return true;
             }

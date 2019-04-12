@@ -21,6 +21,7 @@
             <local:ResultTemplateSelector.DefaultTemplate>
                 <DataTemplate>
                     <TextBox Text="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
+                             Margin="5,0"
                              IsReadOnly="True"
                              BorderBrush="White"
                              BorderThickness="0"
