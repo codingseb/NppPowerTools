@@ -88,13 +88,41 @@ namespace NppPowerTools.PluginInfrastructure
             return result;
         }
 
-        public NotepadPPGateway ShowOpenedDocument(string tabPath)
+        public int GetTabIndex(string tabPath, bool smart = false)
+        {
+            int index = GetAllOpenedDocuments.IndexOf(tabPath);
+
+            if (smart && index < 0)
+                index = GetAllOpenedDocuments.FindIndex(tab => Path.GetFileName(tab).Equals(tabPath));
+
+            if (smart && index < 0)
+                index = GetAllOpenedDocuments.FindIndex(tab => tab.Contains(tabPath));
+
+            return index;
+        }
+
+        public int GetTabIndex(string tabPath)
+        {
+            return GetTabIndex(tabPath, false);
+        }
+
+        public NotepadPPGateway ShowTab(string tabPath, bool smart)
         {
             try
             {
-                ShowTab(GetAllOpenedDocuments.IndexOf(tabPath));
-                // NPPM_SWITCHTOFILE not reliable
-                //Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_SWITCHTOFILE, 0, tabPath);
+                ShowTab(GetTabIndex(tabPath, smart));
+            }
+            catch { }
+
+            return this;
+        }
+
+
+        public NotepadPPGateway ShowTab(string tabPath)
+        {
+            try
+            {
+                ShowTab(GetTabIndex(tabPath));
             }
             catch { }
 

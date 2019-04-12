@@ -1,5 +1,6 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
@@ -28,12 +29,12 @@ namespace NppPowerTools.Utils.Evaluations
                         }
                         else
                         {
-                            BNpp.NotepadPP.ShowOpenedDocument(tabName);
+                            BNpp.NotepadPP.ShowTab(tabName);
                             texts.Add(BNpp.Text);
                         }
                     });
 
-                    BNpp.NotepadPP.ShowOpenedDocument(currentTab);
+                    BNpp.NotepadPP.ShowTab(currentTab);
                     e.Value = texts;
                 }
                 else if(tabVarMatch.Groups["count"].Success)
@@ -50,7 +51,7 @@ namespace NppPowerTools.Utils.Evaluations
                 {
                     BNpp.NotepadPP.ShowTab(int.Parse(tabVarMatch.Groups["tabIndex"].Value));
                     string text = BNpp.Text;
-                    BNpp.NotepadPP.ShowOpenedDocument(currentTab);
+                    BNpp.NotepadPP.ShowTab(currentTab);
                     string doNothingWithItText = BNpp.Text;
 
                     e.Value = text;
@@ -61,6 +62,7 @@ namespace NppPowerTools.Utils.Evaluations
 
             return false;
         }
+
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
@@ -73,9 +75,9 @@ namespace NppPowerTools.Utils.Evaluations
                 if (tabFuncMatch.Groups["tabIndex"].Success)
                 {
                     if (e.Args.Count > 0)
-                        e.Value = BNpp.NotepadPP.GetAllOpenedDocuments.FindIndex(tab => tab.Equals(e.EvaluateArg<string>(0)));
+                        e.Value = BNpp.NotepadPP.GetTabIndex(e.EvaluateArg<string>(0), true);
                     else
-                        e.Value = BNpp.NotepadPP.GetAllOpenedDocuments.FindIndex(tab => tab.Equals(currentTab));
+                        e.Value = BNpp.NotepadPP.GetTabIndex(currentTab);
                 }
                 else if (tabFuncMatch.Groups["fileName"].Success)
                 {
@@ -93,12 +95,12 @@ namespace NppPowerTools.Utils.Evaluations
                         if (arg is int iArg)
                             BNpp.NotepadPP.ShowTab(iArg);
                         else
-                            BNpp.NotepadPP.ShowOpenedDocument(arg.ToStringOutput());
+                            BNpp.NotepadPP.ShowTab(arg.ToStringOutput(), true);
                     }
 
                     string text = BNpp.Text;
-                    BNpp.NotepadPP.ShowOpenedDocument(currentTab);
-                    string doNothingWithItText = BNpp.Text;
+                    BNpp.NotepadPP.ShowTab(currentTab);
+                    _ = BNpp.Text;
 
                     e.Value = text;
                 }

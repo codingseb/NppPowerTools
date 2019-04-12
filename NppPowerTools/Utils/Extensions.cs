@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace NppPowerTools.Utils
 {
-    public static class ImagesExtensions
+    public static class Extensions
     {
         private static Regex hexColorRegex = new Regex("^[#][0-9a-f]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -37,6 +37,17 @@ namespace NppPowerTools.Utils
             }
             else
                 return Color.FromName(tmp);
+        }
+
+        public static string ToStringOutput(this object result)
+        {
+            string sResult = result?.ToString() ?? Config.Instance.TextWhenResultIsNull;
+            return CustomEvaluations.Print + sResult;
+        }
+
+        public static bool TabEquals(this string tab, string compareText)
+        {
+            return tab.Equals(compareText) || Path.GetFileName(tab).Equals(compareText);
         }
     }
 }
