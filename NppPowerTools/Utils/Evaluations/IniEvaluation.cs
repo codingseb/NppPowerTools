@@ -103,6 +103,13 @@ namespace NppPowerTools.Utils.Evaluations
                     return true;
                 }
             }
+            else if ((e.Name.Equals("sections", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("sec", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("s", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile5)
+            {
+                e.Value = inifile5.SectionsNames;
+            }
+
 
             return false;
         }
