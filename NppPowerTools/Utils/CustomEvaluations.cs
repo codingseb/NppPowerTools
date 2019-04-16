@@ -78,7 +78,10 @@ namespace NppPowerTools.Utils
             }
             else if (e.Name.Equals("clipboard", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
             {
-                e.Value = Clipboard.GetText();
+                if (Clipboard.ContainsImage())
+                    e.Value = Clipboard.GetImage().GetBitmap();
+                else
+                    e.Value = Clipboard.GetText();
             }
             else
             {
