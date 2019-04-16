@@ -1,30 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
+﻿using CodingSeb.ExpressionEvaluator;
+using System;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Xaml;
-using CodingSeb.ExpressionEvaluator;
-using Media = System.Windows.Media;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class IniEvaluation : IFunctionEvaluation
+    public class IniEvaluation : IFunctionEvaluation, IVariableEvaluation
     {
         private static readonly Regex iniVariableEvalRegex = new Regex(@"^(ini)(?<string>fromString|fs|s)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -44,8 +24,6 @@ namespace NppPowerTools.Utils.Evaluations
                 }
                 else
                     e.Value = new IniFile(e.EvaluateArg<string>(0));
-
-                return true;
             }
             else if ((e.Name.Equals("gv", StringComparison.OrdinalIgnoreCase)
                 || e.Name.Equals("v", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile)
@@ -53,12 +31,10 @@ namespace NppPowerTools.Utils.Evaluations
                 if (e.Args.Count == 3)
                 {
                     e.Value = inifile.GetValue(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1), e.EvaluateArg<string>(2));
-                    return true;
                 }
                 if (e.Args.Count == 2)
                 {
                     e.Value = inifile.GetValue(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1));
-                    return true;
                 }
             }
             else if ((e.Name.Equals("gvw", StringComparison.OrdinalIgnoreCase)
@@ -67,12 +43,10 @@ namespace NppPowerTools.Utils.Evaluations
                 if (e.Args.Count == 3)
                 {
                     e.Value = inifile2.GetValueWithoutCreating(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1), e.EvaluateArg<string>(2));
-                    return true;
                 }
                 if (e.Args.Count == 2)
                 {
                     e.Value = inifile2.GetValueWithoutCreating(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1));
-                    return true;
                 }
             }
             else if ((e.Name.Equals("gb", StringComparison.OrdinalIgnoreCase)
@@ -81,12 +55,10 @@ namespace NppPowerTools.Utils.Evaluations
                 if (e.Args.Count == 3)
                 {
                     e.Value = inifile3.GetBool(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1), e.EvaluateArg<bool>(2));
-                    return true;
                 }
                 if (e.Args.Count == 2)
                 {
                     e.Value = inifile3.GetBool(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1));
-                    return true;
                 }
             }
             else if ((e.Name.Equals("gbw", StringComparison.OrdinalIgnoreCase)
@@ -95,12 +67,10 @@ namespace NppPowerTools.Utils.Evaluations
                 if (e.Args.Count == 3)
                 {
                     e.Value = inifile4.GetBoolWithoutCreating(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1), e.EvaluateArg<bool>(2));
-                    return true;
                 }
                 if (e.Args.Count == 2)
                 {
                     e.Value = inifile4.GetBoolWithoutCreating(e.EvaluateArg<string>(0), e.EvaluateArg<string>(1));
-                    return true;
                 }
             }
             else if ((e.Name.Equals("sections", StringComparison.OrdinalIgnoreCase)
@@ -109,9 +79,45 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 e.Value = inifile5.SectionsNames;
             }
+            else if ((e.Name.Equals("kfs", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("keys", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("kos", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("ks", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("k", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile6)
+            {
+                e.Value = inifile6.GetKeysOfSection(e.EvaluateArg<string>(0));
+            }
 
-
-            return false;
+            return e.FunctionReturnedValue;
         }
+
+        public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
+        {
+            if ((e.Name.Equals("sections", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("sec", StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("s", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile1)
+            {
+                e.Value = inifile1.SectionsNames;
+            }
+
+            return e.HasValue;
+        }
+
+        #region singleton
+
+        private static IniEvaluation instance = null;
+
+        public static IniEvaluation Instance
+        {
+            get
+            {
+                return instance ?? (instance = new IniEvaluation());
+            }
+        }
+
+        private IniEvaluation()
+        { }
+        #endregion
+
     }
 }

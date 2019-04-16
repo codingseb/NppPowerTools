@@ -19,6 +19,7 @@ namespace NppPowerTools.Utils
             new JsonEvaluation(),
             new StringJoinEvaluation(),
             ExcelEvaluation.Instance,
+            IniEvaluation.Instance,
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -29,7 +30,7 @@ namespace NppPowerTools.Utils
             new StringJoinEvaluation(),
             ExcelEvaluation.Instance,
             new QRCodeEvaluation(),
-            new IniEvaluation(),
+            IniEvaluation.Instance,
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
