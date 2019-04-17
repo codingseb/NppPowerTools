@@ -49,5 +49,11 @@ namespace NppPowerTools
                 }
             }
         }
+
+        private void Show_Properties_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if(sender is FrameworkElement fe && fe.DataContext != null)
+                ShowPropertiesViewModel.Instance.ShowPropertiesWindow(fe.DataContext);
+        }
     }
 }

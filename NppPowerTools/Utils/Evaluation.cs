@@ -28,6 +28,7 @@ namespace NppPowerTools.Utils
             };
 
             evaluator.Namespaces.Add("NppPowerTools");
+            evaluator.Namespaces.Add("System.Windows");
 
             CustomEvaluations.EvaluatorInit(evaluator);
 

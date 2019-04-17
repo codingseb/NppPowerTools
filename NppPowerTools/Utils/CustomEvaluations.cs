@@ -76,6 +76,11 @@ namespace NppPowerTools.Utils
             {
                 e.Value = Guid.NewGuid().ToString();
             }
+            else if(e.Name.Equals("props", StringComparison.OrdinalIgnoreCase) && e.This != null)
+            {
+                ShowPropertiesViewModel.Instance.ShowPropertiesWindow(e.This);
+                e.Value = e.This;
+            }
             else
             {
                 variablesEvaluations.Find(eval => eval.TryEvaluate(sender, e));

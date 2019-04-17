@@ -58,15 +58,16 @@
                  ItemsSource="{Binding Results}"
                  PreviewKeyDown="ListBox_PreviewKeyDown"
                  ItemTemplateSelector="{StaticResource ResultTemplateSelector}">
+            <ListBox.Resources>
+                <ContextMenu x:Key="ContextMenu">
+                    <MenuItem Header="Show _Properties" Click="Show_Properties_MenuItem_Click"/>
+                    <Separator />
+                    <MenuItem Header="_Copy" Command="ApplicationCommands.Copy" />
+                </ContextMenu>
+            </ListBox.Resources>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
-                    <Setter Property="ContextMenu" >
-                        <Setter.Value>
-                            <ContextMenu>
-                                <MenuItem Header="_Copy" Command="ApplicationCommands.Copy" />
-                            </ContextMenu>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}" />
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.CommandBindings>
