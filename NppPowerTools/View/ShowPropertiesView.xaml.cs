@@ -11,5 +11,10 @@ namespace NppPowerTools
         {
             InitializeComponent();
         }
+
+        private void PropertyGrid_SelectedObjectChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<object> e)
+        {
+            
+        }
     }
 }

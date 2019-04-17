@@ -18,16 +18,13 @@
                            Margin="10"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type local:EvaluationError}">
-                    <DockPanel Margin="0">
-                        <Button Content="+" DockPanel.Dock="Left"/>
-                        <TextBox Text="{Binding Exception.Message, Mode=OneTime}" 
+                    <TextBox Text="{Binding Exception.Message, Mode=OneTime}" 
                                  IsReadOnly="True"
                                  Foreground="Red" 
                                  FontWeight="Bold"
                                  BorderBrush="White"
                                  BorderThickness="0"
                                  Padding="1"/>
-                    </DockPanel>
                 </DataTemplate>
             </local:ResultTemplateSelector.Templates>
             <local:ResultTemplateSelector.DefaultTemplate>
