@@ -39,6 +39,12 @@
                     <CheckBox Grid.ColumnSpan="2"
                           Content="_Keep Variables between evaluations"
                           IsChecked="{Binding KeepVariablesBetweenEvaluations}" />
+                    <CheckBox Grid.ColumnSpan="2"
+                          Content="Show exception in _MessageBox"
+                          IsChecked="{Binding ShowExceptionInMessageBox}" />
+                    <CheckBox Grid.ColumnSpan="2"
+                          Content="Show exception in out_put"
+                          IsChecked="{Binding ShowExceptionInOutput}" />
                 </st:AutoGrid>
             </TabItem>
             <TabItem Header="_QR Codes" >

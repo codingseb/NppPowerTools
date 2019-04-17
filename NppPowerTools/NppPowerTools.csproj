@@ -119,6 +119,7 @@
     <Compile Include="Converter\DrawingColorToWPFBrush.cs" />
     <Compile Include="Converter\ImageTypesToImageSourceConverter.cs" />
     <Compile Include="Converter\StringToNullableIntConverter.cs" />
+    <Compile Include="Model\EvaluationError.cs" />
     <Compile Include="PluginInfrastructure\ClikeStringArray.cs" />
     <Compile Include="PluginInfrastructure\DllExport\DllExportAttribute.cs" />
     <Compile Include="PluginInfrastructure\Win32.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Utils\Config.cs" />
     <Compile Include="Utils\CustomEvaluations.cs" />
     <Compile Include="Utils\Evaluation.cs" />
+    <Compile Include="Utils\Evaluations\ClipboardEvaluation.cs" />
     <Compile Include="Utils\Evaluations\ExcelEvaluation.cs" />
     <Compile Include="Utils\Evaluations\HttpEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IEvaluatorInitializator.cs" />

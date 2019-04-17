@@ -17,6 +17,11 @@ namespace NppPowerTools.Utils
         {
             new ResultOut
             {
+                Name = "No output for result",
+                SetResult = _ => BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd())
+            },
+            new ResultOut
+            {
                 Name = "Replace expression by result",
                 SetResult = result => BNpp.SelectedText = result.ToStringOutput(),
             },
@@ -58,11 +63,6 @@ namespace NppPowerTools.Utils
                     EvaluationsResultPanelViewModel.Instance.ShowResult(result);
                 }
             },
-            new ResultOut
-            {
-                Name = "No output for result",
-                SetResult = _ => BNpp.Scintilla.SetSelection(BNpp.Scintilla.GetSelectionEnd(), BNpp.Scintilla.GetSelectionEnd())
-            },
         };
 
         public int CurrentResultOutIndex { get; set; } = 0;
@@ -100,6 +100,10 @@ namespace NppPowerTools.Utils
         public Color QRCodeDarkColor { get; set; } = Color.Black;
 
         public Color QRCodeLightColor { get; set; } = Color.White;
+
+        public bool ShowExceptionInMessageBox { get; set; } = true;
+
+        public bool ShowExceptionInOutput { get; set; } = true;
 
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];

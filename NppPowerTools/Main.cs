@@ -79,7 +79,7 @@ namespace NppPowerTools
                 PluginBase.SetCommand(i + outsCommandsIndex,
                     Config.Instance.ResultOuts[i].Name,
                     () => SetEvaluationOutput(value),
-                    new ShortcutKey(false, true, false, Keys.NumPad1 + i),
+                    new ShortcutKey(false, true, false, Keys.NumPad0 + i),
                     i == Config.Instance.CurrentResultOutIndex);
             }
 

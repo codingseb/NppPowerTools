@@ -71,7 +71,15 @@ namespace NppPowerTools.Utils
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                if (Config.Instance.ShowExceptionInMessageBox)
+                {
+                    MessageBox.Show(exception.Message);
+                }
+
+                if (Config.Instance.ShowExceptionInOutput)
+                {
+                    Config.Instance.CurrentResultOut.SetResult(new EvaluationError { Exception = exception });
+                }
 
                 if (!string.IsNullOrEmpty(CustomEvaluations.Print))
                     Config.Instance.CurrentResultOut.SetResult(CustomEvaluations.Print);

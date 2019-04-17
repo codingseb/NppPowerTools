@@ -51,6 +51,7 @@ namespace NppPowerTools.Utils.Evaluations
             evaluator.StaticTypesForExtensionsMethods.Add(typeof(CalculationExtension));
         }
 
+        #region singleton
         private static ExcelEvaluation instance = null;
 
         public static ExcelEvaluation Instance
@@ -68,6 +69,7 @@ namespace NppPowerTools.Utils.Evaluations
 
         private ExcelEvaluation()
         { }
+        #endregion
 
     }
 }

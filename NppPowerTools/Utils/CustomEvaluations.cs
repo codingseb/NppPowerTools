@@ -2,9 +2,7 @@
 using NppPowerTools.Utils.Evaluations;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Windows;
 
 namespace NppPowerTools.Utils
 {
@@ -20,6 +18,7 @@ namespace NppPowerTools.Utils
             new StringJoinEvaluation(),
             ExcelEvaluation.Instance,
             IniEvaluation.Instance,
+            ClipboardEvaluation.Instance,
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -31,6 +30,7 @@ namespace NppPowerTools.Utils
             ExcelEvaluation.Instance,
             new QRCodeEvaluation(),
             IniEvaluation.Instance,
+            ClipboardEvaluation.Instance,
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
@@ -76,13 +76,6 @@ namespace NppPowerTools.Utils
             {
                 e.Value = Guid.NewGuid().ToString();
             }
-            else if (e.Name.Equals("clipboard", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
-            {
-                if (Clipboard.ContainsImage())
-                    e.Value = Clipboard.GetImage().GetBitmap();
-                else
-                    e.Value = Clipboard.GetText();
-            }
             else
             {
                 variablesEvaluations.Find(eval => eval.TryEvaluate(sender, e));
@@ -113,20 +106,6 @@ namespace NppPowerTools.Utils
                     e.Value = Enumerable.Repeat(e.EvaluateArg(0), (int)e.EvaluateArg(1));
                 else if (e.Args.Count == 1 && e.This != null)
                     e.Value = Enumerable.Repeat(e.This, (int)e.EvaluateArg(1));
-            }
-            else if (e.Name.Equals("clipboard", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
-            {
-                if(e.Args.Count > 0)
-                {
-                    object arg = e.EvaluateArg(0);
-
-                    if (arg is Bitmap bitmap)
-                        Clipboard.SetDataObject(bitmap);
-                    else
-                        Clipboard.SetText(arg.ToString());
-
-                    e.Value = arg;
-                }
             }
             else
             {
