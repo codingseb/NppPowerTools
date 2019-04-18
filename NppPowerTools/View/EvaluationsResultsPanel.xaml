@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ex="clr-namespace:System;assembly=mscorlib"
              xmlns:st="http://schemas.spicytaco.io/"
              xmlns:draw="clr-namespace:System.Drawing;assembly=System.Drawing"
              xmlns:local="clr-namespace:NppPowerTools"
@@ -17,14 +18,33 @@
                     <Image Source="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}, Converter={local:ImageTypesToImageSourceConverter}}"
                            Margin="10"/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type local:EvaluationError}">
-                    <TextBox Text="{Binding Exception.Message, Mode=OneTime}" 
+                <DataTemplate DataType="{x:Type ex:Exception}">
+                    <DockPanel>
+                        <TextBox DockPanel.Dock="Bottom"
+                                 Text="{Binding StackTrace, Mode=OneTime}"
+                                 Margin="20,0"
+                                 Visibility="{Binding IsChecked, ElementName=ShowStackTraceToggleButton, Converter={local:CustomBoolToVisibilityConverter}}"
                                  IsReadOnly="True"
                                  Foreground="Red" 
                                  FontWeight="Bold"
-                                 BorderBrush="White"
+                                 BorderBrush="Transparent"
+                                 Background="Transparent"
+                                 BorderThickness="0"                                
+                                 Padding="1" />
+                        <ToggleButton x:Name="ShowStackTraceToggleButton" 
+                                      Background="Transparent"
+                                      BorderBrush="Transparent"
+                                      Width="20"
+                                      Content="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}, Converter={local:BoolToStringConverter TrueValue='-', FalseValue='+'}}"/>
+                        <TextBox Text="{Binding Message, Mode=OneTime}" 
+                                 IsReadOnly="True"
+                                 Foreground="Red" 
+                                 FontWeight="Bold"
+                                 BorderBrush="Transparent"
+                                 Background="Transparent"
                                  BorderThickness="0"
                                  Padding="1"/>
+                    </DockPanel>
                 </DataTemplate>
             </local:ResultTemplateSelector.Templates>
             <local:ResultTemplateSelector.DefaultTemplate>
@@ -32,7 +52,8 @@
                     <TextBox Text="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
                              Margin="5,0"
                              IsReadOnly="True"
-                             BorderBrush="White"
+                             BorderBrush="Transparent"
+                             Background="Transparent"
                              BorderThickness="0"
                              Padding="1"/>
                 </DataTemplate>

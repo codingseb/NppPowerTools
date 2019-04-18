@@ -131,10 +131,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviors\SimplePropertyBindingBehavior.cs" />
+    <Compile Include="Converter\BoolToStringConverter.cs" />
+    <Compile Include="Converter\CustomBoolToVisibilityConverter.cs" />
     <Compile Include="Converter\DrawingColorToWPFBrush.cs" />
     <Compile Include="Converter\ImageTypesToImageSourceConverter.cs" />
     <Compile Include="Converter\StringToNullableIntConverter.cs" />
-    <Compile Include="Model\EvaluationError.cs" />
     <Compile Include="PluginInfrastructure\ClikeStringArray.cs" />
     <Compile Include="PluginInfrastructure\DllExport\DllExportAttribute.cs" />
     <Compile Include="PluginInfrastructure\Win32.cs" />

@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
         <xceed:PropertyGrid ShowAdvancedOptions="True"
-                            SelectedObjectChanged="PropertyGrid_SelectedObjectChanged"
-                            SelectedObject="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            SelectedObject="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
+        </xceed:PropertyGrid>
     </DockPanel>
 </UserControl>

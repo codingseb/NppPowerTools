@@ -79,7 +79,7 @@ namespace NppPowerTools.Utils
 
                 if (Config.Instance.ShowExceptionInOutput)
                 {
-                    Config.Instance.CurrentResultOut.SetResult(new EvaluationError { Exception = exception });
+                    Config.Instance.CurrentResultOut.SetResult(exception);
                 }
 
                 if (!string.IsNullOrEmpty(CustomEvaluations.Print))
