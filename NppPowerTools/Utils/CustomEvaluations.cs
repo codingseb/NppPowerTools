@@ -14,7 +14,7 @@ namespace NppPowerTools.Utils
         {
             new LoremIspumEvaluation(),
             NppAccessEvaluation.Instance,
-            new JsonEvaluation(),
+            JsonEvaluation.Instance,
             new StringJoinEvaluation(),
             ExcelEvaluation.Instance,
             IniEvaluation.Instance,
@@ -25,6 +25,7 @@ namespace NppPowerTools.Utils
         {
             new LoopEvaluation(),
             NppAccessEvaluation.Instance,
+            JsonEvaluation.Instance,
             new HttpEvaluation(),
             new StringJoinEvaluation(),
             ExcelEvaluation.Instance,

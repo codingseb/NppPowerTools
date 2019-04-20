@@ -22,7 +22,32 @@ namespace NppPowerTools.Utils.Evaluations
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
-            return false;
+            if ((e.Name.Equals("ujson", System.StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("unjson", System.StringComparison.OrdinalIgnoreCase)) && e.Args.Count > 0)
+            {
+                e.Value = JsonConvert.DeserializeObject(e.EvaluateArg(0).ToString());
+            }
+
+            return e.FunctionReturnedValue;
         }
+
+        private static JsonEvaluation instance = null;
+
+        public static JsonEvaluation Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new JsonEvaluation();
+                }
+
+                return instance;
+            }
+        }
+
+        private JsonEvaluation()
+        { }
+
     }
 }

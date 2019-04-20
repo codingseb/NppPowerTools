@@ -99,7 +99,6 @@ namespace NppPowerTools.Utils.Evaluations
 
                     string text = BNpp.Text;
                     BNpp.NotepadPP.ShowTab(currentTab);
-                    _ = BNpp.Text;
 
                     e.Value = text;
                 }
