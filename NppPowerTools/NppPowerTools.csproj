@@ -181,9 +181,13 @@
     <Compile Include="Utils\IniFile.cs" />
     <Compile Include="Utils\LoremIpsum.cs" />
     <Compile Include="Utils\ResultOut.cs" />
+    <Compile Include="ViewModel\CommandFindViewModel.cs" />
     <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\ShowPropertiesViewModel.cs" />
+    <Compile Include="View\CommandFindPanel.xaml.cs">
+      <DependentUpon>CommandFindPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EvaluationsResultsPanel.xaml.cs">
       <DependentUpon>EvaluationsResultsPanel.xaml</DependentUpon>
     </Compile>
@@ -218,6 +222,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\CommandFindPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\EvaluationsResultsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
