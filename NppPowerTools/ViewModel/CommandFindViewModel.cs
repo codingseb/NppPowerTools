@@ -1,29 +1,96 @@
-﻿using System;
-using System.Collections;
+﻿using NppPowerTools.Utils;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Xaml;
-using Media = System.Windows.Media;
 
-namespace NppPowerTools.ViewModel
+namespace NppPowerTools
 {
-    public class CommandFindViewModel
+    public class CommandFindViewModel : ViewModelBase
     {
+        private static readonly Regex expressionEvalRegex = new Regex(@"^[\>:?](?<expression>.*)$", RegexOptions.Compiled);
+
+        CommandFindWindow commandFindWindow = null;
+
+        public string Find { get; set; } = string.Empty;
+
+        public List<NPTCommand> CommandsList => GetFilteredList(Find);
+
+        public List<NPTCommand> GetFilteredList(string filter)
+        {
+            if (filter != null)
+            {
+                Match expressionEvalMatch = expressionEvalRegex.Match(filter);
+
+                if (expressionEvalMatch.Success)
+                {
+                    string expression = expressionEvalMatch.Groups["expression"].Value.Trim();
+
+                    if (!string.IsNullOrEmpty(expression))
+                    {
+                        NPTCommand expressionCommand = new NPTCommand
+                        {
+                            Name = expression,
+                        };
+
+                        Evaluation.Process(true, expressionCommand.Name, result => expressionCommand.ResultOrInfoSup = result, true);
+
+                        return new List<NPTCommand>
+                        {
+                            expressionCommand
+                        };
+                    }
+                }
+                else
+                {
+                    return NPTCommands.Commands.FindAll(command => command.Name.IndexOf(Find, System.StringComparison.OrdinalIgnoreCase) >= 0);
+                }
+            }
+
+            return new List<NPTCommand>();
+        }
+
+        #region WindowManagement
+
+        public void Show()
+        {
+            if (commandFindWindow == null)
+            {
+                commandFindWindow = new CommandFindWindow();
+
+                commandFindWindow.Closed += CommandFindWindow_Closed;
+            }
+
+            commandFindWindow.Show();
+        }
+
+        private void CommandFindWindow_Closed(object sender, System.EventArgs e)
+        {
+            if (commandFindWindow != null)
+            {
+                commandFindWindow.Closed -= CommandFindWindow_Closed;
+
+                commandFindWindow = null;
+
+                Find = string.Empty;
+            }
+        }
+
+        #endregion
+
+        #region singleton
+        private static CommandFindViewModel instance = null;
+
+        public static CommandFindViewModel Instance
+        {
+            get
+            {
+                return instance ?? (instance = new CommandFindViewModel());
+            }
+        }
+
+        private CommandFindViewModel()
+        { }
+        #endregion
+
     }
 }

@@ -16,8 +16,10 @@ namespace NppPowerTools.Utils
             MessageBox.Show("Variables reseted");
         }
 
-        internal static void Process(bool script)
+        internal static void Process(bool isScript, string script = null,  Action<object> setResult = null, bool forceErrorInOutput = false)
         {
+            setResult = setResult ?? Config.Instance.CurrentResultOut.SetResult;
+
             if (!Config.Instance.KeepVariablesBetweenEvaluations)
                 LastVariables = new Dictionary<string, object>();
 
@@ -47,7 +49,7 @@ namespace NppPowerTools.Utils
                     int end = scintilla.GetLineEndPosition(line);
                     int start = 0;
 
-                    if (script)
+                    if (isScript)
                     {
                         // TODO special start script tag
                     }
@@ -66,24 +68,26 @@ namespace NppPowerTools.Utils
                     scintilla.SetSel(new Position(start), new Position(end));
                 }
 
-                object result = script ? evaluator.ScriptEvaluate(evaluator.RemoveComments(BNpp.SelectedText)) : evaluator.Evaluate(BNpp.SelectedText.TrimEnd(';'));
+                script = script ?? BNpp.SelectedText;
 
-                Config.Instance.CurrentResultOut.SetResult(result);
+                object result = isScript ? evaluator.ScriptEvaluate(evaluator.RemoveComments(script.TrimEnd(';', ' ', '\t', '\r', '\n') + ";")) : evaluator.Evaluate(script.TrimEnd(';'));
+
+                setResult(result);
             }
             catch (Exception exception)
             {
-                if (Config.Instance.ShowExceptionInMessageBox)
+                if (Config.Instance.ShowExceptionInMessageBox && !forceErrorInOutput)
                 {
                     MessageBox.Show(exception.Message);
                 }
 
-                if (Config.Instance.ShowExceptionInOutput)
+                if (Config.Instance.ShowExceptionInOutput || forceErrorInOutput)
                 {
-                    Config.Instance.CurrentResultOut.SetResult(exception);
+                    setResult(exception);
                 }
 
                 if (!string.IsNullOrEmpty(CustomEvaluations.Print))
-                    Config.Instance.CurrentResultOut.SetResult(CustomEvaluations.Print);
+                    setResult(CustomEvaluations.Print);
             }
             finally
             {

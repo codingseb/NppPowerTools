@@ -132,9 +132,11 @@
   <ItemGroup>
     <Compile Include="Behaviors\SimplePropertyBindingBehavior.cs" />
     <Compile Include="Converter\BoolToStringConverter.cs" />
+    <Compile Include="Converter\CollectionCountToVisibilityConverter.cs" />
     <Compile Include="Converter\CustomBoolToVisibilityConverter.cs" />
     <Compile Include="Converter\DrawingColorToWPFBrush.cs" />
     <Compile Include="Converter\ImageTypesToImageSourceConverter.cs" />
+    <Compile Include="Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Converter\StringToNullableIntConverter.cs" />
     <Compile Include="PluginInfrastructure\ClikeStringArray.cs" />
     <Compile Include="PluginInfrastructure\DllExport\DllExportAttribute.cs" />
@@ -183,10 +185,13 @@
     <Compile Include="Utils\ResultOut.cs" />
     <Compile Include="ViewModel\CommandFindViewModel.cs" />
     <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />
+    <Compile Include="ViewModel\NPTCommand.cs" />
+    <Compile Include="ViewModel\NPTCommands.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="ViewModel\ShowPropertiesViewModel.cs" />
-    <Compile Include="View\CommandFindPanel.xaml.cs">
-      <DependentUpon>CommandFindPanel.xaml</DependentUpon>
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\CommandFindWindow.xaml.cs">
+      <DependentUpon>CommandFindWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EvaluationsResultsPanel.xaml.cs">
       <DependentUpon>EvaluationsResultsPanel.xaml</DependentUpon>
@@ -222,7 +227,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="View\CommandFindPanel.xaml">
+    <Page Include="View\CommandFindWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

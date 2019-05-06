@@ -2,9 +2,7 @@
 using NppPowerTools.Utils;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
@@ -12,7 +10,7 @@ using System.Windows.Interop;
 
 namespace NppPowerTools
 {
-    public class EvaluationsResultPanelViewModel : INotifyPropertyChanged
+    public class EvaluationsResultPanelViewModel : ViewModelBase
     {
         private Window resultWindow = null;
 
@@ -78,13 +76,6 @@ namespace NppPowerTools
         #region Singleton and propertyChanged
 
         private static EvaluationsResultPanelViewModel instance = null;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public static EvaluationsResultPanelViewModel Instance
         {

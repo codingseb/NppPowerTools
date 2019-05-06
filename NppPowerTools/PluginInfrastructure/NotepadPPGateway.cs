@@ -42,6 +42,12 @@ namespace NppPowerTools.PluginInfrastructure
             return Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)command, wParam, lParam);
         }
 
+        public NotepadPPGateway CallMenuCommand(NppMenuCmd nppMenuCmd)
+        {
+            Send(NppMsg.NPPM_MENUCOMMAND, Unused, nppMenuCmd);
+            return this;
+        }
+
         public NotepadPPGateway FileNew()
         {
             Send(NppMsg.NPPM_MENUCOMMAND, Unused, NppMenuCmd.IDM_FILE_NEW);

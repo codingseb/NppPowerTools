@@ -66,7 +66,12 @@ namespace NppPowerTools
 
         internal static void CommandMenuInit()
         {
+            NPTCommands.InitCommands();
+
             int menuIndex = 0;
+
+            PluginBase.SetCommand(menuIndex++, "Commands Panel", () => CommandFindViewModel.Instance.Show(), new ShortcutKey(true, false, true, Keys.P));
+            PluginBase.SetCommand(menuIndex++, "---", null);
             PluginBase.SetCommand(menuIndex++, "Expression Execute", () => Evaluation.Process(false), new ShortcutKey(true, false, false, Keys.E));
             PluginBase.SetCommand(menuIndex++, "Script Execute", () => Evaluation.Process(true), new ShortcutKey(true, false, true, Keys.E));
             PluginBase.SetCommand(menuIndex++, "---", null);
