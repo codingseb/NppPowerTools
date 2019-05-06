@@ -7,13 +7,16 @@ namespace NppPowerTools
 {
     public class CommandFindViewModel : ViewModelBase
     {
-        private static readonly Regex expressionEvalRegex = new Regex(@"^[\>:?](?<expression>.*)$", RegexOptions.Compiled);
+        private static readonly Regex expressionEvalRegex = new Regex(@"^[\<\>:?](?<expression>.*)$", RegexOptions.Compiled);
+        private static readonly Regex charRegex = new Regex(".", RegexOptions.Compiled);
 
         CommandFindWindow commandFindWindow = null;
 
         public string Find { get; set; } = string.Empty;
 
         public List<NPTCommand> CommandsList => GetFilteredList(Find);
+
+        public int SelectionIndex { get; set; }
 
         public List<NPTCommand> GetFilteredList(string filter)
         {
@@ -34,6 +37,10 @@ namespace NppPowerTools
 
                         Evaluation.Process(true, expressionCommand.Name, result => expressionCommand.ResultOrInfoSup = result, true);
 
+                        expressionCommand.CommandAction = () => BNpp.SelectedText = expressionCommand.ResultOrInfoSup.ToStringOutput();
+
+                        SelectionIndex = 0;
+
                         return new List<NPTCommand>
                         {
                             expressionCommand
@@ -42,7 +49,9 @@ namespace NppPowerTools
                 }
                 else
                 {
-                    return NPTCommands.Commands.FindAll(command => command.Name.IndexOf(Find, System.StringComparison.OrdinalIgnoreCase) >= 0);
+                    Regex findRegex = new Regex(".*" + charRegex.Replace(filter, match => Regex.Escape(match.Value) + ".*"), RegexOptions.IgnoreCase);
+                    SelectionIndex = 0;
+                    return NPTCommands.Commands.FindAll(command => findRegex.IsMatch(command.Name));
                 }
             }
 
@@ -89,7 +98,8 @@ namespace NppPowerTools
         }
 
         private CommandFindViewModel()
-        { }
+        {
+        }
         #endregion
 
     }

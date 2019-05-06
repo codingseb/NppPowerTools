@@ -65,7 +65,8 @@ namespace NppPowerTools.Utils
                         end = scintilla.GetLineEndPosition(i);
                     }
 
-                    scintilla.SetSel(new Position(start), new Position(end));
+                    if(setResult == null)
+                        scintilla.SetSel(new Position(start), new Position(end));
                 }
 
                 script = script ?? BNpp.SelectedText;

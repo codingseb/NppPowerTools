@@ -39,13 +39,16 @@
             <ListBox x:Name="CommandsListBox"
                      Focusable="False"
                      ItemsSource="{Binding CommandsList}" 
+                     SelectedIndex="{Binding SelectionIndex}"
                      PreviewMouseDown="Item_StackPanel_PreviewMouseDown"
                      Visibility="{Binding CommandsList.Count, Converter={local:CollectionCountToVisibilityConverter} }">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:NPTCommand}" >
                         <StackPanel Margin="5">
                             <TextBlock Text="{Binding Name}" />
-                            <TextBlock Text="{Binding ResultOrInfoSup}" Visibility="{Binding ResultOrInfoSup, Converter={local:NullToVisibilityConverter}}"/>
+                            <TextBlock Text="{Binding ResultOrInfoSup}"
+                                       Foreground="{Binding ResultOrInfoSup, Converter={local:ResultToBrushConverter}}"
+                                       Visibility="{Binding ResultOrInfoSup, Converter={local:NullToVisibilityConverter}}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

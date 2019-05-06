@@ -137,6 +137,7 @@
     <Compile Include="Converter\DrawingColorToWPFBrush.cs" />
     <Compile Include="Converter\ImageTypesToImageSourceConverter.cs" />
     <Compile Include="Converter\NullToVisibilityConverter.cs" />
+    <Compile Include="Converter\ResultToBrushConverter.cs" />
     <Compile Include="Converter\StringToNullableIntConverter.cs" />
     <Compile Include="PluginInfrastructure\ClikeStringArray.cs" />
     <Compile Include="PluginInfrastructure\DllExport\DllExportAttribute.cs" />
