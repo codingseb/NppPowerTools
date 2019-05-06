@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace NppPowerTools
 {
@@ -49,9 +52,43 @@ namespace NppPowerTools
                 }
                 else
                 {
-                    Regex findRegex = new Regex(".*" + charRegex.Replace(filter, match => Regex.Escape(match.Value) + ".*"), RegexOptions.IgnoreCase);
+                    Regex findRegex = new Regex("(?<start>.*)" + charRegex.Replace(filter, match => "(?<match>" + Regex.Escape(match.Value) + ")(?<between>.*)")  , RegexOptions.IgnoreCase);
                     SelectionIndex = 0;
-                    return NPTCommands.Commands.FindAll(command => findRegex.IsMatch(command.Name));
+                    return NPTCommands.Commands.FindAll(command =>
+                    {
+                        Match match = findRegex.Match(command.Name);
+
+                        if (match.Success)
+                        {
+                            List<Inline> inlines = new List<Inline>();
+
+                            string start = match.Groups["start"].Value;
+
+                            if (!string.IsNullOrEmpty(start))
+                                inlines.Add(new Run(start));
+
+                            CaptureCollection mcaptures = match.Groups["match"].Captures;
+                            CaptureCollection bcaptures = match.Groups["between"].Captures;
+
+                            for(int i = 0; i < mcaptures.Count; i++)
+                            {
+                                inlines.Add(new Span(new Run(mcaptures[i].Value))
+                                {
+                                    FontWeight = FontWeights.Bold,
+                                    Background = Brushes.Yellow,
+                                });
+                                inlines.Add(new Run(bcaptures[i].Value));
+                            }
+
+                            command.Inlines = inlines;
+
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    });
                 }
             }
 

@@ -79,7 +79,10 @@ namespace NppPowerTools
             {
                 try
                 {
-                    CommandsListBox.SelectedIndex++;
+                    if (CommandsListBox.SelectedIndex >= CommandsListBox.Items.Count - 1)
+                        CommandsListBox.SelectedIndex = 0;
+                    else
+                        CommandsListBox.SelectedIndex++;
                     CommandsListBox.ScrollIntoView(CommandsListBox.SelectedValue);
                     e.Handled = true;
                 }
@@ -89,7 +92,10 @@ namespace NppPowerTools
             {
                 try
                 {
-                    CommandsListBox.SelectedIndex--;
+                    if (CommandsListBox.SelectedIndex <= 0)
+                        CommandsListBox.SelectedIndex = CommandsListBox.Items.Count - 1;
+                    else
+                        CommandsListBox.SelectedIndex--;
                     CommandsListBox.ScrollIntoView(CommandsListBox.SelectedValue);
                     e.Handled = true;
                 }

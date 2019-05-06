@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:st="http://schemas.spicytaco.io/"
+        xmlns:b="clr-namespace:NppPowerTools.Behaviors"
         xmlns:local="clr-namespace:NppPowerTools"
         mc:Ignorable="d" 
         WindowStyle="None"
@@ -45,7 +46,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:NPTCommand}" >
                         <StackPanel Margin="5">
-                            <TextBlock Text="{Binding Name}" />
+                            <TextBlock b:TextBlockExtensions.BindableInlines="{Binding Inlines}" />
                             <TextBlock Text="{Binding ResultOrInfoSup}"
                                        FontWeight="Bold"
                                        Foreground="{Binding ResultOrInfoSup, Converter={local:ResultToBrushConverter}}"
