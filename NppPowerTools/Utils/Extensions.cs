@@ -12,7 +12,7 @@ namespace NppPowerTools.Utils
 {
     public static class Extensions
     {
-        private static Regex hexColorRegex = new Regex("^[#][0-9a-f]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex hexColorRegex = new Regex("^[#][0-9a-f]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static BitmapImage BitmapToImageSource(this Bitmap bitmap)
         {

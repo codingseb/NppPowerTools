@@ -14,8 +14,19 @@ namespace NppPowerTools
     /// </summary>
     public partial class CommandFindWindow : Window
     {
-        [DllImport("user32.dll")]
-        private static extern int GetWindowRect(IntPtr hwnd, out Rectangle rect);
+
+        const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left;        // x position of upper-left corner
+            public int Top;         // y position of upper-left corner
+            public int Right;       // x position of lower-right corner
+            public int Bottom;      // y position of lower-right corner
+        }
+
+        [DllImport("dwmapi.dll")]
+        static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
 
         public CommandFindWindow()
         {
@@ -54,9 +65,9 @@ namespace NppPowerTools
             try
             {
                 IntPtr windowHandle = Process.GetCurrentProcess().MainWindowHandle;
-                GetWindowRect(windowHandle, out Rectangle rect);
+                DwmGetWindowAttribute(windowHandle, DWMWA_EXTENDED_FRAME_BOUNDS, out RECT rect, Marshal.SizeOf(typeof(RECT)));
 
-                Left = ((rect.Left + rect.Width) / 2) - (Width / 2);
+                Left = (rect.Left + rect.Right) / 2 - Width / 2;
                 Top = rect.Top + 100;
             }
             catch { }

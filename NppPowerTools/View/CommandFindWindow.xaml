@@ -15,7 +15,7 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         Deactivated="Window_Deactivated"
         Loaded="Window_Loaded"
-        MaxHeight="600"
+        MaxHeight="500"
         DataContext="{x:Static local:CommandFindViewModel.Instance}"
         FocusManager.FocusedElement="{Binding ElementName=FindTextBox}">
     <Border Padding="5"
@@ -47,6 +47,7 @@
                         <StackPanel Margin="5">
                             <TextBlock Text="{Binding Name}" />
                             <TextBlock Text="{Binding ResultOrInfoSup}"
+                                       FontWeight="Bold"
                                        Foreground="{Binding ResultOrInfoSup, Converter={local:ResultToBrushConverter}}"
                                        Visibility="{Binding ResultOrInfoSup, Converter={local:NullToVisibilityConverter}}"/>
                         </StackPanel>
