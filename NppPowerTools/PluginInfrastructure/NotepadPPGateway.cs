@@ -241,7 +241,13 @@ namespace NppPowerTools.PluginInfrastructure
 
         public NotepadPPGateway SetCurrentLanguage(LangType language)
 		{
-            Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_SETCURRENTLANGTYPE, Unused, (int)language);
+            SetCurrentLanguage((int)language);
+            return this;
+		}
+
+        public NotepadPPGateway SetCurrentLanguage(int language)
+		{
+            Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_SETCURRENTLANGTYPE, Unused, language);
             return this;
 		}
 

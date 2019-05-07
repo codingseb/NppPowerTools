@@ -44,7 +44,7 @@ namespace NppPowerTools
             {
                 try
                 {
-                    this.Close();
+                    Close();
                     e.Handled = true;
                 }
                 catch { }
@@ -55,7 +55,7 @@ namespace NppPowerTools
         {
             try
             {
-                this.Close();
+                Close();
             }
             catch { }
         }

@@ -78,7 +78,6 @@ namespace NppPowerTools
                         CommandAction = win =>
                         {
                             string lang = BNpp.NotepadPP.GetCurrentLanguage().ToString();
-                            BNpp.NotepadPP.FileNew();
                             BNpp.Text = lang;
                             win.Close();
                         }
@@ -88,121 +87,104 @@ namespace NppPowerTools
             catch { }
         }
 
-            // L_TEXT, L_PHP, L_C, L_CPP, L_CS, L_OBJC, L_JAVA, L_RC,
-            //L_HTML, L_XML, L_MAKEFILE, L_PASCAL, L_BATCH, L_INI, L_ASCII, L_USER,
-            //L_ASP, L_SQL, L_VB, L_JS, L_CSS, L_PERL, L_PYTHON, L_LUA,
-            //L_TEX, L_FORTRAN, L_BASH, L_FLASH, L_NSIS, L_TCL, L_LISP, L_SCHEME,
-            //L_ASM, L_DIFF, L_PROPS, L_PS, L_RUBY, L_SMALLTALK, L_VHDL, L_KIX, L_AU3,
-            //L_CAML, L_ADA, L_VERILOG, L_MATLAB, L_HASKELL, L_INNO, L_SEARCHRESULT,
-            //L_CMAKE, L_YAML, L_COBOL, L_GUI4CLI, L_D, L_POWERSHELL, L_R, L_JSP,
-            //L_COFFEESCRIPT, L_JSON, L_JAVASCRIPT, L_FORTRAN_77,
-            //// Don't use L_JS, use L_JAVASCRIPT instead
-            //// The end of enumated language type, so it should be always at the end
-            //L_EXTERNAL
-
         public static void InitLanguages()
         {
+            NPTCommand CreateLangCommand(string name, LangType langType) => new NPTCommand()
+            {
+                Name = name,
+                CommandAction = win =>
+                {
+                    BNpp.NotepadPP.SetCurrentLanguage(langType);
+                    win.Close();
+                }
+            };
+
             Languages = new List<NPTCommand>
             {
-                new NPTCommand()
-                {
-                    Name = "ActionScript (Flash)",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_FLASH);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "ASP",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_ASP);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "C",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_C);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "C++",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_CPP);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "C#",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_CS);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "Java",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_JAVA);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "JavaScript",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_JAVASCRIPT);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "JSON",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_JSON);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "JSP",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_JSP);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "MS-DOS Style",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_ASCII);
-                        win.Close();
-                    }
-                },
-                new NPTCommand()
-                {
-                    Name = "PHP",
-                    CommandAction = win =>
-                    {
-                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_PHP);
-                        win.Close();
-                    }
-                },
+                CreateLangCommand("ActionScript (Flash)", LangType.L_FLASH),
+                CreateLangCommand("Ada", LangType.L_ADA),
+                CreateLangCommand("ASN.1", LangType.L_ASN1),
+                CreateLangCommand("ASP", LangType.L_ASP),
+                CreateLangCommand("Assembly (ASM)", LangType.L_ASM),
+                CreateLangCommand("AutoIt", LangType.L_AU3),
+                CreateLangCommand("AviSynth", LangType.L_AVISYNTH),
+                CreateLangCommand("BaanC", LangType.L_EXTERNAL),
+                CreateLangCommand("Batch", LangType.L_BATCH),
+                CreateLangCommand("Blitzbasic", LangType.L_BLITZBASIC),
+                CreateLangCommand("C", LangType.L_C),
+                CreateLangCommand("C#", LangType.L_CS),
+                CreateLangCommand("C++", LangType.L_CPP),
+                CreateLangCommand("Caml", LangType.L_CAML),
+                CreateLangCommand("CMake", LangType.L_CMAKE),
+                CreateLangCommand("COBOL", LangType.L_COBOL),
+                CreateLangCommand("CSound", LangType.L_CSOUND),
+                CreateLangCommand("CoffeScript", LangType.L_COFFEESCRIPT),
+                CreateLangCommand("CSS", LangType.L_CSS),
+                CreateLangCommand("D", LangType.L_D),
+                CreateLangCommand("Diff", LangType.L_DIFF),
+                CreateLangCommand("Erlang", LangType.L_ERLANG),
+                CreateLangCommand("ESCRIPT", LangType.L_ESCRIPT),
+                CreateLangCommand("Forth", LangType.L_FORTH),
+                CreateLangCommand("Fortran (free form)", LangType.L_FORTRAN),
+                CreateLangCommand("Fortran (fixed form)", LangType.L_FORTRAN_77),
+                CreateLangCommand("Freebasic", LangType.L_FREEBASIC),
+                CreateLangCommand("Gui4Cli", LangType.L_GUI4CLI),
+                CreateLangCommand("Haskell", LangType.L_HASKELL),
+                CreateLangCommand("HTML", LangType.L_HTML),
+                CreateLangCommand("INI File", LangType.L_INI),
+                CreateLangCommand("Inno Setup", LangType.L_INNO),
+                CreateLangCommand("Intel Hex", LangType.L_INTELHEX),
+                CreateLangCommand("Java", LangType.L_JAVA),
+                CreateLangCommand("JavaScript", LangType.L_JAVASCRIPT),
+                CreateLangCommand("JSON", LangType.L_JSON),
+                CreateLangCommand("JSP", LangType.L_JSP),
+                CreateLangCommand("KIXtart", LangType.L_KIX),
+                CreateLangCommand("LISP", LangType.L_LISP),
+                CreateLangCommand("LaTeX", LangType.L_LATEX),
+                CreateLangCommand("Lua", LangType.L_LUA),
+                CreateLangCommand("Makefile", LangType.L_MAKEFILE),
+                CreateLangCommand("Matlab", LangType.L_MATLAB),
+                CreateLangCommand("MMIXAL", LangType.L_MMIXAL),
+                CreateLangCommand("MMIXAL", LangType.L_MMIXAL),
+                CreateLangCommand("MS-DOS Style", LangType.L_ASCII),               
+                CreateLangCommand("Nimrod", LangType.L_NIMROD),
+                CreateLangCommand("Nncrontab", LangType.L_NNCRONTAB),
+                CreateLangCommand("Normal Text", LangType.L_TEXT),
+                CreateLangCommand("NSIS", LangType.L_NSIS),
+                CreateLangCommand("Objective-C", LangType.L_OBJC),
+                CreateLangCommand("OScript", LangType.L_OSCRIPT),
+                CreateLangCommand("Pascal", LangType.L_PASCAL),
+                CreateLangCommand("Perl", LangType.L_PERL),
+                CreateLangCommand("PHP", LangType.L_PHP),
+                CreateLangCommand("PostScript", LangType.L_PS),
+                CreateLangCommand("PowerShell", LangType.L_POWERSHELL),
+                CreateLangCommand("Properties", LangType.L_PROPS),
+                CreateLangCommand("Purebasic", LangType.L_PUREBASIC),
+                CreateLangCommand("Python", LangType.L_PYTHON),
+                CreateLangCommand("R", LangType.L_R),
+                CreateLangCommand("REBOL", LangType.L_REBOL),
+                CreateLangCommand("Registry", LangType.L_REGISTRY),
+                CreateLangCommand("Resource file", LangType.L_RC),
+                CreateLangCommand("Ruby", LangType.L_RUBY),
+                CreateLangCommand("Rust", LangType.L_RUST),
+                CreateLangCommand("Shell (Bash)", LangType.L_BASH),
+                CreateLangCommand("Scheme", LangType.L_SCHEME),
+                CreateLangCommand("Smalltalk", LangType.L_SMALLTALK),
+                CreateLangCommand("Spice", LangType.L_SPICE),
+                CreateLangCommand("SQL", LangType.L_SQL),
+                CreateLangCommand("Swift", LangType.L_SWIFT),
+                CreateLangCommand("S-Record", LangType.L_SRECORD),
+                CreateLangCommand("TCL", LangType.L_TCL),
+                CreateLangCommand("Tektronix extended HEX", LangType.L_TEKTRONIXEXTENDEDHEX),
+                CreateLangCommand("TeX", LangType.L_TEX),
+                CreateLangCommand("txt2tags", LangType.L_TXT2TAGS),
+                CreateLangCommand("Verilog", LangType.L_VERILOG),
+                CreateLangCommand("VHDL", LangType.L_VHDL),
+                CreateLangCommand("Visual Basic", LangType.L_VB),
+                CreateLangCommand("Visual Prolog", LangType.L_VPROLOG),
+                CreateLangCommand("XML", LangType.L_XML),
+                CreateLangCommand("YAML", LangType.L_YAML)
+
             };
         }
 
