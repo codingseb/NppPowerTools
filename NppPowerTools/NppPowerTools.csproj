@@ -132,6 +132,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\SimplePropertyBindingBehavior.cs" />
     <Compile Include="Behaviors\TextBlockExtensions.cs" />
+    <Compile Include="Behaviors\TextBoxExtensions.cs" />
     <Compile Include="Converter\BoolToStringConverter.cs" />
     <Compile Include="Converter\CollectionCountToVisibilityConverter.cs" />
     <Compile Include="Converter\CustomBoolToVisibilityConverter.cs" />

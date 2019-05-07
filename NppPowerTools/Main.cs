@@ -67,6 +67,7 @@ namespace NppPowerTools
         internal static void CommandMenuInit()
         {
             NPTCommands.InitCommands();
+            NPTCommands.InitLanguages();
 
             int menuIndex = 0;
 

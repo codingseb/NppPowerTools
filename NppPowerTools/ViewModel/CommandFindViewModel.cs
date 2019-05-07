@@ -9,12 +9,15 @@ namespace NppPowerTools
 {
     public class CommandFindViewModel : ViewModelBase
     {
-        private static readonly Regex expressionEvalRegex = new Regex(@"^[\<\>:?](?<expression>.*)$", RegexOptions.Compiled);
-        private static readonly Regex charRegex = new Regex(".", RegexOptions.Compiled);
+        private static readonly Regex expressionEvalRegex = new Regex("^:(?<expression>.*)$", RegexOptions.Compiled);
 
         CommandFindWindow commandFindWindow = null;
 
         public string Find { get; set; } = string.Empty;
+
+        public int FindSelectionStart { get; set; }
+
+        public int FindSelectionLength { get; set; }
 
         public List<NPTCommand> CommandsList => GetFilteredList(Find);
 
@@ -53,50 +56,22 @@ namespace NppPowerTools
                         };
                     }
                 }
+                else if(filter.StartsWith("@SetLanguage "))
+                {
+                    SelectionIndex = 0;
+                    return NPTCommands.Languages.RegexFilterCommands(filter.Substring("@SetLanguage ".Length));
+                }
                 else
                 {
-                    Regex findRegex = new Regex("(?<start>.*)" + charRegex.Replace(filter, match => "(?<match>" + Regex.Escape(match.Value) + ")(?<between>.*)")  , RegexOptions.IgnoreCase);
                     SelectionIndex = 0;
-                    return NPTCommands.Commands?.FindAll(command =>
-                    {
-                        Match match = findRegex.Match(command.Name);
-
-                        if (match.Success)
-                        {
-                            List<Inline> inlines = new List<Inline>();
-
-                            string start = match.Groups["start"].Value;
-
-                            if (!string.IsNullOrEmpty(start))
-                                inlines.Add(new Run(start));
-
-                            CaptureCollection mcaptures = match.Groups["match"].Captures;
-                            CaptureCollection bcaptures = match.Groups["between"].Captures;
-
-                            for(int i = 0; i < mcaptures.Count; i++)
-                            {
-                                inlines.Add(new Span(new Run(mcaptures[i].Value))
-                                {
-                                    FontWeight = FontWeights.Bold,
-                                    Background = Brushes.Yellow,
-                                });
-                                inlines.Add(new Run(bcaptures[i].Value));
-                            }
-
-                            command.Inlines = inlines;
-
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    });
+                    return NPTCommands.Commands.RegexFilterCommands(filter);
                 }
             }
 
             return new List<NPTCommand>();
         }
+
+
 
         #region WindowManagement
 

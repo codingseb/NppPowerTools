@@ -34,9 +34,10 @@
                          GotFocus="FindTextBox_GotFocus"
                          PreviewKeyDown="FindTextBox_PreviewKeyDown"
                          BorderThickness="0"
+                         b:TextBoxExtensions.SelectionStart="{Binding FindSelectionStart}"
+                         b:TextBoxExtensions.SelectionLength="{Binding FindSelectionLength}"
                          Text="{Binding Find, UpdateSourceTrigger=PropertyChanged, Delay=300}" 
-                         Padding="5"
-                     />
+                         Padding="5" />
             </Border>
             <ListBox x:Name="CommandsListBox"
                      Focusable="False"
