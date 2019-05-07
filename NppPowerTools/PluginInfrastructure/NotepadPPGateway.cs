@@ -245,6 +245,12 @@ namespace NppPowerTools.PluginInfrastructure
             return this;
 		}
 
+        public LangType GetCurrentLanguage()
+		{
+            Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETCURRENTLANGTYPE, Unused, out int language);
+            return (LangType)language;
+		}
+
         public void SetPluginMenuChecked(int id, bool check)
         {
             Send(NppMsg.NPPM_SETMENUITEMCHECK, PluginBase._funcItems.Items[id]._cmdID, check ? 1 : 0);

@@ -70,7 +70,17 @@ namespace NppPowerTools
                             CommandFindViewModel.Instance.Find = "@SetLanguage ";
                             CommandFindViewModel.Instance.FindSelectionLength = 0;
                             CommandFindViewModel.Instance.FindSelectionStart = CommandFindViewModel.Instance.Find.Length;
-
+                        }
+                    })
+                    .Append(new NPTCommand()
+                    {
+                        Name = "[@GetCurrentLanguage]",
+                        CommandAction = win =>
+                        {
+                            string lang = BNpp.NotepadPP.GetCurrentLanguage().ToString();
+                            BNpp.NotepadPP.FileNew();
+                            BNpp.Text = lang;
+                            win.Close();
                         }
                     })
                     .ToList();
@@ -94,6 +104,15 @@ namespace NppPowerTools
         {
             Languages = new List<NPTCommand>
             {
+                new NPTCommand()
+                {
+                    Name = "ActionScript (Flash)",
+                    CommandAction = win =>
+                    {
+                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_FLASH);
+                        win.Close();
+                    }
+                },
                 new NPTCommand()
                 {
                     Name = "ASP",
@@ -132,10 +151,55 @@ namespace NppPowerTools
                 },
                 new NPTCommand()
                 {
+                    Name = "Java",
+                    CommandAction = win =>
+                    {
+                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_JAVA);
+                        win.Close();
+                    }
+                },
+                new NPTCommand()
+                {
+                    Name = "JavaScript",
+                    CommandAction = win =>
+                    {
+                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_JAVASCRIPT);
+                        win.Close();
+                    }
+                },
+                new NPTCommand()
+                {
+                    Name = "JSON",
+                    CommandAction = win =>
+                    {
+                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_JSON);
+                        win.Close();
+                    }
+                },
+                new NPTCommand()
+                {
+                    Name = "JSP",
+                    CommandAction = win =>
+                    {
+                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_JSP);
+                        win.Close();
+                    }
+                },
+                new NPTCommand()
+                {
                     Name = "MS-DOS Style",
                     CommandAction = win =>
                     {
                         BNpp.NotepadPP.SetCurrentLanguage(LangType.L_ASCII);
+                        win.Close();
+                    }
+                },
+                new NPTCommand()
+                {
+                    Name = "PHP",
+                    CommandAction = win =>
+                    {
+                        BNpp.NotepadPP.SetCurrentLanguage(LangType.L_PHP);
                         win.Close();
                     }
                 },
