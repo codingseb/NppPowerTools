@@ -103,18 +103,16 @@ namespace NppPowerTools
             }
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.None && e.Key == Key.Enter && CommandsListBox.SelectedValue is NPTCommand command)
             {
-                command.CommandAction?.Invoke();
-                Close();
+                command.CommandAction?.Invoke(this);
                 e.Handled = true;
             }
         }
 
         private void Item_StackPanel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if(e.OriginalSource is FrameworkElement frameworkElement && frameworkElement.DataContext is NPTCommand command)
+            if (e.OriginalSource.GetDataContext() is NPTCommand command)
             {
-                command.CommandAction?.Invoke();
-                Close();
+                command.CommandAction?.Invoke(this);
                 e.Handled = true;
             }
         }

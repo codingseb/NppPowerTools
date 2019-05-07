@@ -12,6 +12,9 @@ namespace NppPowerTools.Utils
 {
     public class Config : INotifyPropertyChanged
     {
+        public int CommandPanelWidth { get; set; } = 500;
+        public int CommandPanelHeight { get; set; } = 500;
+
         [JsonIgnore]
         public List<ResultOut> ResultOuts { get; set; } = new List<ResultOut>()
         {

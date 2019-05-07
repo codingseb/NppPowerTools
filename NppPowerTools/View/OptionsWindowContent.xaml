@@ -19,6 +19,18 @@
     </UserControl.Resources>
     <DockPanel Margin="5">
         <TabControl>
+            <TabItem Header="_Command panel">
+                <st:AutoGrid Columns="Auto,*" ChildMargin="3">
+                    <Label Content="_Width"
+                           Target="{Binding ElementName=CommandPanelWidthTextBox}"/>
+                    <TextBox x:Name="CommandPanelWidthTextBox"
+                             Text="{Binding CommandPanelWidth, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="_Height (max)"
+                           Target="{Binding ElementName=CommandPanelHeightTextBox}"/>
+                    <TextBox x:Name="CommandPanelHeightTextBox"
+                             Text="{Binding CommandPanelHeight, UpdateSourceTrigger=PropertyChanged}"/>
+                </st:AutoGrid>
+            </TabItem>
             <TabItem Header="_Evaluation">
                 <st:AutoGrid Columns="Auto,*" ChildMargin="3">
                     <Label Content="Executions _outputs"

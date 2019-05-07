@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Documents;
 
 namespace NppPowerTools
@@ -10,6 +10,8 @@ namespace NppPowerTools
         private IEnumerable<Inline> inlines;
 
         public string Name { get; set; } = string.Empty;
+
+        public int CommandId { get; set; }
 
         public object ResultOrInfoSup { get; set; }
 
@@ -23,6 +25,6 @@ namespace NppPowerTools
             set { inlines = value; }
         }
 
-        public Action CommandAction { get; set; } = () => { };
+        public Action<Window> CommandAction { get; set; } = win => win.Close();
     }
 }

@@ -6,6 +6,7 @@
         xmlns:st="http://schemas.spicytaco.io/"
         xmlns:b="clr-namespace:NppPowerTools.Behaviors"
         xmlns:local="clr-namespace:NppPowerTools"
+        xmlns:utils="clr-namespace:NppPowerTools.Utils"
         mc:Ignorable="d" 
         WindowStyle="None"
         WindowState="Normal"
@@ -16,11 +17,11 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         Deactivated="Window_Deactivated"
         Loaded="Window_Loaded"
-        MaxHeight="500"
+        MaxHeight="{Binding CommandPanelHeight, Source={x:Static utils:Config.Instance}}"
         DataContext="{x:Static local:CommandFindViewModel.Instance}"
         FocusManager.FocusedElement="{Binding ElementName=FindTextBox}">
     <Border Padding="5"
-            Width="500"
+            Width="{Binding CommandPanelWidth, Source={x:Static utils:Config.Instance}}"
             Background="WhiteSmoke"
             BorderBrush="Gray"
             BorderThickness="1"
@@ -45,8 +46,8 @@
                      Visibility="{Binding CommandsList.Count, Converter={local:CollectionCountToVisibilityConverter} }">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:NPTCommand}" >
-                        <StackPanel Margin="5">
-                            <TextBlock b:TextBlockExtensions.BindableInlines="{Binding Inlines}" />
+                        <StackPanel Margin="5" ToolTip="{Binding Name}">
+                            <TextBlock b:TextBlockExtensions.BindableInlines="{Binding Inlines}"/>
                             <TextBlock Text="{Binding ResultOrInfoSup}"
                                        FontWeight="Bold"
                                        Foreground="{Binding ResultOrInfoSup, Converter={local:ResultToBrushConverter}}"

@@ -1,6 +1,5 @@
 ﻿using NppPowerTools.Utils;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Documents;
@@ -40,7 +39,11 @@ namespace NppPowerTools
 
                         Evaluation.Process(true, expressionCommand.Name, result => expressionCommand.ResultOrInfoSup = result, true);
 
-                        expressionCommand.CommandAction = () => BNpp.SelectedText = expressionCommand.ResultOrInfoSup.ToStringOutput();
+                        expressionCommand.CommandAction = win =>
+                        {
+                            BNpp.SelectedText = expressionCommand.ResultOrInfoSup.ToStringOutput();
+                            win.Close();
+                        };
 
                         SelectionIndex = 0;
 
@@ -54,7 +57,7 @@ namespace NppPowerTools
                 {
                     Regex findRegex = new Regex("(?<start>.*)" + charRegex.Replace(filter, match => "(?<match>" + Regex.Escape(match.Value) + ")(?<between>.*)")  , RegexOptions.IgnoreCase);
                     SelectionIndex = 0;
-                    return NPTCommands.Commands.FindAll(command =>
+                    return NPTCommands.Commands?.FindAll(command =>
                     {
                         Match match = findRegex.Match(command.Name);
 
