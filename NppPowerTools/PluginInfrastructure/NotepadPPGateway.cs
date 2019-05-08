@@ -258,12 +258,6 @@ namespace NppPowerTools.PluginInfrastructure
             return (LangType)language;
 		}
 
-        public ShortcutKey GetShortcutByCommandId(int commandId)
-        {
-            Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETSHORTCUTBYCMDID, new IntPtr(commandId), out IntPtr outVal);
-            return Marshal.PtrToStructure<ShortcutKey>(outVal);
-        }
-
         public void SetPluginMenuChecked(int id, bool check)
         {
             Send(NppMsg.NPPM_SETMENUITEMCHECK, PluginBase._funcItems.Items[id]._cmdID, check ? 1 : 0);

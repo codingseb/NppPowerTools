@@ -51,19 +51,10 @@ namespace NppPowerTools
                         string id = node.Attributes["id"].Value.Trim();
                         int nppMenuCmd = int.Parse(id);
 
-                        ShortcutKey? shortcutKey = null;
-
-                        try
-                        {
-                            shortcutKey = BNpp.NotepadPP.GetShortcutByCommandId(nppMenuCmd);
-                        }
-                        catch { }
-
                         return new NPTCommand()
                         {
                             Name = root.GetPrefix(id) + node.Attributes["name"].Value.Replace("&", string.Empty),
                             CommandId = nppMenuCmd,
-                            Shortcut = shortcutKey,
                             CommandAction = win =>
                             {
                                 BNpp.NotepadPP.CallMenuCommand(nppMenuCmd);

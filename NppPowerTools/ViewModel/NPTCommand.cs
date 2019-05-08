@@ -14,8 +14,6 @@ namespace NppPowerTools
 
         public int CommandId { get; set; }
 
-        public ShortcutKey? Shortcut { get; set; }
-
         public object ResultOrInfoSup { get; set; }
 
         public IEnumerable<Inline> Inlines
