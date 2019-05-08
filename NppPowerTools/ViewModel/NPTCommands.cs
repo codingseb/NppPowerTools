@@ -51,10 +51,19 @@ namespace NppPowerTools
                         string id = node.Attributes["id"].Value.Trim();
                         int nppMenuCmd = int.Parse(id);
 
+                        ShortcutKey? shortcutKey = null;
+
+                        try
+                        {
+                            shortcutKey = BNpp.NotepadPP.GetShortcutByCommandId(nppMenuCmd);
+                        }
+                        catch { }
+
                         return new NPTCommand()
                         {
                             Name = root.GetPrefix(id) + node.Attributes["name"].Value.Replace("&", string.Empty),
                             CommandId = nppMenuCmd,
+                            Shortcut = shortcutKey,
                             CommandAction = win =>
                             {
                                 BNpp.NotepadPP.CallMenuCommand(nppMenuCmd);
@@ -64,11 +73,10 @@ namespace NppPowerTools
                     })
                     .Append(new NPTCommand()
                     {
-                        Name = root.GetEntry("language") + " [@SetLanguage]",
+                        Name = root.GetEntry("language") + "-> [@SetLanguage]",
                         CommandAction = win =>
                         {
                             CommandFindViewModel.Instance.Find = "@SetLanguage ";
-                            CommandFindViewModel.Instance.FindSelectionLength = 0;
                             CommandFindViewModel.Instance.FindSelectionStart = CommandFindViewModel.Instance.Find.Length;
                         }
                     })
@@ -112,7 +120,7 @@ namespace NppPowerTools
                 CreateLangCommand("Batch", LangType.L_BATCH),
                 CreateLangCommand("Blitzbasic", LangType.L_BLITZBASIC),
                 CreateLangCommand("C", LangType.L_C),
-                CreateLangCommand("C#", LangType.L_CS),
+                CreateLangCommand("C# (CSharp)", LangType.L_CS),
                 CreateLangCommand("C++", LangType.L_CPP),
                 CreateLangCommand("Caml", LangType.L_CAML),
                 CreateLangCommand("CMake", LangType.L_CMAKE),
@@ -313,7 +321,7 @@ namespace NppPowerTools
 
         public static List<NPTCommand> RegexFilterCommands(this List<NPTCommand> commands, string filter)
         {
-            Regex findRegex = new Regex("(?<start>.*)" + charRegex.Replace(filter, match => "(?<match>" + Regex.Escape(match.Value) + ")(?<between>.*)"), RegexOptions.IgnoreCase);
+            Regex findRegex = new Regex(charRegex.Replace(filter, match => "(?<between>[^"+ Regex.Escape(match.Value) +"]*)(?<match>" + Regex.Escape(match.Value) + ")") + "(?<end>.*)", RegexOptions.IgnoreCase);
 
             return commands?.FindAll(command =>
             {
@@ -323,25 +331,25 @@ namespace NppPowerTools
                  {
                      List<Inline> inlines = new List<Inline>();
 
-                     string start = match.Groups["start"].Value;
-
-                     if (!string.IsNullOrEmpty(start))
-                         inlines.Add(new Run(start));
+                     string end = match.Groups["end"].Value;
 
                      CaptureCollection mcaptures = match.Groups["match"].Captures;
                      CaptureCollection bcaptures = match.Groups["between"].Captures;
 
                      for (int i = 0; i < mcaptures.Count; i++)
                      {
-                         inlines.Add(new Span(new Run(mcaptures[i].Value))
+                        inlines.Add(new Run(bcaptures[i].Value));
+                        inlines.Add(new Span(new Run(mcaptures[i].Value))
                          {
                              FontWeight = FontWeights.Bold,
                              Background = Brushes.Yellow,
                          });
-                         inlines.Add(new Run(bcaptures[i].Value));
                      }
 
-                     command.Inlines = inlines;
+                    if (!string.IsNullOrEmpty(end))
+                        inlines.Add(new Run(end));
+
+                    command.Inlines = inlines;
 
                      return true;
                  }

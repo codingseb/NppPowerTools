@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NppPowerTools.PluginInfrastructure;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
@@ -12,6 +13,8 @@ namespace NppPowerTools
         public string Name { get; set; } = string.Empty;
 
         public int CommandId { get; set; }
+
+        public ShortcutKey? Shortcut { get; set; }
 
         public object ResultOrInfoSup { get; set; }
 

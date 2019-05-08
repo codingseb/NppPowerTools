@@ -47,13 +47,22 @@
                      Visibility="{Binding CommandsList.Count, Converter={local:CollectionCountToVisibilityConverter} }">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:NPTCommand}" >
-                        <StackPanel Margin="5" ToolTip="{Binding Name}">
-                            <TextBlock b:TextBlockExtensions.BindableInlines="{Binding Inlines}"/>
-                            <TextBlock Text="{Binding ResultOrInfoSup}"
+                        <DockPanel Margin="5" ToolTip="{Binding Name}">
+                            <TextBlock DockPanel.Dock="Left" b:TextBlockExtensions.BindableInlines="{Binding Inlines}"/>
+                            <Border Margin="10,0"
+                                    Visibility="{Binding Shortcut, Converter={local:NullToVisibilityConverter}}"
+                                    Padding="5,1"
+                                    DockPanel.Dock="Right"
+                                    Background="LightGray"
+                                    CornerRadius="4">
+                                <TextBlock  Text="{Binding Shortcut}" />
+                            </Border>
+                            <TextBlock DockPanel.Dock="Bottom"
+                                       Text="{Binding ResultOrInfoSup}"
                                        FontWeight="Bold"
                                        Foreground="{Binding ResultOrInfoSup, Converter={local:ResultToBrushConverter}}"
                                        Visibility="{Binding ResultOrInfoSup, Converter={local:NullToVisibilityConverter}}"/>
-                        </StackPanel>
+                        </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

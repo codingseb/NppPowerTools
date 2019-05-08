@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace NppPowerTools.PluginInfrastructure
@@ -256,6 +257,12 @@ namespace NppPowerTools.PluginInfrastructure
             Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETCURRENTLANGTYPE, Unused, out int language);
             return (LangType)language;
 		}
+
+        public ShortcutKey GetShortcutByCommandId(int commandId)
+        {
+            Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETSHORTCUTBYCMDID, new IntPtr(commandId), out IntPtr outVal);
+            return Marshal.PtrToStructure<ShortcutKey>(outVal);
+        }
 
         public void SetPluginMenuChecked(int id, bool check)
         {

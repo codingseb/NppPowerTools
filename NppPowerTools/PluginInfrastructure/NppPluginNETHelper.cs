@@ -45,6 +45,12 @@ namespace NppPowerTools.PluginInfrastructure
         public bool IsShift { get { return _isShift != 0; } }
         public bool IsAlt { get { return _isAlt != 0; } }
         public Keys Key { get { return (Keys)_key; } }
+        public string AsText { get => Key == Keys.None ? null : (IsCtrl ? "Ctrl+" : string.Empty) + (IsAlt ? "Alt+" : string.Empty) + (IsShift ? "Shift+" : string.Empty) + Key.ToString(); }
+
+        public override string ToString()
+        {
+            return AsText;
+        }
 
         public byte _isCtrl;
         public byte _isAlt;
