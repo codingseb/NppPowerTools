@@ -71,6 +71,14 @@ namespace NppPowerTools
                             CommandFindViewModel.Instance.FindSelectionStart = CommandFindViewModel.Instance.Find.Length;
                         }
                     })
+                    .Append(new NPTCommand()
+                    {
+                        Name = "[@TestLanguage]",
+                        CommandAction = win =>
+                        {
+                            BNpp.NotepadPP.SetCurrentLanguage("asp");
+                        }
+                    })
                     .ToList();
             }
             catch { }
@@ -168,6 +176,7 @@ namespace NppPowerTools
                 CreateLangCommand("Tektronix extended HEX", LangType.L_TEKTRONIXEXTENDEDHEX),
                 CreateLangCommand("TeX", LangType.L_TEX),
                 CreateLangCommand("txt2tags", LangType.L_TXT2TAGS),
+                CreateLangCommand("User Language", LangType.L_USER),
                 CreateLangCommand("Verilog", LangType.L_VERILOG),
                 CreateLangCommand("VHDL", LangType.L_VHDL),
                 CreateLangCommand("Visual Basic", LangType.L_VB),

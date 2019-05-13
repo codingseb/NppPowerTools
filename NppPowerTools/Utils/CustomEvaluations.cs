@@ -40,7 +40,6 @@ namespace NppPowerTools.Utils
             ExcelEvaluation.Instance,
         };
 
-
         public static string Print { get; set; }
 
         public static void EvaluatorInit(ExpressionEvaluator evaluator)
@@ -89,7 +88,7 @@ namespace NppPowerTools.Utils
             }
             else if (e.This is LangType langType && e.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
             {
-                e.Value = NPTCommands.Languages.Find(c => c.ResultOrInfoSup is LangType tmplangType && tmplangType == langType).Name;
+                e.Value = NPTCommands.Languages.Find(c => c.ResultOrInfoSup is LangType tmplangType && tmplangType == langType)?.Name ?? "No Name";
             }
             else
             {

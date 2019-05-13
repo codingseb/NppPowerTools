@@ -246,6 +246,15 @@ namespace NppPowerTools.PluginInfrastructure
             return this;
 		}
 
+        public unsafe NotepadPPGateway SetCurrentLanguage(string language)
+        {
+            fixed (byte* languagePtr = Encoding.UTF8.GetBytes(language))
+            {
+                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_SETCURRENTLANGTYPE, Unused, (IntPtr)languagePtr);
+            }
+            return this;
+        }
+
         public NotepadPPGateway SetCurrentLanguage(int language)
 		{
             Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_SETCURRENTLANGTYPE, Unused, language);
