@@ -18,8 +18,6 @@ namespace NppPowerTools.Utils
 
         internal static void Process(bool isScript, string script = null,  Action<object> setResult = null, bool forceErrorInOutput = false)
         {
-            setResult = setResult ?? Config.Instance.CurrentResultOut.SetResult;
-
             if (!Config.Instance.KeepVariablesBetweenEvaluations)
                 LastVariables = new Dictionary<string, object>();
 
@@ -68,6 +66,8 @@ namespace NppPowerTools.Utils
                     if(setResult == null)
                         scintilla.SetSel(new Position(start), new Position(end));
                 }
+
+                setResult = setResult ?? Config.Instance.CurrentResultOut.SetResult;
 
                 script = script ?? BNpp.SelectedText;
 

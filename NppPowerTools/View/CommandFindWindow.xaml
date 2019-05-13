@@ -48,20 +48,20 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:NPTCommand}" >
                         <DockPanel Margin="5" ToolTip="{Binding Name}">
-                            <TextBlock DockPanel.Dock="Left" b:TextBlockExtensions.BindableInlines="{Binding Inlines}"/>
-                            <Border Margin="10,0"
+                            <!--<Border Margin="10,0"
                                     Visibility="{Binding Shortcut, Converter={local:NullToVisibilityConverter}}"
                                     Padding="5,1"
                                     DockPanel.Dock="Right"
                                     Background="LightGray"
                                     CornerRadius="4">
                                 <TextBlock  Text="{Binding Shortcut}" />
-                            </Border>
+                            </Border>-->
                             <TextBlock DockPanel.Dock="Bottom"
                                        Text="{Binding ResultOrInfoSup}"
                                        FontWeight="Bold"
                                        Foreground="{Binding ResultOrInfoSup, Converter={local:ResultToBrushConverter}}"
                                        Visibility="{Binding ResultOrInfoSup, Converter={local:NullToVisibilityConverter}}"/>
+                            <TextBlock b:TextBlockExtensions.BindableInlines="{Binding Inlines}"/>
                         </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

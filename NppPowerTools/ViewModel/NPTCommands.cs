@@ -71,16 +71,6 @@ namespace NppPowerTools
                             CommandFindViewModel.Instance.FindSelectionStart = CommandFindViewModel.Instance.Find.Length;
                         }
                     })
-                    .Append(new NPTCommand()
-                    {
-                        Name = "[@GetCurrentLanguage]",
-                        CommandAction = win =>
-                        {
-                            string lang = BNpp.NotepadPP.GetCurrentLanguage().ToString();
-                            BNpp.Text = lang;
-                            win.Close();
-                        }
-                    })
                     .ToList();
             }
             catch { }
@@ -91,6 +81,7 @@ namespace NppPowerTools
             NPTCommand CreateLangCommand(string name, LangType langType) => new NPTCommand()
             {
                 Name = name,
+                ResultOrInfoSup = langType,
                 CommandAction = win =>
                 {
                     BNpp.NotepadPP.SetCurrentLanguage(langType);

@@ -1,5 +1,7 @@
-﻿using NppPowerTools.Utils;
+﻿using NppPowerTools.PluginInfrastructure;
+using NppPowerTools.Utils;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace NppPowerTools
@@ -61,7 +63,20 @@ namespace NppPowerTools
                 else
                 {
                     SelectionIndex = 0;
-                    return NPTCommands.Commands.RegexFilterCommands(filter);
+                    return NPTCommands.Commands
+                        .ToList()
+                        .Append(new NPTCommand()
+                        {
+                            Name = "[@GetCurrentLanguage]",
+                            ResultOrInfoSup = "[" + BNpp.NotepadPP.GetCurrentLanguage().ToString() + "] : " + NPTCommands.Languages.Find(c => c.ResultOrInfoSup is LangType tmplangType && tmplangType == BNpp.NotepadPP.GetCurrentLanguage())?.Name,
+                            CommandAction = win =>
+                            {
+                                BNpp.Text = BNpp.NotepadPP.GetCurrentLanguage().ToString();
+                                win.Close();
+                            }
+                        })
+                        .ToList()
+                        .RegexFilterCommands(filter);
                 }
             }
 

@@ -1,4 +1,5 @@
 ﻿using CodingSeb.ExpressionEvaluator;
+using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils.Evaluations;
 using System;
 using System.Collections.Generic;
@@ -77,10 +78,18 @@ namespace NppPowerTools.Utils
             {
                 e.Value = Guid.NewGuid().ToString();
             }
-            else if(e.Name.Equals("props", StringComparison.OrdinalIgnoreCase) && e.This != null)
+            else if (e.Name.Equals("props", StringComparison.OrdinalIgnoreCase) && e.This != null)
             {
                 ShowPropertiesViewModel.Instance.ShowPropertiesWindow(e.This);
                 e.Value = e.This;
+            }
+            else if (new string[] { "getcurrentlanguage","currentlanguage", "currentlang", "curlang", "clang", "cl" }.Contains(e.Name.ToLower()))
+            {
+                e.Value = BNpp.NotepadPP.GetCurrentLanguage();
+            }
+            else if (e.This is LangType langType && e.Name.Equals("name", StringComparison.OrdinalIgnoreCase))
+            {
+                e.Value = NPTCommands.Languages.Find(c => c.ResultOrInfoSup is LangType tmplangType && tmplangType == langType).Name;
             }
             else
             {
