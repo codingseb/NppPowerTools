@@ -68,27 +68,27 @@ namespace NppPowerTools.Utils
             },
         };
 
-        public int CurrentResultOutIndex { get; set; } = 0;
+        public int CurrentResultOutIndex { get; set; }
 
         public string TextWhenResultIsNull { get; set; } = string.Empty;
 
-        public bool OptionForceIntegerNumbersEvaluationsAsDoubleByDefault { get; set; } = false;
+        public bool OptionForceIntegerNumbersEvaluationsAsDoubleByDefault { get; set; }
 
         public bool CaseSensitive { get; set; } = true;
 
-        public bool KeepVariablesBetweenEvaluations { get; set; } = false;
+        public bool KeepVariablesBetweenEvaluations { get; set; }
 
-        public bool ReverseSortingInResultsWindow { get; set; } = false;
+        public bool ReverseSortingInResultsWindow { get; set; }
 
-        public bool UseProxy { get; set; } = false;
+        public bool UseProxy { get; set; }
 
-        public bool UseDefaultProxy { get; set; } = false;
+        public bool UseDefaultProxy { get; set; }
 
         public string ProxyAddress { get; set; } = string.Empty;
 
-        public int? ProxyPort { get; set; } = null;
+        public int? ProxyPort { get; set; }
 
-        public bool ProxyBypassOnLocal { get; set; } = false;
+        public bool ProxyBypassOnLocal { get; set; }
 
         public string ProxyBypassList { get; set; } = string.Empty;
 
