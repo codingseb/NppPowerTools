@@ -34,7 +34,7 @@ namespace NppPowerTools.Utils.Evaluations
             else if((excelSheetVariableMatch = excelSheetVariableRegex.Match(e.Name)).Success && (e.This is ExcelPackage || e.This is ExcelWorkbook))
             {
                 ExcelWorkbook excelWorkbook = (e.This as ExcelWorkbook) ?? (e.This as ExcelPackage)?.Workbook;
-
+                
                 if (excelSheetVariableMatch.Groups["index"].Success)
                     e.Value = excelWorkbook.Worksheets[int.Parse(excelSheetVariableMatch.Groups["index"].Value)];
                 else
