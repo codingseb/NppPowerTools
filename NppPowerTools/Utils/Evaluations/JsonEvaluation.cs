@@ -9,6 +9,10 @@ namespace NppPowerTools.Utils.Evaluations
         {
             if (e.Name.Equals("json", System.StringComparison.OrdinalIgnoreCase) && e.This != null)
             {
+                e.Value = JsonConvert.SerializeObject(e.This);
+            }
+            if (e.Name.Equals("jsoni", System.StringComparison.OrdinalIgnoreCase) && e.This != null)
+            {
                 e.Value = JsonConvert.SerializeObject(e.This, Formatting.Indented);
             }
             else if ((e.Name.Equals("ujson", System.StringComparison.OrdinalIgnoreCase)

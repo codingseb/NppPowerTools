@@ -20,7 +20,7 @@ namespace NppPowerTools.Utils
             ExcelEvaluation.Instance,
             IniEvaluation.Instance,
             ClipboardEvaluation.Instance,
-            new SystemCommands(),
+            new IpConfigCommands(),
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>

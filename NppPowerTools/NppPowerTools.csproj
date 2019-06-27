@@ -141,6 +141,7 @@
     <Compile Include="Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Converter\ResultToBrushConverter.cs" />
     <Compile Include="Converter\StringToNullableIntConverter.cs" />
+    <Compile Include="Converter\ToJsonConverter.cs" />
     <Compile Include="PluginInfrastructure\ClikeStringArray.cs" />
     <Compile Include="PluginInfrastructure\DllExport\DllExportAttribute.cs" />
     <Compile Include="PluginInfrastructure\Win32.cs" />

@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class SystemCommands : IVariableEvaluation
+    public class IpConfigCommands : IVariableEvaluation
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
@@ -15,23 +15,57 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 e.Value = IpConfig();
             }
-            else if(e.Name.Equals("ipwifi", StringComparison.OrdinalIgnoreCase))
-            {
-                e.Value = Regex.Match(IpConfig(),
-                    @"Carte\s+réseau\s+sans\s+fil\s+Wi-Fi.*$(\s*(?!Carte)(^(\s*(?<ipv4>A.*IPv4.*\s(?<ip>(\d+\.){3}\d+).*)|.*)$))+",
-                    RegexOptions.Multiline | RegexOptions.IgnoreCase)
-                    .Groups["ip"].Value;
-            }
             else if (e.Name.Equals("ips", StringComparison.OrdinalIgnoreCase))
             {
-                e.Value =string.Join("\r\n", Regex.Matches(IpConfig(),
+                e.Value = string.Join("\r\n", Regex.Matches(IpConfig(),
                     @"(?<name>Carte.*?)$(\s*(?!Carte)(^(\s*(?<ipv4>A.*IPv4.*\s(?<ip>(\d+\.){3}\d+).*)|.*)$))+",
                     RegexOptions.Multiline | RegexOptions.IgnoreCase)
                     .Cast<Match>()
                     .Where(match => match.Groups["ip"].Success)
                     .Select(match => match.Groups["name"].Value.Trim() + "\r\n" + match.Groups["ip"].Value));
             }
+            else if (e.Name.Equals("jips", StringComparison.OrdinalIgnoreCase))
+            {
+                e.Value = string.Join("\r\n", Regex.Matches(IpConfig(),
+                    @"(?<name>Carte.*?)$(\s*(?!Carte)(^(\s*(?<ipv4>A.*IPv4.*\s(?<ip>(\d+\.){3}\d+).*)|.*)$))+",
+                    RegexOptions.Multiline | RegexOptions.IgnoreCase)
+                    .Cast<Match>()
+                    .Where(match => match.Groups["ip"].Success)
+                    .Select(match => match.Groups["ip"].Value));
+            }
+            else if(e.Name.StartsWith("ip_", StringComparison.OrdinalIgnoreCase))
+            {
+                string find = Regex.Replace(e.Name.Substring(3), ".", "(.*?)$&");
 
+                e.Value = string.Join("\r\n", Regex.Matches(IpConfig(),
+                    @"(?<name>Carte\s+find.*?)$(\s*(?!Carte)(^(\s*(?<ipv4>A.*IPv4.*\s(?<ip>(\d+\.){3}\d+).*)|.*)$))+".Replace("find", find),
+                    RegexOptions.Multiline | RegexOptions.IgnoreCase)
+                    .Cast<Match>()
+                    .Where(match => match.Groups["ip"].Success)
+                    .Select(match => match.Groups["name"].Value.Trim() + "\r\n" + match.Groups["ip"].Value));
+            }
+            else if(e.Name.StartsWith("jip_", StringComparison.OrdinalIgnoreCase))
+            {
+                string find = Regex.Replace(e.Name.Substring(4), ".", "(.*?)$&");
+
+                e.Value = string.Join("\r\n", Regex.Matches(IpConfig(),
+                    @"(?<name>Carte\s+find.*?)$(\s*(?!Carte)(^(\s*(?<ipv4>A.*IPv4.*\s(?<ip>(\d+\.){3}\d+).*)|.*)$))+".Replace("find", find),
+                    RegexOptions.Multiline | RegexOptions.IgnoreCase)
+                    .Cast<Match>()
+                    .Where(match => match.Groups["ip"].Success)
+                    .Select(match => match.Groups["ip"].Value));
+            }
+            else if(e.Name.StartsWith("aip_", StringComparison.OrdinalIgnoreCase))
+            {
+                string find = Regex.Replace(e.Name.Substring(4), ".", "(.*?)$&");
+
+                e.Value = string.Join("\r\n", Regex.Matches(IpConfig(),
+                    @"(?<name>Carte\s+find.*?)$(\s*(?!Carte)(^(\s*(?<ipv4>A.*IPv4.*\s(?<ip>(\d+\.){3}\d+).*)|.*)$))+".Replace("find", find),
+                    RegexOptions.Multiline | RegexOptions.IgnoreCase)
+                    .Cast<Match>()
+                    .Where(match => match.Groups["ip"].Success)
+                    .Select(match => match.Value));
+            }
 
             return e.HasValue;
         }
