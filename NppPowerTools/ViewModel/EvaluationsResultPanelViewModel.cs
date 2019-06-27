@@ -10,7 +10,7 @@ using System.Windows.Interop;
 
 namespace NppPowerTools
 {
-    public class EvaluationsResultPanelViewModel : ViewModelBase
+    public sealed class EvaluationsResultPanelViewModel : ViewModelBase
     {
         private Window resultWindow = null;
 

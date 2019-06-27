@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class JsonEvaluation : IVariableEvaluation, IFunctionEvaluation
+    public sealed class JsonEvaluation : IVariableEvaluation, IFunctionEvaluation
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {

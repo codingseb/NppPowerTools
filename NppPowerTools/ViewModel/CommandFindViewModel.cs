@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools
 {
-    public class CommandFindViewModel : ViewModelBase
+    public sealed class CommandFindViewModel : ViewModelBase
     {
         private static readonly Regex expressionEvalRegex = new Regex("^:(?<expression>.*)$", RegexOptions.Compiled);
 

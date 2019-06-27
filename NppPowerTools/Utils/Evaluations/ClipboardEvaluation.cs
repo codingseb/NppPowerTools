@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class ClipboardEvaluation : IVariableEvaluation, IFunctionEvaluation
+    public sealed class ClipboardEvaluation : IVariableEvaluation, IFunctionEvaluation
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {

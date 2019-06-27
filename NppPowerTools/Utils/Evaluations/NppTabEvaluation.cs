@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class NppAccessEvaluation : IVariableEvaluation, IFunctionEvaluation
+    public sealed class NppAccessEvaluation : IVariableEvaluation, IFunctionEvaluation
     {
         private static readonly Regex tabVarRegex = new Regex(@"^tab(?<pos>(?<tabIndex>\d+)|(?<all>all)|(?<count>count|c))?(?<fileName>filename|fn|f|n)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex tabFuncRegex = new Regex("^tab((?<tabIndex>index|i)|(?<fileName>filename|fn|f|n))?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);

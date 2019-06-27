@@ -6,7 +6,7 @@ using System.Windows.Interop;
 
 namespace NppPowerTools
 {
-    public class ShowPropertiesViewModel
+    public sealed class ShowPropertiesViewModel
     {
         private Window propertiesWindow = null;
 

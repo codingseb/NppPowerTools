@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class ExcelEvaluation : IFunctionEvaluation, IVariableEvaluation, IEvaluatorInitializator
+    public sealed class ExcelEvaluation : IFunctionEvaluation, IVariableEvaluation, IEvaluatorInitializator
     {
         private static Regex excelSheetVariableRegex = new Regex(@"^(sheet[s]?|sh)(?<index>\d+)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
