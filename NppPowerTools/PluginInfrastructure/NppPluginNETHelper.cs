@@ -115,7 +115,10 @@ namespace NppPowerTools.PluginInfrastructure
                 Marshal.StructureToPtr(funcItem._pShKey, newShortCutKey, false);
                 Marshal.WriteIntPtr(ptrPosNewItem, newShortCutKey);
             }
-            else Marshal.WriteIntPtr(ptrPosNewItem, IntPtr.Zero);
+            else
+            {
+                Marshal.WriteIntPtr(ptrPosNewItem, IntPtr.Zero);
+            }
 
             _nativePointer = newPointer;
         }

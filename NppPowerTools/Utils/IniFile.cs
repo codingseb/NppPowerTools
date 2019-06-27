@@ -511,9 +511,15 @@ namespace NppPowerTools.Utils
                             ListSections.Insert(index, section);                // Insere dans la liste
                         else ListSections.Add(section);                         // Insere en fin de liste
                     }
-                    else ListSections.Add(section);                             // Insere en fin de liste
+                    else
+                    {
+                        ListSections.Add(section);                             // Insere en fin de liste
+                    }
                 }
-                else ListSections.Insert(0, section);                           // Insere en debut de liste
+                else
+                {
+                    ListSections.Insert(0, section);                           // Insere en debut de liste
+                }
             }
         }
 
@@ -668,7 +674,9 @@ namespace NppPowerTools.Utils
                     return defaut.ToString();
                 }
                 else
+                {
                     return val;
+                }
             }
             else
             {
@@ -2466,7 +2474,9 @@ namespace NppPowerTools.Utils
         {
             Dictionary<string, string> resultDict;
             if (!Sections.ContainsKey(section))
+            {
                 resultDict = new Dictionary<string, string>();
+            }
             else
             {
                 Section currentSection = Sections[section] as Section;
@@ -2516,7 +2526,9 @@ namespace NppPowerTools.Utils
                 string result = quotedText;
 
                 if (result.Equals(" "))
+                {
                     IsQuoted[key] = true;
+                }
                 else
                 {
                     while (result.EndsWith(" ") || result.EndsWith("\t"))
@@ -2547,8 +2559,9 @@ namespace NppPowerTools.Utils
                             IsQuoted[key] = false;
                     }
                     else if (result.Contains(";"))
+                    {
                         IsQuoted[key] = true;
-
+                    }
                 }
 
                 return result;
@@ -2633,7 +2646,9 @@ namespace NppPowerTools.Utils
                 get
                 {
                     if (keys.ContainsKey(key))
+                    {
                         return keys[key];
+                    }
                     else
                     {
                         SetKey(key, "");

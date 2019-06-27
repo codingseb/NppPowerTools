@@ -30,18 +30,22 @@ namespace NppPowerTools.Utils.Evaluations
             Match excelSheetVariableMatch;
 
             if ((e.Name.Equals("book", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("b", StringComparison.OrdinalIgnoreCase)) && e.This is ExcelPackage pack4Book)
+            {
                 e.Value = pack4Book.Workbook;
-            else if((excelSheetVariableMatch = excelSheetVariableRegex.Match(e.Name)).Success && (e.This is ExcelPackage || e.This is ExcelWorkbook))
+            }
+            else if ((excelSheetVariableMatch = excelSheetVariableRegex.Match(e.Name)).Success && (e.This is ExcelPackage || e.This is ExcelWorkbook))
             {
                 ExcelWorkbook excelWorkbook = (e.This as ExcelWorkbook) ?? (e.This as ExcelPackage)?.Workbook;
-                
+
                 if (excelSheetVariableMatch.Groups["index"].Success)
                     e.Value = excelWorkbook.Worksheets[int.Parse(excelSheetVariableMatch.Groups["index"].Value)];
                 else
                     e.Value = excelWorkbook.Worksheets;
             }
             else
+            {
                 return false;
+            }
 
             return true;
         }

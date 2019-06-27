@@ -60,7 +60,9 @@ namespace NppPowerTools.Utils
                 return Color.FromArgb(int.Parse(tmp, System.Globalization.NumberStyles.HexNumber));
             }
             else
+            {
                 return Color.FromName(tmp);
+            }
         }
 
         public static string GetNameOrHexString(this System.Windows.Media.Color color)

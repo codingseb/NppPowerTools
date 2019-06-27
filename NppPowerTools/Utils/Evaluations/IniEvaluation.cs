@@ -23,7 +23,9 @@ namespace NppPowerTools.Utils.Evaluations
                     e.Value = inifile;
                 }
                 else
+                {
                     e.Value = new IniFile(e.EvaluateArg<string>(0));
+                }
             }
             else if ((e.Name.Equals("gv", StringComparison.OrdinalIgnoreCase)
                 || e.Name.Equals("v", StringComparison.OrdinalIgnoreCase)) && e.This is IniFile inifile)

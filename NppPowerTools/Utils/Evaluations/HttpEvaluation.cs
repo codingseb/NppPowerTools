@@ -84,10 +84,14 @@ namespace NppPowerTools.Utils.Evaluations
                             e.Value = new Bitmap(response.Content.ReadAsStreamAsync().Result);
                         }
                         else
+                        {
                             e.Value = (object)response.Content.ReadAsStringAsync().Result;
+                        }
                     }
                     else
+                    {
                         e.Value = response;
+                    }
                 }
                 catch (Exception exception)
                 {
