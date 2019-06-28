@@ -122,6 +122,19 @@ namespace NppPowerTools.Utils
                 else if (e.Args.Count == 1 && e.This != null)
                     e.Value = Enumerable.Repeat(e.This, (int)e.EvaluateArg(1));
             }
+            else if (e.This is string text && e.Name.Equals("Split"))
+            {
+                object[] args = e.EvaluateArgs();
+
+                if(args.All(o => o is char))
+                {
+                    e.Value = text.Split(args.Cast<char>().ToArray());
+                }
+                else if(args.All(o => o is string))
+                {
+                    e.Value = text.Split(args.Cast<string>().ToArray(), StringSplitOptions.None);
+                }
+            }
             else
             {
                 functionsEvaluations.Find(eval => eval.TryEvaluate(sender, e));
