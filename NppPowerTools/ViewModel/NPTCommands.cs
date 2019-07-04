@@ -1,4 +1,5 @@
-﻿using NppPowerTools.PluginInfrastructure;
+﻿using Newtonsoft.Json.Linq;
+using NppPowerTools.PluginInfrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,7 @@ namespace NppPowerTools
     {
         private static readonly Regex charRegex = new Regex(".", RegexOptions.Compiled);
 
-        private static string currentNativeLangPath = Path.Combine(
+        private static readonly string currentNativeLangPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "Notepad++",
             "nativeLang.xml");
@@ -65,7 +66,7 @@ namespace NppPowerTools
                     .Append(new NPTCommand()
                     {
                         Name = root.GetEntry("language") + "-> [@SetLanguage]",
-                        CommandAction = win =>
+                        CommandAction = _ =>
                         {
                             CommandFindViewModel.Instance.Find = "@SetLanguage ";
                             CommandFindViewModel.Instance.FindSelectionStart = CommandFindViewModel.Instance.Find.Length;
@@ -73,10 +74,39 @@ namespace NppPowerTools
                     })
                     .Append(new NPTCommand()
                     {
-                        Name = "[@TestLanguage]",
+                        Name = "[@JsonPath] Get the Json path of the current cursor location",
                         CommandAction = win =>
                         {
-                            BNpp.NotepadPP.SetCurrentLanguage("asp");
+                            try
+                            {
+                                int currentLine = BNpp.Scintilla.GetCurrentLineNumber();
+                                string line = BNpp.GetLineText(currentLine + 1);
+                                string text = BNpp.Text.Substring(0, BNpp.Scintilla.GetLineEndPosition(currentLine));
+
+                                int nbrOfClosingNeeded = (line.TakeWhile(c => c == ' ').Count() / 2) + 1;
+
+                                for (int i = 0; i < nbrOfClosingNeeded; i++)
+                                {
+                                    text += "}";
+                                }
+
+                                JObject jroot = JObject.Parse(text);
+
+                                var last = jroot.Last;
+
+                                while (last.HasValues)
+                                    last = last.Last;
+
+                                BNpp.NotepadPP.FileNew();
+
+                                BNpp.Text = last.Path;
+                            }
+                            catch(Exception exception)
+                            {
+                                MessageBox.Show($"{exception}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+
+                            win.Close();
                         }
                     })
                     .ToList();
@@ -144,7 +174,7 @@ namespace NppPowerTools
                 CreateLangCommand("Matlab", LangType.L_MATLAB),
                 CreateLangCommand("MMIXAL", LangType.L_MMIXAL),
                 CreateLangCommand("MMIXAL", LangType.L_MMIXAL),
-                CreateLangCommand("MS-DOS Style", LangType.L_ASCII),               
+                CreateLangCommand("MS-DOS Style", LangType.L_ASCII),
                 CreateLangCommand("Nimrod", LangType.L_NIMROD),
                 CreateLangCommand("Nncrontab", LangType.L_NNCRONTAB),
                 CreateLangCommand("Normal Text", LangType.L_TEXT),
@@ -183,7 +213,6 @@ namespace NppPowerTools
                 CreateLangCommand("Visual Prolog", LangType.L_VPROLOG),
                 CreateLangCommand("XML", LangType.L_XML),
                 CreateLangCommand("YAML", LangType.L_YAML)
-
             };
         }
 
