@@ -59,8 +59,9 @@
                         <CheckBox Grid.ColumnSpan="2"
                               Content="Show exception in out_put"
                               IsChecked="{Binding ShowExceptionInOutput}" />
-                        <Label Content="Histor_y Count" />
-                        <TextBox Text="{Binding NbrOfLastScriptToKeep}" />
+                        <Label Content="Histor_y Count"
+                               Target="{Binding ElementName=NbrOfLastScriptToKeepTextBox}"/>
+                        <TextBox x:Name="NbrOfLastScriptToKeepTextBox" Text="{Binding NbrOfLastScriptToKeep, UpdateSourceTrigger=PropertyChanged}" />
                     </st:AutoGrid>
                     <Button Content="Clea_r History" Click="ClearHistory_Button_Click" />
                 </st:StackPanel>
