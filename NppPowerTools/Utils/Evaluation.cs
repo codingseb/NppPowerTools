@@ -71,6 +71,8 @@ namespace NppPowerTools.Utils
 
                 script = script ?? BNpp.SelectedText;
 
+                Config.Instance.LastScript = script;
+
                 object result = isScript ? evaluator.ScriptEvaluate(evaluator.RemoveComments(script.TrimEnd(';', ' ', '\t', '\r', '\n') + ";")) : evaluator.Evaluate(script.TrimEnd(';'));
 
                 setResult(result);

@@ -68,6 +68,10 @@ namespace NppPowerTools.Utils
             },
         };
 
+        public string LastScript { get; set; }
+
+        public bool CommandSmartSearch { get; set; } = true;
+
         public int CurrentResultOutIndex { get; set; }
 
         public string TextWhenResultIsNull { get; set; } = string.Empty;

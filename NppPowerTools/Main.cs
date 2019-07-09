@@ -1,6 +1,7 @@
 using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils;
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -77,19 +78,37 @@ namespace NppPowerTools
             PluginBase.SetCommand(menuIndex++, "Script Execute", () => Evaluation.Process(true), new ShortcutKey(true, false, true, Keys.E));
             PluginBase.SetCommand(menuIndex++, "---", null);
 
-            outsCommandsIndex = menuIndex;
-
             for (int i = 0; i < Config.Instance.ResultOuts.Count; i++)
             {
                 int value = i;
-                PluginBase.SetCommand(i + outsCommandsIndex,
+                PluginBase.SetCommand(menuIndex++,
                     Config.Instance.ResultOuts[i].Name,
                     () => SetEvaluationOutput(value),
                     new ShortcutKey(false, true, false, Keys.NumPad0 + i),
                     i == Config.Instance.CurrentResultOutIndex);
             }
 
-            menuIndex += Config.Instance.ResultOuts.Count;
+            PluginBase.SetCommand(menuIndex++, "---", null);
+
+            PluginBase.SetCommand(menuIndex++, "Reset to last Script or Expression", () =>
+            {
+                BNpp.Text = Config.Instance.LastScript ?? string.Empty;
+                BNpp.Scintilla.DocumentEnd();
+
+            }, new ShortcutKey(true, false, false, Keys.D0));
+
+            for(int i = 0; i < 9; i++)
+            {
+                int value = i;
+                PluginBase.SetCommand(menuIndex++,
+                    $"Keep {value + 1} line",
+                    () =>
+                    {
+                        BNpp.Text = string.Join("\r\n", BNpp.Text.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).Take(value + 1));
+                        BNpp.Scintilla.DocumentEnd();
+                    },
+                    new ShortcutKey(true, false, false, Keys.D1 + i));
+            }
 
             PluginBase.SetCommand(menuIndex++, "---", null);
             PluginBase.SetCommand(menuIndex++, "Reset variables", () => Evaluation.ResetVariables(), new ShortcutKey(false, true, false, Keys.Delete));
