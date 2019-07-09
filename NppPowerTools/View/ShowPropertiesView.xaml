@@ -9,7 +9,8 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
         <GroupBox Header="Json"
-                  DockPanel.Dock="Bottom">
+                  DockPanel.Dock="Bottom"
+                  MaxHeight="300">
             <TextBox TextWrapping="WrapWithOverflow"
                      Text="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}, Converter={local:ToJsonConverter}}"
                      Background="Transparent"

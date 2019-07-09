@@ -78,11 +78,11 @@ namespace NppPowerTools.Utils
             {
                 e.Value = Guid.NewGuid().ToString();
             }
-            else if (e.Name.Equals("Text") && e.This == null)
+            else if (e.Name.Equals("text", StringComparison.OrdinalIgnoreCase) && e.This == null)
             {
                 e.Value = BNpp.Text;
             }
-            else if (e.Name.Equals("SelectedText") && e.This == null)
+            else if (e.Name.Equals("selectedtext", StringComparison.OrdinalIgnoreCase) && e.This == null)
             {
                 e.Value = BNpp.SelectedText;
             }

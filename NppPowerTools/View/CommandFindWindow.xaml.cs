@@ -103,7 +103,7 @@ namespace NppPowerTools
             }
             else if (e.KeyboardDevice.Modifiers == ModifierKeys.None && e.Key == Key.Enter && CommandsListBox.SelectedValue is NPTCommand command)
             {
-                command.CommandAction?.Invoke(this);
+                command.Execute(this);
                 e.Handled = true;
             }
         }
@@ -112,7 +112,7 @@ namespace NppPowerTools
         {
             if (e.OriginalSource.GetDataContext() is NPTCommand command)
             {
-                command.CommandAction?.Invoke(this);
+                command.Execute(this);
                 e.Handled = true;
             }
         }

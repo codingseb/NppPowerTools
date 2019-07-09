@@ -3,6 +3,7 @@ using NppPowerTools.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace NppPowerTools
 {
@@ -10,7 +11,7 @@ namespace NppPowerTools
     {
         private static readonly Regex expressionEvalRegex = new Regex("^:(?<expression>.*)$", RegexOptions.Compiled);
 
-        CommandFindWindow commandFindWindow = null;
+        CommandFindWindow commandFindWindow;
 
         public string Find { get; set; } = string.Empty;
 
@@ -18,11 +19,11 @@ namespace NppPowerTools
 
         public int FindSelectionLength { get; set; }
 
-        public List<NPTCommand> CommandsList => GetFilteredList(Find);
+        public IEnumerable<NPTCommand> CommandsList => GetFilteredList(Find);
 
         public int SelectionIndex { get; set; }
 
-        public List<NPTCommand> GetFilteredList(string filter)
+        public IEnumerable<NPTCommand> GetFilteredList(string filter)
         {
             if (filter != null)
             {
@@ -63,8 +64,10 @@ namespace NppPowerTools
                 else
                 {
                     SelectionIndex = 0;
-                    return NPTCommands.Commands
-                        .ToList()
+                    return NPTCommands.LastCommands
+                        .Cast<NPTCommand>()
+                        .Reverse()
+                        .Concat(NPTCommands.Commands)
                         .Append(new NPTCommand()
                         {
                             Name = "[@GetCurrentLanguage]",
@@ -75,7 +78,15 @@ namespace NppPowerTools
                                 win.Close();
                             }
                         })
-                        .ToList()
+                        .Append(new NPTCommand()
+                        {
+                            Name = "[@ClearHistory] Clear the commands history",
+                            CommandAction = _ =>
+                            {
+                                NPTCommands.LastCommands.Clear();
+                                Find = string.Empty;
+                            }
+                        })
                         .RegexFilterCommands(filter);
                 }
             }

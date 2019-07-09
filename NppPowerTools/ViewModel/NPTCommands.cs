@@ -25,6 +25,21 @@ namespace NppPowerTools
 
         public static List<NPTCommand> Languages { get; private set; }
 
+        public static List<NPTCommand> LastCommands { get; } = new List<NPTCommand>();
+
+        public static void Execute(this NPTCommand command, Window window)
+        {
+            int index = LastCommands.FindIndex(c => c.Name.Equals(command.Name));
+            if (index > -1)
+                LastCommands.RemoveAt(index);
+            LastCommands.Add(command);
+
+            while (LastCommands.Count >= 10)
+                LastCommands.RemoveAt(0);
+
+            command.CommandAction?.Invoke(window);
+        }
+
         public static void InitCommands()
         {
             try
@@ -101,7 +116,7 @@ namespace NppPowerTools
 
                                 BNpp.Text = last.Path;
                             }
-                            catch(Exception exception)
+                            catch (Exception exception)
                             {
                                 MessageBox.Show($"{exception}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
@@ -116,7 +131,7 @@ namespace NppPowerTools
                         {
                             bool isSelection = BNpp.SelectedText.Length > 0;
 
-                            string text = string.Join("\r\n", (isSelection ? BNpp.SelectedText :BNpp.Text).Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).Reverse());
+                            string text = string.Join("\r\n", (isSelection ? BNpp.SelectedText : BNpp.Text).Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).Reverse());
 
                             if (isSelection)
                                 BNpp.SelectedText = text;
@@ -253,11 +268,11 @@ namespace NppPowerTools
                     else if (subId.IsBetween(21, 23))
                         prefix += root.GetSubEntry("file-recentFiles") + "->";
                 }
-                else if((id - 42000).IsOneOf(18,19,21,25,32) || id == 48016)
+                else if ((id - 42000).IsOneOf(18, 19, 21, 25, 32) || id == 48016)
                 {
                     prefix += root.GetEntry("macro") + "->";
                 }
-                else if(commandId.StartsWith("50"))
+                else if (commandId.StartsWith("50"))
                 {
                     prefix += root.GetEntry("edit") + "->" + root.GetSubEntry("edit-autoCompletion") + "->";
                 }
@@ -273,15 +288,15 @@ namespace NppPowerTools
                         prefix += root.GetSubEntry("edit-indent") + "->";
                     else if (subId.IsOneOf(16, 17) || subId.IsBetween(67, 72))
                         prefix += root.GetSubEntry("edit-convertCaseTo") + "->";
-                    else if (subId.IsBetween(10, 15) ||subId.IsBetween(55, 66) || subId.IsOneOf(77))
+                    else if (subId.IsBetween(10, 15) || subId.IsBetween(55, 66) || subId.IsOneOf(77))
                         prefix += root.GetSubEntry("edit-lineOperations") + "->";
                     else if (subId.IsOneOf(22, 23, 47, 35, 36))
                         prefix += root.GetSubEntry("edit-comment") + "->";
-                    else if (subId.IsBetween(42,46) ||subId.IsOneOf(54,53,24))
+                    else if (subId.IsBetween(42, 46) || subId.IsOneOf(54, 53, 24))
                         prefix += root.GetSubEntry("edit-blankOperations") + "->";
-                    else if (subId.IsBetween(48,50) ||subId.IsOneOf(38,39))
+                    else if (subId.IsBetween(48, 50) || subId.IsOneOf(38, 39))
                         prefix += root.GetSubEntry("edit-pasteSpecial") + "->";
-                    else if (subId.IsBetween(73,76))
+                    else if (subId.IsBetween(73, 76))
                         prefix += root.GetSubEntry("edit-onSelection") + "->";
                 }
                 else if (commandId.StartsWith("43"))
@@ -298,10 +313,10 @@ namespace NppPowerTools
                         prefix += root.GetSubEntry("search-jumpUp") + "->";
                     else if (subId.IsBetween(39, 44))
                         prefix += root.GetSubEntry("search-jumpDown") + "->";
-                    else if (subId.IsBetween(5, 8) || subId.IsBetween(18, 21) ||subId.IsOneOf(50,51))
+                    else if (subId.IsBetween(5, 8) || subId.IsBetween(18, 21) || subId.IsOneOf(50, 51))
                         prefix += root.GetSubEntry("search-bookmark") + "->";
                 }
-                else if(id.IsBetween(10001,10004))
+                else if (id.IsBetween(10001, 10004))
                 {
                     prefix += root.GetEntry("view") + "->" + root.GetSubEntry("view-moveCloneDocument") + "->";
                 }
@@ -313,17 +328,17 @@ namespace NppPowerTools
 
                     //if (subId.IsOneOf())
                     //    prefix += root.GetSubEntry("view-currentFileIn") + "->";
-                    if (subId.IsOneOf(19,20,25,26,41))
+                    if (subId.IsOneOf(19, 20, 25, 26, 41))
                         prefix += root.GetSubEntry("view-showSymbol") + "->";
-                    else if (subId.IsOneOf(23,24,33))
+                    else if (subId.IsOneOf(23, 24, 33))
                         prefix += root.GetSubEntry("view-zoom") + "->";
-                    else if (subId.IsBetween(86,99) && subId != 97)
+                    else if (subId.IsBetween(86, 99) && subId != 97)
                         prefix += root.GetSubEntry("view-tab") + "->";
                     //else if (subId.IsBetween())
                     //    prefix += root.GetSubEntry("view-collapseLevel") + "->";
                     //else if (subId.IsOneOf())
                     //    prefix += root.GetSubEntry("view-uncollapseLevel") + "->";
-                    else if (subId.IsBetween(81,83))
+                    else if (subId.IsBetween(81, 83))
                         prefix += root.GetSubEntry("view-project") + "->";
                 }
                 else if ((id - 45000).IsBetween(4, 13))
@@ -356,45 +371,50 @@ namespace NppPowerTools
         private static string GetEntry(this XmlNode root, string menuId) => root?.SelectSingleNode($"//Native-Langue/Menu/Main/Entries/Item[@menuId='{menuId}']")?.Attributes["name"]?.Value?.Replace("&", string.Empty) ?? string.Empty;
         private static string GetSubEntry(this XmlNode root, string subMenuId) => root?.SelectSingleNode($"//Native-Langue/Menu/Main/SubEntries/Item[@subMenuId='{subMenuId}']")?.Attributes["name"]?.Value?.Replace("&", string.Empty) ?? string.Empty;
 
-        public static List<NPTCommand> RegexFilterCommands(this List<NPTCommand> commands, string filter)
+        public static IEnumerable<NPTCommand> RegexFilterCommands(this IEnumerable<NPTCommand> commands, string filter)
         {
-            Regex findRegex = new Regex(charRegex.Replace(filter, match => "(?<between>[^"+ Regex.Escape(match.Value) +"]*)(?<match>" + Regex.Escape(match.Value) + ")") + "(?<end>.*)", RegexOptions.IgnoreCase);
+            Regex findRegex = new Regex(charRegex.Replace(filter, match => "(?<between>[^" + Regex.Escape(match.Value) + "]*)(?<match>" + Regex.Escape(match.Value) + ")") + "(?<end>.*)", RegexOptions.IgnoreCase);
 
-            return commands?.FindAll(command =>
+            string findId = Guid.NewGuid().ToString();
+
+            return commands?.Where(command =>
             {
-                 Match match = findRegex.Match(command.Name);
+                Match match = findRegex.Match(command.DisplayName);
 
-                 if (match.Success)
-                 {
-                     List<Inline> inlines = new List<Inline>();
+                if (match.Success)
+                {
+                    if (!command.FindId.Equals(findId))
+                    {
+                        List<Inline> inlines = new List<Inline>();
 
-                     string end = match.Groups["end"].Value;
+                        string end = match.Groups["end"].Value;
 
-                     CaptureCollection mcaptures = match.Groups["match"].Captures;
-                     CaptureCollection bcaptures = match.Groups["between"].Captures;
+                        CaptureCollection mcaptures = match.Groups["match"].Captures;
+                        CaptureCollection bcaptures = match.Groups["between"].Captures;
 
-                     for (int i = 0; i < mcaptures.Count; i++)
-                     {
-                        inlines.Add(new Run(bcaptures[i].Value));
-                        inlines.Add(new Span(new Run(mcaptures[i].Value))
-                         {
-                             FontWeight = FontWeights.Bold,
-                             Background = Brushes.Yellow,
-                         });
-                     }
+                        for (int i = 0; i < mcaptures.Count; i++)
+                        {
+                            inlines.Add(new Run(bcaptures[i].Value));
+                            inlines.Add(new Span(new Run(mcaptures[i].Value))
+                            {
+                                FontWeight = FontWeights.Bold,
+                                Background = Brushes.Yellow,
+                            });
+                        }
 
-                    if (!string.IsNullOrEmpty(end))
-                        inlines.Add(new Run(end));
+                        if (!string.IsNullOrEmpty(end))
+                            inlines.Add(new Run(end));
 
-                    command.Inlines = inlines;
+                        command.Inlines = inlines;
+                    }
 
-                     return true;
-                 }
-                 else
-                 {
-                     return false;
-                 }
-             });
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
         }
     }
 }
