@@ -65,7 +65,7 @@ namespace NppPowerTools
                     })
                     .Append(new NPTCommand()
                     {
-                        Name = root.GetEntry("language") + "-> [@SetLanguage]",
+                        Name = root.GetEntry("language") + "-> [@SetLanguage] Set the language for the current tab",
                         CommandAction = _ =>
                         {
                             CommandFindViewModel.Instance.Find = "@SetLanguage ";
@@ -74,7 +74,7 @@ namespace NppPowerTools
                     })
                     .Append(new NPTCommand()
                     {
-                        Name = "[@JsonPath] Get the Json path of the current cursor location",
+                        Name = "[@JsonPath] Get the Json path of the current cursor location and put it in a new tab",
                         CommandAction = win =>
                         {
                             try
@@ -105,6 +105,23 @@ namespace NppPowerTools
                             {
                                 MessageBox.Show($"{exception}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
+
+                            win.Close();
+                        }
+                    })
+                    .Append(new NPTCommand()
+                    {
+                        Name = "[@Reverse] Reverse all lines of the tab or selection",
+                        CommandAction = win =>
+                        {
+                            bool isSelection = BNpp.SelectedText.Length > 0;
+
+                            string text = string.Join("\r\n", (isSelection ? BNpp.SelectedText :BNpp.Text).Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).Reverse());
+
+                            if (isSelection)
+                                BNpp.SelectedText = text;
+                            else
+                                BNpp.Text = text;
 
                             win.Close();
                         }

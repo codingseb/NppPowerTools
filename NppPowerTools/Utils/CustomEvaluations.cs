@@ -78,6 +78,14 @@ namespace NppPowerTools.Utils
             {
                 e.Value = Guid.NewGuid().ToString();
             }
+            else if (e.Name.Equals("Text") && e.This == null)
+            {
+                e.Value = BNpp.Text;
+            }
+            else if (e.Name.Equals("SelectedText") && e.This == null)
+            {
+                e.Value = BNpp.SelectedText;
+            }
             else if (e.Name.Equals("props", StringComparison.OrdinalIgnoreCase) && e.This != null)
             {
                 ShowPropertiesViewModel.Instance.ShowPropertiesWindow(e.This);
