@@ -1,6 +1,7 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using NppPowerTools.PluginInfrastructure;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -71,7 +72,11 @@ namespace NppPowerTools.Utils
 
                 script = script ?? BNpp.SelectedText;
 
-                Config.Instance.LastScript = script;
+                Config.Instance.LastScripts.Insert(0, script);
+                while (Config.Instance.LastScripts.Count > Config.Instance.NbrOfLastScriptToKeep)
+                    Config.Instance.LastScripts.RemoveAt(Config.Instance.LastScripts.Count -1);
+
+                Config.Instance.LastScripts = Config.Instance.LastScripts.Distinct().ToList();
 
                 object result = isScript ? evaluator.ScriptEvaluate(evaluator.RemoveComments(script.TrimEnd(';', ' ', '\t', '\r', '\n') + ";")) : evaluator.Evaluate(script.TrimEnd(';'));
 

@@ -8,7 +8,7 @@ namespace NppPowerTools
 {
     public sealed class CommandFindViewModel : ViewModelBase
     {
-        private static readonly Regex expressionEvalRegex = new Regex("^:(?<expression>.*)$", RegexOptions.Compiled);
+        private static readonly Regex expressionEvalRegex = new Regex("^:(?<histo>:)?(?<expression>.*)$", RegexOptions.Compiled);
 
         CommandFindWindow commandFindWindow;
 
@@ -32,7 +32,22 @@ namespace NppPowerTools
                 {
                     string expression = expressionEvalMatch.Groups["expression"].Value.Trim();
 
-                    if (!string.IsNullOrEmpty(expression))
+                    if(expressionEvalMatch.Groups["histo"].Success)
+                    {
+                        return Config.Instance.LastScripts
+                            .Select(script => new NPTCommand()
+                            {
+                                Name = script,
+                                CommandAction = win =>
+                                {
+                                    BNpp.Text = script;
+                                    BNpp.Scintilla.DocumentEnd();
+                                    win.Close();
+                                }
+                            })
+                            .RegexFilterCommands(filter.Substring(2));
+                    }
+                    else if (!string.IsNullOrEmpty(expression))
                     {
                         NPTCommand expressionCommand = new NPTCommand
                         {
@@ -92,8 +107,6 @@ namespace NppPowerTools
 
             return new List<NPTCommand>();
         }
-
-
 
         #region WindowManagement
 

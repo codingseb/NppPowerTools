@@ -92,9 +92,17 @@ namespace NppPowerTools
 
             PluginBase.SetCommand(menuIndex++, "Reset to last Script or Expression", () =>
             {
-                BNpp.Text = Config.Instance.LastScript ?? string.Empty;
+                BNpp.Text = (Config.Instance.LastScripts.Count > 0 ? Config.Instance.LastScripts[0] : string.Empty);
                 BNpp.Scintilla.DocumentEnd();
 
+            }, new ShortcutKey(true, false, true, Keys.L));
+
+            PluginBase.SetCommand(menuIndex++, "Last Scripts/Expression History", () =>
+            {
+                CommandFindViewModel.Instance.Show();
+                CommandFindViewModel.Instance.Find = "::";
+                CommandFindViewModel.Instance.FindSelectionLength = 0;
+                CommandFindViewModel.Instance.FindSelectionStart = 2;
             }, new ShortcutKey(true, false, false, Keys.D0));
 
             for(int i = 0; i < 9; i++)

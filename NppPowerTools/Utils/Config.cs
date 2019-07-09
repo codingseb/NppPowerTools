@@ -68,7 +68,9 @@ namespace NppPowerTools.Utils
             },
         };
 
-        public string LastScript { get; set; }
+        public List<string> LastScripts { get; set; } = new List<string>();
+
+        public int NbrOfLastScriptToKeep { get; set; } = 100;
 
         public bool CommandSmartSearch { get; set; } = true;
 

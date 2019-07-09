@@ -8,6 +8,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:st="http://schemas.spicytaco.io/"
              mc:Ignorable="d" 
+             PreviewKeyDown="UserControl_PreviewKeyDown"
              DataContext="{x:Static utils:Config.Instance}">
     <UserControl.Resources>
         <Style TargetType="TextBox">
@@ -32,32 +33,37 @@
                 </st:AutoGrid>
             </TabItem>
             <TabItem Header="_Evaluation">
-                <st:AutoGrid Columns="Auto,*" ChildMargin="3">
-                    <Label Content="Executions _outputs"
-                           Target="{Binding ElementName=OutputsComboBox}"/>
-                    <ComboBox x:Name="OutputsComboBox"
-                          ItemsSource="{Binding ResultOuts}"
-                          SelectedIndex="{Binding CompleteCurrentResultOutIndexSelection}"
-                          DisplayMemberPath="Name"/>
-                    <Label Content="Text when result is _null"/>
-                    <TextBox x:Name="TextWhenResultIsNullTextBox"
-                         Text="{Binding TextWhenResultIsNull}" />
-                    <CheckBox Grid.ColumnSpan="2"
-                          Content="_Force integer numbers evaluation as double by default"
-                          IsChecked="{Binding OptionForceIntegerNumbersEvaluationsAsDoubleByDefault}" />
-                    <CheckBox Grid.ColumnSpan="2"
-                          Content="_Case sensitive"
-                          IsChecked="{Binding CaseSensitive}" />
-                    <CheckBox Grid.ColumnSpan="2"
-                          Content="_Keep Variables between evaluations"
-                          IsChecked="{Binding KeepVariablesBetweenEvaluations}" />
-                    <CheckBox Grid.ColumnSpan="2"
-                          Content="Show exception in _MessageBox"
-                          IsChecked="{Binding ShowExceptionInMessageBox}" />
-                    <CheckBox Grid.ColumnSpan="2"
-                          Content="Show exception in out_put"
-                          IsChecked="{Binding ShowExceptionInOutput}" />
-                </st:AutoGrid>
+                <st:StackPanel>
+                    <st:AutoGrid Columns="Auto,*" ChildMargin="3">
+                        <Label Content="Executions _outputs"
+                               Target="{Binding ElementName=OutputsComboBox}"/>
+                        <ComboBox x:Name="OutputsComboBox"
+                              ItemsSource="{Binding ResultOuts}"
+                              SelectedIndex="{Binding CompleteCurrentResultOutIndexSelection}"
+                              DisplayMemberPath="Name"/>
+                        <Label Content="Text when result is _null"/>
+                        <TextBox x:Name="TextWhenResultIsNullTextBox"
+                             Text="{Binding TextWhenResultIsNull}" />
+                        <CheckBox Grid.ColumnSpan="2"
+                              Content="_Force integer numbers evaluation as double by default"
+                              IsChecked="{Binding OptionForceIntegerNumbersEvaluationsAsDoubleByDefault}" />
+                        <CheckBox Grid.ColumnSpan="2"
+                              Content="_Case sensitive"
+                              IsChecked="{Binding CaseSensitive}" />
+                        <CheckBox Grid.ColumnSpan="2"
+                              Content="_Keep Variables between evaluations"
+                              IsChecked="{Binding KeepVariablesBetweenEvaluations}" />
+                        <CheckBox Grid.ColumnSpan="2"
+                              Content="Show exception in _MessageBox"
+                              IsChecked="{Binding ShowExceptionInMessageBox}" />
+                        <CheckBox Grid.ColumnSpan="2"
+                              Content="Show exception in out_put"
+                              IsChecked="{Binding ShowExceptionInOutput}" />
+                        <Label Content="Histor_y Count" />
+                        <TextBox Text="{Binding NbrOfLastScriptToKeep}" />
+                    </st:AutoGrid>
+                    <Button Content="Clea_r History" Click="ClearHistory_Button_Click" />
+                </st:StackPanel>
             </TabItem>
             <TabItem Header="_QR Codes" >
                 <st:AutoGrid Columns="Auto,*" ChildMargin="3">
