@@ -381,32 +381,30 @@ namespace NppPowerTools
             {
                 Match match = findRegex.Match(command.DisplayName);
 
-                if (match.Success)
+                if (match.Success && !command.FindId.Equals(findId))
                 {
-                    if (!command.FindId.Equals(findId))
+                    command.FindId = findId;
+                    List<Inline> inlines = new List<Inline>();
+
+                    string end = match.Groups["end"].Value;
+
+                    CaptureCollection mcaptures = match.Groups["match"].Captures;
+                    CaptureCollection bcaptures = match.Groups["between"].Captures;
+
+                    for (int i = 0; i < mcaptures.Count; i++)
                     {
-                        List<Inline> inlines = new List<Inline>();
-
-                        string end = match.Groups["end"].Value;
-
-                        CaptureCollection mcaptures = match.Groups["match"].Captures;
-                        CaptureCollection bcaptures = match.Groups["between"].Captures;
-
-                        for (int i = 0; i < mcaptures.Count; i++)
+                        inlines.Add(new Run(bcaptures[i].Value));
+                        inlines.Add(new Span(new Run(mcaptures[i].Value))
                         {
-                            inlines.Add(new Run(bcaptures[i].Value));
-                            inlines.Add(new Span(new Run(mcaptures[i].Value))
-                            {
-                                FontWeight = FontWeights.Bold,
-                                Background = Brushes.Yellow,
-                            });
-                        }
-
-                        if (!string.IsNullOrEmpty(end))
-                            inlines.Add(new Run(end));
-
-                        command.Inlines = inlines;
+                            FontWeight = FontWeights.Bold,
+                            Background = Brushes.Yellow,
+                        });
                     }
+
+                    if (!string.IsNullOrEmpty(end))
+                        inlines.Add(new Run(end));
+
+                    command.Inlines = inlines;
 
                     return true;
                 }
