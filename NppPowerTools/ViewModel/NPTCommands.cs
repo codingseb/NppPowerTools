@@ -96,7 +96,7 @@ namespace NppPowerTools
                             {
                                 int currentLine = BNpp.Scintilla.GetCurrentLineNumber();
                                 string line = BNpp.GetLineText(currentLine + 1);
-                                string text = BNpp.Text.Substring(0, BNpp.Scintilla.GetLineEndPosition(currentLine));
+                                string text = BNpp.Scintilla.GetText(BNpp.Scintilla.GetLineEndPosition(currentLine) + 1);
 
                                 int nbrOfClosingNeeded = (line.TakeWhile(c => c == ' ').Count() / 2) + 1;
 
