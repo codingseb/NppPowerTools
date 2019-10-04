@@ -20,12 +20,22 @@ namespace NppPowerTools.Utils
         internal static void Process(bool isScript, string script = null,  Action<object> setResult = null, bool forceErrorInOutput = false)
         {
             if (!Config.Instance.KeepVariablesBetweenEvaluations)
+            {
                 LastVariables = new Dictionary<string, object>();
+            }
+            else if(LastVariables != null)
+            {
+                LastVariables
+                    .ToList()
+                    .FindAll(kvp => kvp.Value is StronglyTypedVariable)
+                    .ForEach(kvp => LastVariables.Remove(kvp.Key));
+            }
 
             ExpressionEvaluator evaluator = new ExpressionEvaluator(LastVariables)
             {
                 OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault,
                 OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive,
+                OptionScriptNeedSemicolonAtTheEndOfLastExpression = false,
             };
 
             evaluator.Namespaces.Add("NppPowerTools");
@@ -78,7 +88,7 @@ namespace NppPowerTools.Utils
 
                 Config.Instance.LastScripts = Config.Instance.LastScripts.Distinct().ToList();
 
-                object result = isScript ? evaluator.ScriptEvaluate(evaluator.RemoveComments(script.TrimEnd(';', ' ', '\t', '\r', '\n') + ";")) : evaluator.Evaluate(script.TrimEnd(';'));
+                object result = isScript ? evaluator.ScriptEvaluate(evaluator.RemoveComments(script)) : evaluator.Evaluate(script.TrimEnd(';'));
 
                 setResult(result);
             }
