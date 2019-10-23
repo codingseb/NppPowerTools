@@ -195,6 +195,7 @@
     <Compile Include="Utils\LoremIpsum.cs" />
     <Compile Include="Utils\ResultOut.cs" />
     <Compile Include="Utils\TreeHelperExtensions.cs" />
+    <Compile Include="Utils\XEval.cs" />
     <Compile Include="ViewModel\CommandFindViewModel.cs" />
     <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />
     <Compile Include="ViewModel\NPTCommand.cs" />

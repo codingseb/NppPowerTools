@@ -31,7 +31,7 @@ namespace NppPowerTools.Utils
                     .ForEach(kvp => LastVariables.Remove(kvp.Key));
             }
 
-            ExpressionEvaluator evaluator = new ExpressionEvaluator(LastVariables)
+            ExpressionEvaluator evaluator = new XEval(LastVariables)
             {
                 OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault,
                 OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive,
