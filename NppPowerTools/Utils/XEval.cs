@@ -11,7 +11,7 @@ namespace NppPowerTools.Utils
     /// </summary>
     public class XEval : ExpressionEvaluator
     {
-        public XEval() : base()
+        public XEval()
         {}
 
         public XEval(IDictionary<string, object> variables) : base(variables)
@@ -51,14 +51,14 @@ namespace NppPowerTools.Utils
                 StandardOutputEncoding = Encoding.GetEncoding(850)
             };
 
-            Process proc = new Process
+            using (Process proc = new Process())
             {
-                StartInfo = procStartInfo
-            };
+                proc.StartInfo = procStartInfo;
 
-            proc.Start();
+                proc.Start();
 
-            return proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
+                return proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
+            }
         }
     }
 }
