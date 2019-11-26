@@ -11,7 +11,13 @@ namespace NppPowerTools.Utils.Evaluations
         {
             if ((e.Name.Equals("stringjoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sjoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", System.StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForJoin)
             {
-                e.Value = string.Join(BNpp.CurrentEOL, enumerableForJoin.Cast<object>());
+                e.Value = string.Join("", enumerableForJoin.Cast<object>());
+
+                return true;
+            }
+            if ((e.Name.Equals("linejoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("ljoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("lj", System.StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForLJoin)
+            {
+                e.Value = string.Join(BNpp.CurrentEOL, enumerableForLJoin.Cast<object>());
 
                 return true;
             }
@@ -27,7 +33,7 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 if (e.This is List<object> list)
                 {
-                    e.Value = string.Join(e.Args.Count > 0 ? e.EvaluateArg<string>(0) : "\r\n", list);
+                    e.Value = string.Join(e.Args.Count > 0 ? e.EvaluateArg<string>(0) : "", list);
                 }
                 else if (e.Args.Count > 1 && e.EvaluateArg(1) is List<object> list2)
                 {
