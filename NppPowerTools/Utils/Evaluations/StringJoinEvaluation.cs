@@ -29,15 +29,15 @@ namespace NppPowerTools.Utils.Evaluations
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
-            if ((e.Name.Equals("stringjoin", System.StringComparison.OrdinalIgnoreCase) ||e.Name.Equals("sjoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", System.StringComparison.OrdinalIgnoreCase)) && (e.This is IEnumerable<object> || (e.Args.Count > 1 && e.EvaluateArg(1) is List<object>)))
+            if ((e.Name.Equals("stringjoin", System.StringComparison.OrdinalIgnoreCase) ||e.Name.Equals("sjoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", System.StringComparison.OrdinalIgnoreCase)) && (e.This is IEnumerable || (e.Args.Count > 1 && e.EvaluateArg(1) is IEnumerable)))
             {
-                if (e.This is List<object> list)
+                if (e.This is IEnumerable enumerable)
                 {
-                    e.Value = string.Join(e.Args.Count > 0 ? e.EvaluateArg<string>(0) : "", list);
+                    e.Value = string.Join(e.Args.Count > 0 ? e.EvaluateArg<string>(0) : "", enumerable.Cast<object>());
                 }
-                else if (e.Args.Count > 1 && e.EvaluateArg(1) is List<object> list2)
+                else if (e.Args.Count > 1 && e.EvaluateArg(1) is IEnumerable enumerable2)
                 {
-                    e.Value = string.Join(e.EvaluateArg<string>(0), list2);
+                    e.Value = string.Join(e.EvaluateArg<string>(0), enumerable2.Cast<object>());
                 }
 
                 return true;
