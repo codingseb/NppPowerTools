@@ -1,6 +1,5 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace NppPowerTools.Utils.Evaluations
