@@ -66,8 +66,8 @@
     <StartProgram Condition="'$(Platform)'=='x86'">$(MSBuildProgramFiles32)\Notepad++\notepad++.exe</StartProgram>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.4.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.4.16\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
+    <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.4.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.4.17\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
     </Reference>
     <Reference Include="ColorPickerWPF, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ColorPickerWPF.1.0.9\lib\net461\ColorPickerWPF.dll</HintPath>
