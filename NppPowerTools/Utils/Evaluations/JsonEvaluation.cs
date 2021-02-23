@@ -16,7 +16,9 @@ namespace NppPowerTools.Utils.Evaluations
                 e.Value = JsonConvert.SerializeObject(e.This, Formatting.Indented);
             }
             else if ((e.Name.Equals("ujson", System.StringComparison.OrdinalIgnoreCase)
-                || e.Name.Equals("unjson", System.StringComparison.OrdinalIgnoreCase)) && e.This is string)
+                || e.Name.Equals("unjson", System.StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("dejson", System.StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("djson", System.StringComparison.OrdinalIgnoreCase)) && e.This is string)
             {
                 e.Value = JsonConvert.DeserializeObject(e.This.ToString());
             }
@@ -27,7 +29,9 @@ namespace NppPowerTools.Utils.Evaluations
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
             if ((e.Name.Equals("ujson", System.StringComparison.OrdinalIgnoreCase)
-                || e.Name.Equals("unjson", System.StringComparison.OrdinalIgnoreCase)) && e.Args.Count > 0)
+                || e.Name.Equals("unjson", System.StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("dejson", System.StringComparison.OrdinalIgnoreCase)
+                || e.Name.Equals("djson", System.StringComparison.OrdinalIgnoreCase)) && e.Args.Count > 0)
             {
                 e.Value = JsonConvert.DeserializeObject(e.EvaluateArg(0).ToString());
             }

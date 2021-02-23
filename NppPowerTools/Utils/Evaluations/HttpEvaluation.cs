@@ -1,14 +1,21 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
     public class HttpEvaluation : IFunctionEvaluation
     {
+        static HttpEvaluation()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+        }
+
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
             if (!(e.Name.StartsWith("http", StringComparison.OrdinalIgnoreCase) && (e.This != null || e.Args.Count > 0)))
@@ -40,7 +47,10 @@ namespace NppPowerTools.Utils.Evaluations
 
             HttpRequestMessage httpRequestMessage = null;
 
-            string url = e.This?.ToString() ?? e.EvaluateArg(0).ToString();
+            List<object> args = e.EvaluateArgs().ToList();
+            string url = e.This?.ToString() ?? args[0].ToString();
+            IDictionary<string, object> config = args.Find(a => a is IDictionary<string, object>) as IDictionary<string, object>;
+            IDictionary<string, object> header = null;
 
             if (e.Name.Equals("httppost", StringComparison.OrdinalIgnoreCase))
             {
@@ -75,6 +85,23 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 try
                 {
+                    if(config != null)
+                    {
+                        config = new Dictionary<string, object>(config, StringComparer.OrdinalIgnoreCase);
+
+                        if (config.ContainsKey("headers"))
+                            header = config["headers"] as IDictionary<string, object>;
+                        else if (config.ContainsKey("header"))
+                            header = config["header"] as IDictionary<string, object>;
+                        else if (config.ContainsKey("head"))
+                            header = config["head"] as IDictionary<string, object>;
+                        else if (config.ContainsKey("h"))
+                            header = config["h"] as IDictionary<string, object>;
+
+                        if(header != null)
+                            header.Keys.ToList().ForEach(key => httpRequestMessage.Headers.Add(key, header[key].ToString()));
+                    }
+
                     HttpResponseMessage response = client.SendAsync(httpRequestMessage).Result;
 
                     if (!e.Args.Last().Trim().Equals("f", StringComparison.OrdinalIgnoreCase))
