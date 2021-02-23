@@ -107,7 +107,7 @@ namespace NppPowerTools
 
                                 JObject jroot = JObject.Parse(text);
 
-                                var last = jroot.Last;
+                                JToken last = jroot.Last;
 
                                 while (last.HasValues)
                                     last = last.Last;
@@ -364,7 +364,6 @@ namespace NppPowerTools
 
             return prefix;
         }
-
 
         private static bool IsOneOf(this int id, params int[] values) => values.Contains(id);
         private static bool IsBetween(this int id, int greaterOrEqual, int smallerOrEqual) => id >= greaterOrEqual && id <= smallerOrEqual;

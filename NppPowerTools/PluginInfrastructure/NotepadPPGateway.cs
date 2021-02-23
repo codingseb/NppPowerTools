@@ -124,7 +124,6 @@ namespace NppPowerTools.PluginInfrastructure
             return this;
         }
 
-
         public NotepadPPGateway ShowTab(string tabPath)
         {
             try
@@ -162,7 +161,7 @@ namespace NppPowerTools.PluginInfrastructure
 
         public string GetTabFileFromPosition(int tabIndex)
         {
-            var id = this.GetBufferIdFromTab(tabIndex);
+            IntPtr id = this.GetBufferIdFromTab(tabIndex);
             return this.GetTabFile(id);
         }
 
@@ -170,12 +169,12 @@ namespace NppPowerTools.PluginInfrastructure
         {
             get
             {
-                var count = this.TabCount;
+                int count = this.TabCount;
 
-                var files = new List<string>();
+                List<string> files = new List<string>();
                 for (int i = 0; i < count; i++)
                 {
-                    var file = this.GetTabFileFromPosition(i);
+                    string file = this.GetTabFileFromPosition(i);
 
                     if (!string.IsNullOrEmpty(file))
                         files.Add(file);
@@ -186,7 +185,7 @@ namespace NppPowerTools.PluginInfrastructure
 
         public string GetTabFile(IntPtr index)
         {
-            var path = new StringBuilder(2000);
+            StringBuilder path = new StringBuilder(2000);
             Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETFULLPATHFROMBUFFERID, index, path);
             return path.ToString();
         }
@@ -198,7 +197,7 @@ namespace NppPowerTools.PluginInfrastructure
 		{
             get
             {
-			var path = new StringBuilder(2000);
+                StringBuilder path = new StringBuilder(2000);
                 Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETPLUGINSCONFIGDIR, path.Capacity, path);
 			return path.ToString();
 		}
@@ -211,7 +210,7 @@ namespace NppPowerTools.PluginInfrastructure
 		{
             get
             {
-			var path = new StringBuilder(2000);
+                StringBuilder path = new StringBuilder(2000);
                 Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETNPPDIRECTORY, path.Capacity, path);
 			return path.ToString();
 		}
@@ -224,7 +223,7 @@ namespace NppPowerTools.PluginInfrastructure
 		{
             get
             {
-                var path = new StringBuilder(2000);
+                StringBuilder path = new StringBuilder(2000);
                 Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETFULLCURRENTPATH, path.Capacity, path);
                 return path.ToString();
 		}
@@ -235,7 +234,7 @@ namespace NppPowerTools.PluginInfrastructure
 	/// </summary>
         public unsafe string GetFilePath(int bufferId)
 	{
-            var path = new StringBuilder(2000);
+            StringBuilder path = new StringBuilder(2000);
             Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_GETFULLPATHFROMBUFFERID, bufferId, path);
             return path.ToString();
         }

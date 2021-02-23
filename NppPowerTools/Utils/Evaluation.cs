@@ -78,9 +78,9 @@ namespace NppPowerTools.Utils
                         scintilla.SetSel(new Position(start), new Position(end));
                 }
 
-                setResult = setResult ?? Config.Instance.CurrentResultOut.SetResult;
+                setResult ??= Config.Instance.CurrentResultOut.SetResult;
 
-                script = script ?? BNpp.SelectedText;
+                script ??= BNpp.SelectedText;
 
                 Config.Instance.LastScripts.Insert(0, script);
                 while (Config.Instance.LastScripts.Count > Config.Instance.NbrOfLastScriptToKeep)
@@ -88,7 +88,7 @@ namespace NppPowerTools.Utils
 
                 Config.Instance.LastScripts = Config.Instance.LastScripts.Distinct().ToList();
 
-                object result = isScript ? evaluator.ScriptEvaluate(evaluator.RemoveComments(script)) : evaluator.Evaluate(script.TrimEnd(';'));
+                object result = isScript ? evaluator.ScriptEvaluate(evaluator.RemoveComments(script)) : evaluator.Evaluate(evaluator.RemoveComments(script.TrimEnd(';')));
 
                 setResult(result);
             }

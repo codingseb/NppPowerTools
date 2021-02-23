@@ -22,7 +22,7 @@ namespace NppPowerTools.Behaviors
 
         private static void OnBindableInlinesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var Target = d as TextBlock;
+            TextBlock Target = d as TextBlock;
 
             if (Target != null)
             {

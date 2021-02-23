@@ -10,7 +10,6 @@ using System.Runtime.InteropServices;
 
 namespace NppPowerTools.PluginInfrastructure
 {
-
     [Flags]
     public enum NppTbMsg : uint
     {
@@ -67,5 +66,4 @@ namespace NppPowerTools.PluginInfrastructure
         public int Right;
         public int Bottom;
     }
-
 }

@@ -32,7 +32,7 @@ namespace System.Windows
             where T : DependencyObject
         {
             // get parent item
-            var parentObject = VisualTreeHelper.GetParent(child);
+            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
 
             // we’ve reached the end of the tree
             if (parentObject == null) return null;
@@ -60,7 +60,7 @@ namespace System.Windows
             where T : DependencyObject
         {
             // get parent item
-            var parentObject = LogicalTreeHelper.GetParent(child);
+            DependencyObject parentObject = LogicalTreeHelper.GetParent(child);
 
             // we’ve reached the end of the tree
             if (parentObject == null) return null;
@@ -87,7 +87,7 @@ namespace System.Windows
             if (node == null) yield break;
             yield return node;
 
-            foreach (var child in LogicalTreeHelper.GetChildren(node).OfType<DependencyObject>()
+            foreach (object child in LogicalTreeHelper.GetChildren(node).OfType<DependencyObject>()
                 .SelectMany(depObj => depObj.LogicalTreeDepthFirstTraversal()))
                 yield return child;
         }
@@ -102,10 +102,10 @@ namespace System.Windows
             if (node == null) yield break;
             yield return node;
 
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(node); i++)
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(node); i++)
             {
-                var child = VisualTreeHelper.GetChild(node, i);
-                foreach (var d in child.VisualTreeDepthFirstTraversal())
+                DependencyObject child = VisualTreeHelper.GetChild(node, i);
+                foreach (object d in child.VisualTreeDepthFirstTraversal())
                 {
                     yield return d;
                 }

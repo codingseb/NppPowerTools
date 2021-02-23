@@ -40,7 +40,7 @@ namespace NppPowerTools.Utils
 
         private string ExecuteCommand(string command)
         {
-            var procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
+            ProcessStartInfo procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -51,14 +51,14 @@ namespace NppPowerTools.Utils
                 StandardOutputEncoding = Encoding.GetEncoding(850)
             };
 
-            using (Process proc = new Process())
+            using Process proc = new Process
             {
-                proc.StartInfo = procStartInfo;
+                StartInfo = procStartInfo
+            };
 
-                proc.Start();
+            proc.Start();
 
-                return proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
-            }
+            return proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
         }
     }
 }

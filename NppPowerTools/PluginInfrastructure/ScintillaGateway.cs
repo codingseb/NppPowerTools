@@ -20,7 +20,6 @@ namespace NppPowerTools.PluginInfrastructure
 
         public static readonly int LengthZeroTerminator = "\0".Length;
 
-
         public ScintillaGateway(IntPtr scintilla)
         {
             this.scintilla = scintilla;
@@ -28,7 +27,7 @@ namespace NppPowerTools.PluginInfrastructure
 
         public int GetSelectionLength()
         {
-            var selectionLength = (int) Win32.SendMessage(scintilla, SciMsg.SCI_GETSELTEXT, Unused, Unused) - LengthZeroTerminator;
+            int selectionLength = (int) Win32.SendMessage(scintilla, SciMsg.SCI_GETSELTEXT, Unused, Unused) - LengthZeroTerminator;
             return selectionLength;
         }
 
@@ -40,7 +39,7 @@ namespace NppPowerTools.PluginInfrastructure
 
         public void InsertTextAndMoveCursor(string text)
         {
-            var currentPos = GetCurrentPos();
+            Position currentPos = GetCurrentPos();
             InsertText(currentPos, text);
             GotoPos(new Position(currentPos.Value + text.Length));
         }
@@ -56,7 +55,7 @@ namespace NppPowerTools.PluginInfrastructure
         /// </summary>
         public void ClearSelectionToCursor()
         {
-            var pos = GetCurrentPos().Value;
+            int pos = GetCurrentPos().Value;
             SetSelection(pos, pos);
         }
 
@@ -87,7 +86,7 @@ namespace NppPowerTools.PluginInfrastructure
         /// <summary>Add text to the document at current position. (Scintilla feature 2001)</summary>
         public unsafe void AddText(string text)
         {
-            var array = Encoding.UTF8.GetBytes(text);
+            byte[] array = Encoding.UTF8.GetBytes(text);
             fixed (byte* textPtr = Encoding.UTF8.GetBytes(text))
             {
                 IntPtr res = Win32.SendMessage(scintilla, SciMsg.SCI_ADDTEXT, array.Length, (IntPtr) textPtr);

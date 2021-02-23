@@ -43,7 +43,7 @@ namespace NppPowerTools.Utils.Evaluations
                 }
             }
 
-            var client = new HttpClient(httpClientHandler);
+            HttpClient client = new HttpClient(httpClientHandler);
 
             HttpRequestMessage httpRequestMessage = null;
 

@@ -62,7 +62,6 @@ namespace NppPowerTools.Utils.Evaluations
             return false;
         }
 
-
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
             Match tabFuncMatch = tabFuncRegex.Match(e.Name);

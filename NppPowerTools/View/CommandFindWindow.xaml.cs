@@ -11,7 +11,6 @@ namespace NppPowerTools
     /// </summary>
     public partial class CommandFindWindow : Window
     {
-
         const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT

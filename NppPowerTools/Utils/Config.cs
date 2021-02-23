@@ -86,8 +86,6 @@ namespace NppPowerTools.Utils
 
         public bool ReverseSortingInResultsWindow { get; set; }
 
-
-
         public bool UseProxy { get; set; }
 
         public bool UseDefaultProxy { get; set; }

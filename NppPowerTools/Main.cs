@@ -62,7 +62,6 @@ namespace NppPowerTools
 
         public static void OnNotification(ScNotification notification)
         {
-
         }
 
         internal static void CommandMenuInit()
@@ -94,7 +93,6 @@ namespace NppPowerTools
             {
                 BNpp.Text = (Config.Instance.LastScripts.Count > 0 ? Config.Instance.LastScripts[0] : string.Empty);
                 BNpp.Scintilla.DocumentEnd();
-
             }, new ShortcutKey(true, false, true, Keys.L));
 
             PluginBase.SetCommand(menuIndex++, "Last Scripts/Expression History", () =>
@@ -125,7 +123,6 @@ namespace NppPowerTools
             PluginBase.SetCommand(menuIndex++, "Options", ShowOptionWindow, new ShortcutKey(true, false, true, Keys.O));
             PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version}\r\nAuthor : CodingSeb", "About"));
         }
-
 
         public static void SetEvaluationOutput(int value)
         {

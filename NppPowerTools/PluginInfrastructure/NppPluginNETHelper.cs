@@ -24,7 +24,7 @@ namespace NppPowerTools.PluginInfrastructure
         public ShortcutKey(string data)
         {
             //Ctrl+Shift+Alt+Key
-            var parts = data.Split('+');
+            string[] parts = data.Split('+');
             _key = Convert.ToByte(Enum.Parse(typeof(Keys), parts.Last()));
             parts = parts.Take(parts.Length - 1).ToArray();
             _isCtrl = Convert.ToByte(parts.Contains("Ctrl"));
@@ -166,13 +166,11 @@ namespace NppPowerTools.PluginInfrastructure
         }
     }
 
-
     public enum winVer
     {
         WV_UNKNOWN, WV_WIN32S, WV_95, WV_98, WV_ME, WV_NT, WV_W2K,
         WV_XP, WV_S2003, WV_XPX64, WV_VISTA, WV_WIN7, WV_WIN8, WV_WIN81, WV_WIN10
     }
-
 
     [Flags]
     public enum DockMgrMsg : uint

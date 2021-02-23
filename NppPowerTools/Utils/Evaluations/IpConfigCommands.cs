@@ -74,7 +74,7 @@ namespace NppPowerTools.Utils.Evaluations
         {
             const string command = "ipconfig /all";
 
-            var procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
+            ProcessStartInfo procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false,

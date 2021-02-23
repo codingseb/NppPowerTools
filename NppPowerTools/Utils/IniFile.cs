@@ -1402,7 +1402,6 @@ namespace NppPowerTools.Utils
                 string res = GetValueWithoutCreating(section, key, sdefaut);
 
                 return (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(res);
-
             }
             catch
             {
@@ -1647,9 +1646,7 @@ namespace NppPowerTools.Utils
                 path = "";
             }
 
-
             return path;
-
         }
 
         /// <summary>
@@ -1692,7 +1689,6 @@ namespace NppPowerTools.Utils
             {
                 path = "";
             }
-
 
             return path;
         }
@@ -1753,7 +1749,6 @@ namespace NppPowerTools.Utils
                 // Si la sauvegarde est annulée.
                 if (tmpEventArg.Cancel)
                     return false;
-
 
                 Monitor.Enter(lockSave);
 
@@ -2048,7 +2043,6 @@ namespace NppPowerTools.Utils
 
             if (oldComment.Equals(""))
             {
-
                 CommentChangingEventArgs tmpArgs = new CommentChangingEventArgs(section, "", oldComment, comment, false);
 
                 OnCommentChanging(tmpArgs);
@@ -2314,7 +2308,6 @@ namespace NppPowerTools.Utils
                             currentCommentOrEmptyLines = "";
                             fileHeaderPossible = false;
                         }
-
                     }
                 }
 
@@ -2416,7 +2409,6 @@ namespace NppPowerTools.Utils
                             currentCommentOrEmptyLines = "";
                             fileHeaderPossible = false;
                         }
-
                     }
                 }
 
@@ -2654,7 +2646,6 @@ namespace NppPowerTools.Utils
                         SetKey(key, "");
                         return "";
                     }
-
                 }
                 set
                 {
@@ -2876,7 +2867,6 @@ namespace NppPowerTools.Utils
             private string newComment;
             private bool cancel = false;
             private bool isCommentBeforeKeyOrSection = false;
-
 
             /// <summary>
             /// Constructeur

@@ -39,23 +39,15 @@ namespace NppPowerTools.Utils.Evaluations
             return e.FunctionReturnedValue;
         }
 
-        private static JsonEvaluation instance = null;
+        #region Singleton          
 
-        public static JsonEvaluation Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new JsonEvaluation();
-                }
+        private static JsonEvaluation instance;
 
-                return instance;
-            }
-        }
+        public static JsonEvaluation Instance => instance ??= new JsonEvaluation();
 
         private JsonEvaluation()
         { }
 
+        #endregion
     }
 }
