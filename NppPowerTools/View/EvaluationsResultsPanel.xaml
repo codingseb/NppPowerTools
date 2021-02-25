@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ex="clr-namespace:System;assembly=mscorlib"
-             xmlns:st="http://schemas.spicytaco.io/"
              xmlns:draw="clr-namespace:System.Drawing;assembly=System.Drawing"
              xmlns:local="clr-namespace:NppPowerTools"
              mc:Ignorable="d" 
@@ -64,7 +63,7 @@
         </local:ResultTemplateSelector>
     </UserControl.Resources>
     <DockPanel>
-        <st:StackPanel DockPanel.Dock="Top"
+        <StackPanelEx DockPanel.Dock="Top"
                        Margin="3"
                        Orientation="Horizontal"
                        MarginBetweenChildren="5">
@@ -73,7 +72,7 @@
             <CheckBox Content="_Reverse sorting" 
                       IsChecked="{Binding ReverseSorting}"
                       VerticalAlignment="Center"/>
-        </st:StackPanel>
+        </StackPanelEx>
         <ListBox Background="White" 
                  ScrollViewer.CanContentScroll="False"
                  ItemsSource="{Binding Results}"
