@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:NppPowerTools"
              xmlns:utils="clr-namespace:NppPowerTools.Utils"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:st="http://schemas.spicytaco.io/"
              mc:Ignorable="d" 
              PreviewKeyDown="UserControl_PreviewKeyDown"
              DataContext="{x:Static utils:Config.Instance}">
@@ -21,7 +20,7 @@
     <DockPanel Margin="5">
         <TabControl>
             <TabItem Header="_Command panel">
-                <st:AutoGrid Columns="Auto,*" ChildMargin="3">
+                <AutoGrid Columns="Auto,*" ChildMargin="3">
                     <Label Content="_Width"
                            Target="{Binding ElementName=CommandPanelWidthTextBox}"/>
                     <TextBox x:Name="CommandPanelWidthTextBox"
@@ -30,11 +29,11 @@
                            Target="{Binding ElementName=CommandPanelHeightTextBox}"/>
                     <TextBox x:Name="CommandPanelHeightTextBox"
                              Text="{Binding CommandPanelHeight, UpdateSourceTrigger=PropertyChanged}"/>
-                </st:AutoGrid>
+                </AutoGrid>
             </TabItem>
             <TabItem Header="_Evaluation">
-                <st:StackPanel>
-                    <st:AutoGrid Columns="Auto,*" ChildMargin="3">
+                <StackPanelEx>
+                    <AutoGrid Columns="Auto,*" ChildMargin="3">
                         <Label Content="Executions _outputs"
                                Target="{Binding ElementName=OutputsComboBox}"/>
                         <ComboBox x:Name="OutputsComboBox"
@@ -62,12 +61,12 @@
                         <Label Content="Histor_y Count"
                                Target="{Binding ElementName=NbrOfLastScriptToKeepTextBox}"/>
                         <TextBox x:Name="NbrOfLastScriptToKeepTextBox" Text="{Binding NbrOfLastScriptToKeep, UpdateSourceTrigger=PropertyChanged}" />
-                    </st:AutoGrid>
+                    </AutoGrid>
                     <Button Content="Clea_r History" Click="ClearHistory_Button_Click" />
-                </st:StackPanel>
+                </StackPanelEx>
             </TabItem>
             <TabItem Header="_QR Codes" >
-                <st:AutoGrid Columns="Auto,*" ChildMargin="3">
+                <AutoGrid Columns="Auto,*" ChildMargin="3">
                     <Label Content="_Square default size"
                            Target="{Binding ElementName=QrCodeDefaultSizeTextBox}"/>
                     <TextBox x:Name="QrCodeDefaultSizeTextBox" Text="{Binding QrCodeDefaultSize, UpdateSourceTrigger=PropertyChanged}" />
@@ -78,7 +77,7 @@
                            MouseDown="Color_Label_MouseDown"/>
                     <Label Content="Light Color" />
                     <Label Background="{Binding QRCodeLightColor, Converter={local:DrawingColorToWPFBrush}}" BorderBrush="Black" BorderThickness="1"/>
-                </st:AutoGrid>
+                </AutoGrid>
             </TabItem>
             <TabItem Header="Pro_xy for http requests" >
                 <DockPanel>
@@ -137,7 +136,7 @@
                                   IsEnabled="True"/>
                         <CheckBox Content="Default _settings" 
                                   IsChecked="{Binding UseDefaultProxy}" />
-                        <st:AutoGrid Columns="Auto,*,Auto,50" ChildMargin="3">
+                        <AutoGrid Columns="Auto,*,Auto,50" ChildMargin="3">
                             <Label Content="_Address" 
                            Target="{Binding ElementName=ProxyAddressTextBox}"/>
                             <TextBox x:Name="ProxyAddressTextBox"
@@ -146,10 +145,10 @@
                            Target="{Binding ElementName=ProxyPortTextBox}"/>
                             <TextBox x:Name="ProxyPortTextBox" 
                              Text="{Binding ProxyPort, Converter={local:StringToNullableIntConverter}}" />
-                        </st:AutoGrid>
+                        </AutoGrid>
                         <CheckBox Content="Use _Default Credentials"
                               IsChecked="{Binding UseDefaultCredentials}"/>
-                        <st:AutoGrid Columns="Auto,*" ChildMargin="3">
+                        <AutoGrid Columns="Auto,*" ChildMargin="3">
                             <Label Content="_User"
                                Style="{StaticResource CredentialDependent}"
                                Target="{Binding ElementName=ProxyUserNameTextBox}"/>
@@ -167,7 +166,7 @@
                                                                      Value="{Binding ProxyPassword}"/>
                                 </i:Interaction.Behaviors>
                             </PasswordBox>
-                        </st:AutoGrid>
+                        </AutoGrid>
                         <CheckBox Content="Do _not use proxy for these addresses"
                                   IsChecked="{Binding ProxyBypassOnLocal}"
                                   Grid.ColumnSpan="2"/>

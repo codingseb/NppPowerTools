@@ -73,6 +73,9 @@
     <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.4.20.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.4.20\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
     </Reference>
+    <Reference Include="CodingSeb.Layouts, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.Layouts.1.0.1\lib\net47\CodingSeb.Layouts.dll</HintPath>
+    </Reference>
     <Reference Include="ColorPickerWPF, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ColorPickerWPF.1.0.9\lib\net461\ColorPickerWPF.dll</HintPath>
     </Reference>
