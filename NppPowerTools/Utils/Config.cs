@@ -187,7 +187,7 @@ namespace NppPowerTools.Utils
         public virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            this.Save();
+            Save();
         }
 
         #endregion

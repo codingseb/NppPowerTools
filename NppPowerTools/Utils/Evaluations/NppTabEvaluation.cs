@@ -72,17 +72,11 @@ namespace NppPowerTools.Utils.Evaluations
 
                 if (tabFuncMatch.Groups["tabIndex"].Success)
                 {
-                    if (e.Args.Count > 0)
-                        e.Value = BNpp.NotepadPP.GetTabIndex(e.EvaluateArg<string>(0), true);
-                    else
-                        e.Value = BNpp.NotepadPP.GetTabIndex(currentTab);
+                    e.Value = e.Args.Count > 0 ? BNpp.NotepadPP.GetTabIndex(e.EvaluateArg<string>(0), true) : (object)BNpp.NotepadPP.GetTabIndex(currentTab);
                 }
                 else if (tabFuncMatch.Groups["fileName"].Success)
                 {
-                    if (e.Args.Count > 0)
-                        e.Value = BNpp.NotepadPP.GetAllOpenedDocuments[e.EvaluateArg<int>(0)];
-                    else
-                        e.Value = currentTab;
+                    e.Value = e.Args.Count > 0 ? BNpp.NotepadPP.GetAllOpenedDocuments[e.EvaluateArg<int>(0)] : currentTab;
                 }
                 else
                 {
@@ -116,7 +110,7 @@ namespace NppPowerTools.Utils.Evaluations
         {
             get
             {
-                return instance ?? (instance = new NppAccessEvaluation());
+                return instance ??= new NppAccessEvaluation();
             }
         }
 

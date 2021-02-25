@@ -23,10 +23,9 @@ namespace NppPowerTools.Utils.Evaluations
 
                 if (loremIspumVariableEvalMatch.Groups["words"].Success)
                     e.Value = li.GetWords(int.Parse(loremIspumVariableEvalMatch.Groups["words"].Value, CultureInfo.InvariantCulture), wordPerLine);
-                else if (loremIspumVariableEvalMatch.Groups["lines"].Success)
-                    e.Value = li.GetLines(int.Parse(loremIspumVariableEvalMatch.Groups["lines"].Value, CultureInfo.InvariantCulture), wordPerLine);
-                else
-                    e.Value = li.GetWords(100, wordPerLine);
+                else e.Value = loremIspumVariableEvalMatch.Groups["lines"].Success
+                    ? li.GetLines(int.Parse(loremIspumVariableEvalMatch.Groups["lines"].Value, CultureInfo.InvariantCulture), wordPerLine)
+                    : li.GetWords(100, wordPerLine);
 
                 return true;
             }

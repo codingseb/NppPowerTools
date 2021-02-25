@@ -63,12 +63,12 @@ namespace NppPowerTools.Utils
         /// <summary>
         /// spécifie si le fichier est en lecture seul ou pas
         /// </summary>
-        protected bool readOnly = false;
+        protected bool readOnly;
 
         /// <summary>
         /// Spécifie si le fichier est chargé correctement.
         /// </summary>
-        protected bool loaded = false;
+        protected bool loaded;
 
         /// <summary>
         /// Spécifie si la section et la clé doivent être créé lors de la lecture d'une valeur
@@ -128,17 +128,17 @@ namespace NppPowerTools.Utils
         /// <summary>
         /// Survient lorsqu'un commentaire est sur le point d'être changé.
         /// </summary>
-        public event CommentChangingEventHandler CommentChanging;
+        public event EventHandler<CommentChangingEventArgs> CommentChanging;
 
         /// <summary>
         /// Survient lorsqu'un commentaire a été changé.
         /// </summary>
-        public event CommentChangedEventHandler CommentChanged;
+        public event EventHandler<CommentChangedEventArgs> CommentChanged;
 
         /// <summary>
         /// Survient lorsqu'une valeur est sur le point d'être changée.
         /// </summary>
-        public event ValueChangingEventHandler ValueChanging;
+        public event EventHandler<ValueChangingEventArgs> ValueChanging;
 
         /// <summary>
         /// Survient lorsqu'une valeur a été changée.
@@ -200,15 +200,9 @@ namespace NppPowerTools.Utils
             set
             {
                 // Si la dernière ligne n'est pas une ligne vide, on en rajoute une.
-                if (!value.Split(new string[] { "\r\n", "\n", "\r" }, StringSplitOptions.None).Last().Replace(" ", "").Replace("\t", "").Equals(""))
-                {
-                    fileHeaderCommentsOrEmptyLines = value + newline;
-                }
-                // Sinon on sauvegarde le commentaire tel quel
-                else
-                {
-                    fileHeaderCommentsOrEmptyLines = value;
-                }
+                fileHeaderCommentsOrEmptyLines = !value.Split(new string[] { "\r\n", "\n", "\r" }, StringSplitOptions.None).Last().Replace(" ", "").Replace("\t", "").Equals("")
+                    ? value + newline
+                    : value;
             }
         }
 
@@ -387,7 +381,7 @@ namespace NppPowerTools.Utils
         /// </summary>
         protected void OnIniFileLoadedStateChanged()
         {
-            IniFileLoadedStateChanged?.Invoke(this, new EventArgs());
+            IniFileLoadedStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -507,7 +501,7 @@ namespace NppPowerTools.Utils
                     if (Sections.ContainsKey(previousSect))
                     {
                         int index = ListSections.IndexOf(previousSect) + 1;     // Insere apres "previousSect
-                        if (index < ListSections.Count())
+                        if (index < ListSections.Count)
                             ListSections.Insert(index, section);                // Insere dans la liste
                         else ListSections.Add(section);                         // Insere en fin de liste
                     }
@@ -565,8 +559,7 @@ namespace NppPowerTools.Utils
         /// <returns>Les clés de les section</returns>
         public List<string> GetKeysOfSection(string section)
         {
-            List<string> result = null;
-
+            List<string> result;
             try
             {
                 result = new List<string>(Sections[section].GetKeys().Keys);
@@ -586,8 +579,7 @@ namespace NppPowerTools.Utils
         /// <returns>Les valeurs de toutes les clés de la section</returns>
         public List<string> GetValuesOfSection(string section)
         {
-            List<string> result = null;
-
+            List<string> result;
             try
             {
                 result = new List<string>(Sections[section].GetKeys().Values);
@@ -610,7 +602,7 @@ namespace NppPowerTools.Utils
         {
             string oldValue = "";
 
-            if (this.SectionExist(section) && this.KeyExist(section, key))
+            if (SectionExist(section) && KeyExist(section, key))
                 oldValue = this[section][key];
 
             ValueChangingEventArgs tmpArg = new ValueChangingEventArgs(section, key, oldValue, value);
@@ -668,10 +660,10 @@ namespace NppPowerTools.Utils
             if (CreateIfValueDoNotExist)
             {
                 string val = this[section][key];
-                if (val == "")
+                if (val?.Length == 0)
                 {
-                    this[section][key] = defaut.ToString();
-                    return defaut.ToString();
+                    this[section][key] = defaut;
+                    return defaut;
                 }
                 else
                 {
@@ -1301,13 +1293,9 @@ namespace NppPowerTools.Utils
         {
             try
             {
-                string sdefaut = "";
-
-                if (defaut.IsNamedColor)
-                    sdefaut = defaut.Name;
-                else
-                    sdefaut = ("#" + defaut.A.ToString("x2") + defaut.R.ToString("x2") + defaut.G.ToString("x2") + defaut.B.ToString("x2")).ToUpper();
-
+                string sdefaut = defaut.IsNamedColor
+                    ? defaut.Name
+                    : ("#" + defaut.A.ToString("x2") + defaut.R.ToString("x2") + defaut.G.ToString("x2") + defaut.B.ToString("x2")).ToUpper();
                 string res = GetValue(section, key, sdefaut);
                 if (res.StartsWith("#"))
                 {
@@ -1349,13 +1337,9 @@ namespace NppPowerTools.Utils
         {
             try
             {
-                string sdefaut = "";
-
-                if (defaut.IsNamedColor)
-                    sdefaut = defaut.Name;
-                else
-                    sdefaut = ("#" + defaut.A.ToString("x2") + defaut.R.ToString("x2") + defaut.G.ToString("x2") + defaut.B.ToString("x2")).ToUpper();
-
+                string sdefaut = defaut.IsNamedColor
+                    ? defaut.Name
+                    : ("#" + defaut.A.ToString("x2") + defaut.R.ToString("x2") + defaut.G.ToString("x2") + defaut.B.ToString("x2")).ToUpper();
                 string res = GetValueWithoutCreating(section, key, sdefaut);
                 if (res.StartsWith("#"))
                 {
@@ -1461,7 +1445,7 @@ namespace NppPowerTools.Utils
 
         /// <summary>
         /// Retourne la valeur d'une clé sous forme d'une taille (Size).
-        /// Format [width,height] 
+        /// Format [width,height]
         /// </summary>
         /// <param name="section">Nom de la section.</param>
         /// <param name="key">Nom de la clé.</param>
@@ -1484,7 +1468,7 @@ namespace NppPowerTools.Utils
 
         /// <summary>
         /// Retourne la valeur d'une clé sous forme d'une taille (Size).
-        /// Format [width,height] 
+        /// Format [width,height]
         /// Valeur par défaut Size(1,1)
         /// </summary>
         /// <param name="section">Nom de la section.</param>
@@ -1497,7 +1481,7 @@ namespace NppPowerTools.Utils
 
         /// <summary>
         /// Retourne la valeur d'une clé sous forme d'une taille (Size).
-        /// Format [width,height] 
+        /// Format [width,height]
         /// </summary>
         /// <param name="section">Nom de la section.</param>
         /// <param name="key">Nom de la clé.</param>
@@ -1520,7 +1504,7 @@ namespace NppPowerTools.Utils
 
         /// <summary>
         /// Retourne la valeur d'une clé sous forme d'une taille (Size).
-        /// Format [width,height] 
+        /// Format [width,height]
         /// Valeur par défaut Size(1,1)
         /// </summary>
         /// <param name="section">Nom de la section.</param>
@@ -1533,7 +1517,7 @@ namespace NppPowerTools.Utils
 
         /// <summary>
         /// Retourne la valeur d'une clé sous forme d'un (Point).
-        /// Format [x,y] 
+        /// Format [x,y]
         /// </summary>
         /// <param name="section">Nom de la section.</param>
         /// <param name="key">Nom de la clé.</param>
@@ -1556,7 +1540,7 @@ namespace NppPowerTools.Utils
 
         /// <summary>
         /// Retourne la valeur d'une clé sous forme d'un (Point).
-        /// Format [x,y] 
+        /// Format [x,y]
         /// Valeur par défaut Point(0,0)
         /// </summary>
         /// <param name="section">Nom de la section.</param>
@@ -1569,7 +1553,7 @@ namespace NppPowerTools.Utils
 
         /// <summary>
         /// Retourne la valeur d'une clé sous forme d'un (Point).
-        /// Format [x,y] 
+        /// Format [x,y]
         /// </summary>
         /// <param name="section">Nom de la section.</param>
         /// <param name="key">Nom de la clé.</param>
@@ -1593,7 +1577,7 @@ namespace NppPowerTools.Utils
 
         /// <summary>
         /// Retourne la valeur d'une clé sous forme d'un (Point).
-        /// Format [x,y] 
+        /// Format [x,y]
         /// Valeur par défaut Point(0,0)
         /// </summary>
         /// <param name="section">Nom de la section.</param>
@@ -1676,14 +1660,7 @@ namespace NppPowerTools.Utils
 
             try
             {
-                if (path.StartsWith("."))
-                {
-                    path = Path.GetFullPath(Path.Combine(Application.StartupPath, path));
-                }
-                else
-                {
-                    path = Path.GetFullPath(path);
-                }
+                path = path.StartsWith(".") ? Path.GetFullPath(Path.Combine(Application.StartupPath, path)) : Path.GetFullPath(path);
             }
             catch
             {
@@ -1734,7 +1711,7 @@ namespace NppPowerTools.Utils
         /// <returns><c>true</c> si la sauvegarde a réussi <c>false</c> sinon.</returns>
         public bool Save(string fileName)
         {
-            if (this.readOnly)
+            if (readOnly)
             {
                 MessageBox.Show("Erreur le fichier : \"" + fileName + "\" à été ouvert en lecture seule");
                 return false;
@@ -1757,10 +1734,10 @@ namespace NppPowerTools.Utils
                     if (File.Exists(fileName))
                         File.Copy(fileName, fileName + "~.tmp");
 
-                    File.WriteAllText(fileName, this.ToString(), Encoding.UTF8);
+                    File.WriteAllText(fileName, ToString(), Encoding.UTF8);
 
                     // Génère l'évènement qui informe que le fichier ini a été sauvé.
-                    OnIniFileSaved(new EventArgs());
+                    OnIniFileSaved(EventArgs.Empty);
 
                     return true;
                 }
@@ -1844,9 +1821,7 @@ namespace NppPowerTools.Utils
             // Pour que la fin du fichier ne soit pas de plus en plus de retour à la ligne
             char[] removeList = { '\n', '\r', '\t', ' ' };
 
-            fichier = fichier.TrimEnd(removeList);
-
-            return fichier;
+            return fichier.TrimEnd(removeList);
         }
 
         /// <summary>
@@ -2141,6 +2116,8 @@ namespace NppPowerTools.Utils
                         beforeCodeCommentsOrEmptyLines.Remove("[" + section + "]" + currentKeyName);
                         beforeCodeCommentsOrEmptyLines["[" + section + "]" + newKeyName] = comment;
                     }
+
+                    result = true;
                 }
             }
 
@@ -2173,16 +2150,16 @@ namespace NppPowerTools.Utils
         public virtual void Reload()
         {
             // Efface tout
-            this.RemoveAllSections();
-            this.linkedComments.Clear();
-            this.beforeCodeCommentsOrEmptyLines.Clear();
-            this.fileHeaderCommentsOrEmptyLines = "";
-            this.fileFooterCommentsOrEmptyLines = "";
-            this.loaded = false;
+            RemoveAllSections();
+            linkedComments.Clear();
+            beforeCodeCommentsOrEmptyLines.Clear();
+            fileHeaderCommentsOrEmptyLines = "";
+            fileFooterCommentsOrEmptyLines = "";
+            loaded = false;
             OnIniFileLoadedStateChanged();
 
             // Recharge 
-            this.Load(this.FileName);
+            Load(FileName);
         }
 
         /// <summary>
@@ -2200,13 +2177,13 @@ namespace NppPowerTools.Utils
         public void UnLoad()
         {
             // Efface tout
-            this.RemoveAllSections();
-            this.linkedComments.Clear();
-            this.beforeCodeCommentsOrEmptyLines.Clear();
-            this.fileHeaderCommentsOrEmptyLines = "";
-            this.fileFooterCommentsOrEmptyLines = "";
-            this.FileName = "";
-            this.loaded = false;
+            RemoveAllSections();
+            linkedComments.Clear();
+            beforeCodeCommentsOrEmptyLines.Clear();
+            fileHeaderCommentsOrEmptyLines = "";
+            fileFooterCommentsOrEmptyLines = "";
+            FileName = "";
+            loaded = false;
             OnIniFileLoadedStateChanged();
         }
 
@@ -2225,7 +2202,7 @@ namespace NppPowerTools.Utils
             {
                 StreamReader str;
 
-                if (this.readOnly)
+                if (readOnly)
                 {
                     // Ouverture en lecture seule.
                     str = new StreamReader(File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite), encoding);
@@ -2315,7 +2292,7 @@ namespace NppPowerTools.Utils
                 fileFooterCommentsOrEmptyLines = currentCommentOrEmptyLines;
 
                 // mémorise le chemin d'accès au fichier
-                this.sFileName = fileName;
+                sFileName = fileName;
 
                 str.Close();
                 str.Dispose();
@@ -2433,7 +2410,7 @@ namespace NppPowerTools.Utils
 
             for (int i = 0; i < textLine.Length; i++)
             {
-                char currentChar = textLine.ToCharArray()[i];
+                char currentChar = textLine[i];
 
                 if (currentChar == '"')
                 {
@@ -2464,18 +2441,15 @@ namespace NppPowerTools.Utils
         /// <returns>Le dictionnaire de toutes les paires clés valeurs de la section</returns>
         public Dictionary<string, string> GetDictOfSection(string section)
         {
-            Dictionary<string, string> resultDict;
             if (!Sections.ContainsKey(section))
             {
-                resultDict = new Dictionary<string, string>();
+                return new Dictionary<string, string>();
             }
             else
             {
-                Section currentSection = Sections[section] as Section;
-                resultDict = currentSection.GetKeys();
+                Section currentSection = Sections[section];
+                return currentSection.GetKeys();
             }
-
-            return resultDict;
         }
 
         /// <summary>
@@ -2545,10 +2519,7 @@ namespace NppPowerTools.Utils
                 {
                     if (!IsQuoted.ContainsKey(key))
                     {
-                        if (result.Contains(";"))
-                            IsQuoted[key] = true;
-                        else
-                            IsQuoted[key] = false;
+                        IsQuoted[key] = result.Contains(";");
                     }
                     else if (result.Contains(";"))
                     {
@@ -2569,10 +2540,7 @@ namespace NppPowerTools.Utils
                 if (key.IndexOf("=") > 0)
                     throw new Exception("Caractère '=' interdit");
 
-                if (keys.ContainsKey(key))
-                    keys[key] = DoubleQuotesStrip(value, key);
-                else
-                    keys.Add(key, DoubleQuotesStrip(value, key));
+                keys[key] = DoubleQuotesStrip(value, key);
             }
 
             /// <summary>
@@ -2659,11 +2627,6 @@ namespace NppPowerTools.Utils
         /// </summary>
         public class ValueChangedEventArgs : EventArgs
         {
-            private string section;
-            private string key;
-            private string oldValue;
-            private string newValue;
-
             /// <summary>
             /// Constructeur
             /// </summary>
@@ -2673,43 +2636,31 @@ namespace NppPowerTools.Utils
             /// <param name="newValue">La valeur après le changement</param>
             public ValueChangedEventArgs(string section, string key, string oldValue, string newValue)
             {
-                this.section = section;
-                this.key = key;
-                this.oldValue = oldValue;
-                this.newValue = newValue;
+                Section = section;
+                Key = key;
+                OldValue = oldValue;
+                NewValue = newValue;
             }
 
             /// <summary>
             /// Nom de la section où la valeur à changé
             /// </summary>
-            public string Section
-            {
-                get { return section; }
-            }
+            public string Section { get; }
 
             /// <summary>
             /// Nom de la clé où la valeur à changé
             /// </summary>
-            public string Key
-            {
-                get { return key; }
-            }
+            public string Key { get; }
 
             /// <summary>
             /// La valeur avant le changement
             /// </summary>
-            public string OldValue
-            {
-                get { return oldValue; }
-            }
+            public string OldValue { get; }
 
             /// <summary>
             /// La valeur après le changement
             /// </summary>
-            public string NewValue
-            {
-                get { return newValue; }
-            }
+            public string NewValue { get; }
         }
 
         /// <summary>
@@ -2717,12 +2668,6 @@ namespace NppPowerTools.Utils
         /// </summary>
         public class ValueChangingEventArgs : EventArgs
         {
-            private string section;
-            private string key;
-            private string oldValue;
-            private string newValue;
-            private bool cancel = false;
-
             /// <summary>
             /// Constructeur
             /// </summary>
@@ -2732,56 +2677,37 @@ namespace NppPowerTools.Utils
             /// <param name="newValue">La valeur après le changement</param>
             public ValueChangingEventArgs(string section, string key, string oldValue, string newValue)
             {
-                this.section = section;
-                this.key = key;
-                this.oldValue = oldValue;
-                this.newValue = newValue;
+                Section = section;
+                Key = key;
+                OldValue = oldValue;
+                NewValue = newValue;
             }
 
             /// <summary>
             /// Nom de la section où la valeur à changé
             /// </summary>
-            public string Section
-            {
-                get { return section; }
-            }
+            public string Section { get; }
 
             /// <summary>
             /// Nom de la clé où la valeur à changé
             /// </summary>
-            public string Key
-            {
-                get { return key; }
-            }
+            public string Key { get; }
 
             /// <summary>
             /// La valeur avant le changement
             /// </summary>
-            public string OldValue
-            {
-                get { return oldValue; }
-            }
+            public string OldValue { get; }
 
             /// <summary>
             /// La valeur après le changement
             /// </summary>
-            public string NewValue
-            {
-                get { return newValue; }
-            }
+            public string NewValue { get; }
 
             /// <summary>
             /// Obtient ou définit une valeur boolean qui définit si le changement
             /// doit-être annuler(<c>true</c>) ou être maintenue (<c>false</c>).
             /// </summary>
-            public bool Cancel
-            {
-                get
-                { return cancel; }
-
-                set
-                { cancel = value; }
-            }
+            public bool Cancel { get; set; }
         }
 
         /// <summary>
@@ -2789,12 +2715,6 @@ namespace NppPowerTools.Utils
         /// </summary>
         public class CommentChangedEventArgs : EventArgs
         {
-            private string section;
-            private string key;
-            private string oldComment;
-            private string newComment;
-            private bool isCommentBeforeKeyOrSection = false;
-
             /// <summary>
             /// Constructeur
             /// </summary>
@@ -2804,56 +2724,38 @@ namespace NppPowerTools.Utils
             /// <param name="newComment">Le commentaire après le changement</param>
             public CommentChangedEventArgs(string section, string key, string oldComment, string newComment, bool isCommentBeforeKeyOrSection)
             {
-                this.section = section;
-                this.key = key;
-                this.oldComment = oldComment;
-                this.newComment = newComment;
-                this.isCommentBeforeKeyOrSection = isCommentBeforeKeyOrSection;
+                Section = section;
+                Key = key;
+                OldComment = oldComment;
+                NewComment = newComment;
+                IsCommentBeforeKeyOrSection = isCommentBeforeKeyOrSection;
             }
 
             /// <summary>
             /// Nom de la section où la valeur à changé
             /// </summary>
-            public string Section
-            {
-                get { return section; }
-            }
+            public string Section { get; }
 
             /// <summary>
             /// Nom de la clé où la valeur à changé
             /// </summary>
-            public string Key
-            {
-                get { return key; }
-            }
+            public string Key { get; }
 
             /// <summary>
             /// Le commentaire avant le changement
             /// </summary>
-            public string OldComment
-            {
-                get { return oldComment; }
-            }
+            public string OldComment { get; }
 
             /// <summary>
             /// Le commentaire après le changement
             /// </summary>
-            public string NewComment
-            {
-                get { return newComment; }
-            }
+            public string NewComment { get; }
 
             /// <summary>
             /// Si <c>true</c> C'est un commentaire placé avant la clé ou la section spécifiée.
             /// Si <c>false</c> C'est un commentaire placé après sur la même ligne que la clé ou la section spécifiée.
             /// </summary>
-            public bool IsCommentBeforeKeyOrSection
-            {
-                get
-                {
-                    return isCommentBeforeKeyOrSection;
-                }
-            }
+            public bool IsCommentBeforeKeyOrSection { get; }
         }
 
         /// <summary>
@@ -2861,13 +2763,6 @@ namespace NppPowerTools.Utils
         /// </summary>
         public class CommentChangingEventArgs : EventArgs
         {
-            private string section;
-            private string key;
-            private string oldComment;
-            private string newComment;
-            private bool cancel = false;
-            private bool isCommentBeforeKeyOrSection = false;
-
             /// <summary>
             /// Constructeur
             /// </summary>
@@ -2877,69 +2772,44 @@ namespace NppPowerTools.Utils
             /// <param name="newComment">Le commentaire après le changement</param>
             public CommentChangingEventArgs(string section, string key, string oldComment, string newComment, bool isCommentBeforeKeyOrSection)
             {
-                this.section = section;
-                this.key = key;
-                this.oldComment = oldComment;
-                this.newComment = newComment;
-                this.isCommentBeforeKeyOrSection = isCommentBeforeKeyOrSection;
+                Section = section;
+                Key = key;
+                OldComment = oldComment;
+                NewComment = newComment;
+                IsCommentBeforeKeyOrSection = isCommentBeforeKeyOrSection;
             }
 
             /// <summary>
             /// Nom de la section où la valeur à changé
             /// </summary>
-            public string Section
-            {
-                get { return section; }
-            }
+            public string Section { get; }
 
             /// <summary>
             /// Nom de la clé où la valeur à changé
             /// </summary>
-            public string Key
-            {
-                get { return key; }
-            }
+            public string Key { get; }
 
             /// <summary>
             /// Le commentaire avant le changement
             /// </summary>
-            public string OldComment
-            {
-                get { return oldComment; }
-            }
+            public string OldComment { get; }
 
             /// <summary>
             /// Le commentaire après le changement
             /// </summary>
-            public string NewComment
-            {
-                get { return newComment; }
-            }
+            public string NewComment { get; }
 
             /// <summary>
             /// Obtient ou définit une valeur boolean qui définit si le changement
             /// doit-être annuler(<c>true</c>) ou être maintenue (<c>false</c>).
             /// </summary>
-            public bool Cancel
-            {
-                get
-                { return cancel; }
-
-                set
-                { cancel = value; }
-            }
+            public bool Cancel { get; set; }
 
             /// <summary>
             /// Si <c>true</c> C'est un commentaire placé avant la clé ou la section spécifiée.
             /// Si <c>false</c> C'est un commentaire placé après sur la même ligne que la clé ou la section spécifiée.
             /// </summary>
-            public bool IsCommentBeforeKeyOrSection
-            {
-                get
-                {
-                    return isCommentBeforeKeyOrSection;
-                }
-            }
+            public bool IsCommentBeforeKeyOrSection { get; }
         }
 
         /// <summary>
@@ -2947,8 +2817,6 @@ namespace NppPowerTools.Utils
         /// </summary>
         public class IniFileSavingEventArgs : EventArgs
         {
-            private bool cancel = false;
-
             /// <summary>
             /// Constructeur
             /// </summary>
@@ -2959,14 +2827,7 @@ namespace NppPowerTools.Utils
             /// Obtient ou définit une valeur boolean qui définit si la sauvegarde
             /// doit-être annuler(<c>true</c>) ou être maintenue (<c>false</c>).
             /// </summary>
-            public bool Cancel
-            {
-                get
-                { return cancel; }
-
-                set
-                { cancel = value; }
-            }
+            public bool Cancel { get; set; }
         }
     }
 }

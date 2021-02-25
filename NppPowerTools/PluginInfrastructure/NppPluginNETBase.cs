@@ -12,17 +12,17 @@ namespace NppPowerTools.PluginInfrastructure
         {
             SetCommand(index, commandName, functionPointer, new ShortcutKey(), false);
         }
-        
+
         public static void SetCommand(int index, string commandName, NppFuncItemDelegate functionPointer, ShortcutKey shortcut)
         {
             SetCommand(index, commandName, functionPointer, shortcut, false);
         }
-        
+
         public static void SetCommand(int index, string commandName, NppFuncItemDelegate functionPointer, bool checkOnInit)
         {
             SetCommand(index, commandName, functionPointer, new ShortcutKey(), checkOnInit);
         }
-        
+
         public static void SetCommand(int index, string commandName, NppFuncItemDelegate functionPointer, ShortcutKey shortcut, bool checkOnInit)
         {
             FuncItem funcItem = new FuncItem

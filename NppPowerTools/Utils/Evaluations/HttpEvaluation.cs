@@ -106,14 +106,9 @@ namespace NppPowerTools.Utils.Evaluations
 
                     if (!e.Args.Last().Trim().Equals("f", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (response.Content.Headers.ContentType.MediaType.IndexOf("image", StringComparison.OrdinalIgnoreCase) >= 0)
-                        {
-                            e.Value = new Bitmap(response.Content.ReadAsStreamAsync().Result);
-                        }
-                        else
-                        {
-                            e.Value = (object)response.Content.ReadAsStringAsync().Result;
-                        }
+                        e.Value = response.Content.Headers.ContentType.MediaType.IndexOf("image", StringComparison.OrdinalIgnoreCase) >= 0
+                            ? new Bitmap(response.Content.ReadAsStreamAsync().Result)
+                            : (object)response.Content.ReadAsStringAsync().Result;
                     }
                     else
                     {

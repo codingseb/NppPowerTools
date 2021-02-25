@@ -16,8 +16,6 @@ namespace NppPowerTools
         private static System.Windows.Window optionsWindow = null;
         private const string OPTION_WINDOW_TITLE = "Options - Npp Power Tools";
 
-        private static int outsCommandsIndex;
-
         //Import the FindWindow API to find our window
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr FindWindow([MarshalAs(UnmanagedType.LPWStr)] string ClassName, [MarshalAs(UnmanagedType.LPWStr)] string WindowName);
@@ -29,17 +27,17 @@ namespace NppPowerTools
         private static extern IntPtr SetWindowLong(IntPtr hWnd, int windowLongFlags, IntPtr dwNewLong);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern long SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+        private static extern long SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
         public const int GWL_EXSTYLE = -20;
         public const int WS_EX_LAYERED = 0x80000;
         public const int LWA_ALPHA = 0x2;
         public const int LWA_COLORKEY = 0x1;
 
-        private enum WindowLongFlags : int
+        private enum WindowLongFlags
         {
             GWL_EXSTYLE = -20,
             GWLP_HINSTANCE = -6,
@@ -128,8 +126,8 @@ namespace NppPowerTools
         {
             try
             {
-                BNpp.NotepadPP.SetPluginMenuChecked(Config.Instance.CurrentResultOutIndex + outsCommandsIndex, false);
-                BNpp.NotepadPP.SetPluginMenuChecked(value + outsCommandsIndex, true);
+                BNpp.NotepadPP.SetPluginMenuChecked(Config.Instance.CurrentResultOutIndex, false);
+                BNpp.NotepadPP.SetPluginMenuChecked(value, true);
                 Config.Instance.CurrentResultOutIndex = value;
                 Config.Instance.Save();
 

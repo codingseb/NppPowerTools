@@ -10,13 +10,13 @@ namespace NppPowerTools
     public class UnmanagedExports
     {
         [DllExport(CallingConvention = CallingConvention.Cdecl)]
-        static bool isUnicode()
+        private static bool isUnicode()
         {
             return true;
         }
 
         [DllExport(CallingConvention = CallingConvention.Cdecl)]
-        static void setInfo(NppData notepadPlusData)
+        private static void setInfo(NppData notepadPlusData)
         {
             try
             {
@@ -30,21 +30,21 @@ namespace NppPowerTools
         }
 
         [DllExport(CallingConvention = CallingConvention.Cdecl)]
-        static IntPtr getFuncsArray(ref int nbF)
+        private static IntPtr getFuncsArray(ref int nbF)
         {
             nbF = PluginBase._funcItems.Items.Count;
             return PluginBase._funcItems.NativePointer;
         }
 
         [DllExport(CallingConvention = CallingConvention.Cdecl)]
-        static uint messageProc(uint Message, IntPtr wParam, IntPtr lParam)
+        private static uint messageProc(uint Message, IntPtr wParam, IntPtr lParam)
         {
             return 1;
         }
 
-        static IntPtr _ptrPluginName = IntPtr.Zero;
+        private static IntPtr _ptrPluginName = IntPtr.Zero;
         [DllExport(CallingConvention = CallingConvention.Cdecl)]
-        static IntPtr getName()
+        private static IntPtr getName()
         {
             if (_ptrPluginName == IntPtr.Zero)
                 _ptrPluginName = Marshal.StringToHGlobalUni(Main.PluginName);
@@ -52,7 +52,7 @@ namespace NppPowerTools
         }
 
         [DllExport(CallingConvention = CallingConvention.Cdecl)]
-        static void beNotified(IntPtr notifyCode)
+        private static void beNotified(IntPtr notifyCode)
         {
             try
             {

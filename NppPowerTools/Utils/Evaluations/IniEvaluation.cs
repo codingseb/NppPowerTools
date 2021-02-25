@@ -113,7 +113,7 @@ namespace NppPowerTools.Utils.Evaluations
         {
             get
             {
-                return instance ?? (instance = new IniEvaluation());
+                return instance ??= new IniEvaluation();
             }
         }
 

@@ -41,8 +41,8 @@ namespace NppPowerTools.PluginInfrastructure
             /// </summary>
             public int nPos;
             /// <summary>
-            /// Specifies the immediate position of a scroll box that the user is dragging. 
-            /// An application can retrieve this value while processing the SB_THUMBTRACK request code. 
+            /// Specifies the immediate position of a scroll box that the user is dragging.
+            /// An application can retrieve this value while processing the SB_THUMBTRACK request code.
             /// An application cannot set the immediate scroll position; the SetScrollInfo function ignores this member.
             /// </summary>
             public int nTrackPos;
@@ -79,54 +79,54 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         [DllImport("user32", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam);
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         [DllImport("user32", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lParam);
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         [DllImport("user32", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, IntPtr lParam);
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         [DllImport("user32", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, IntPtr wParam, out IntPtr lParam);
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         [DllImport("user32", CharSet = CharSet.Auto)]
         public static extern bool SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, ref ShortcutKey lParam);
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, NppMenuCmd lParam)
@@ -135,9 +135,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, IntPtr lParam)
@@ -146,9 +146,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, int lParam)
@@ -157,9 +157,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, out int lParam)
@@ -171,9 +171,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, int lParam)
@@ -182,9 +182,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lParam)
@@ -193,9 +193,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)] string lParam)
@@ -204,9 +204,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, SciMsg Msg, IntPtr wParam, int lParam)
@@ -215,9 +215,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, SciMsg Msg, int wParam, IntPtr lParam)
@@ -226,9 +226,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, SciMsg Msg, int wParam, string lParam)
@@ -237,9 +237,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, SciMsg Msg, int wParam, [MarshalAs(UnmanagedType.LPStr)] StringBuilder lParam)
@@ -248,9 +248,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, SciMsg Msg, int wParam, int lParam)
@@ -259,9 +259,9 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         /// <summary>
-        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as 
-        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.  
-        /// If gateways are missing or incomplete, please help extend them and send your code to the project 
+        /// You should try to avoid calling this method in your plugin code. Rather use one of the gateways such as
+        /// <see cref="ScintillaGateway"/> or <see cref="NotepadPPGateway"/>.
+        /// If gateways are missing or incomplete, please help extend them and send your code to the project
         /// at https://github.com/kbilsted/NotepadPlusPlusPluginPack.Net
         /// </summary>
         public static IntPtr SendMessage(IntPtr hWnd, SciMsg Msg, IntPtr wParam, IntPtr lParam)

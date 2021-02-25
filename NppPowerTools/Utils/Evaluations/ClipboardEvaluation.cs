@@ -11,10 +11,7 @@ namespace NppPowerTools.Utils.Evaluations
         {
             if (e.Name.Equals("clipboard", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
             {
-                if (Clipboard.ContainsImage())
-                    e.Value = Clipboard.GetImage().GetBitmap();
-                else
-                    e.Value = Clipboard.GetText();
+                e.Value = Clipboard.ContainsImage() ? Clipboard.GetImage().GetBitmap() : (object)Clipboard.GetText();
             }
 
             return e.HasValue;
@@ -47,7 +44,7 @@ namespace NppPowerTools.Utils.Evaluations
         {
             get
             {
-                return instance ?? (instance = new ClipboardEvaluation());
+                return instance ??= new ClipboardEvaluation();
             }
         }
 

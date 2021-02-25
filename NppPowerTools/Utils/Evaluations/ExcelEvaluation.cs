@@ -15,7 +15,7 @@ namespace NppPowerTools.Utils.Evaluations
             if(e.Name.Equals("xl", StringComparison.OrdinalIgnoreCase) && e.Args.Count > 0)
             {
                 string filName = e.EvaluateArg(0).ToString();
-                e.Value = new ExcelPackage(new FileInfo(filName)); 
+                e.Value = new ExcelPackage(new FileInfo(filName));
             }
             else
             {
@@ -37,10 +37,9 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 ExcelWorkbook excelWorkbook = (e.This as ExcelWorkbook) ?? (e.This as ExcelPackage)?.Workbook;
 
-                if (excelSheetVariableMatch.Groups["index"].Success)
-                    e.Value = excelWorkbook.Worksheets[int.Parse(excelSheetVariableMatch.Groups["index"].Value)];
-                else
-                    e.Value = excelWorkbook.Worksheets;
+                e.Value = excelSheetVariableMatch.Groups["index"].Success
+                    ? excelWorkbook.Worksheets[int.Parse(excelSheetVariableMatch.Groups["index"].Value)]
+                    : (object)excelWorkbook.Worksheets;
             }
             else
             {

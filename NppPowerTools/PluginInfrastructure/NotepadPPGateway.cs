@@ -28,17 +28,17 @@ namespace NppPowerTools.PluginInfrastructure
 
 		private const int Unused = 0;
 
-        IntPtr Send(NppMsg command, int wParam, NppMenuCmd lParam)
+        private IntPtr Send(NppMsg command, int wParam, NppMenuCmd lParam)
 		{
             return Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)command, wParam, lParam);
 		}
 
-        IntPtr Send(NppMsg command, int wParam, int lParam)
+        private IntPtr Send(NppMsg command, int wParam, int lParam)
 		{
             return Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)command, wParam, lParam);
 		}
 
-        IntPtr Send(NppMsg command, IntPtr wParam, IntPtr lParam)
+        private IntPtr Send(NppMsg command, IntPtr wParam, IntPtr lParam)
         {
             return Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)command, wParam, lParam);
         }
@@ -161,20 +161,20 @@ namespace NppPowerTools.PluginInfrastructure
 
         public string GetTabFileFromPosition(int tabIndex)
         {
-            IntPtr id = this.GetBufferIdFromTab(tabIndex);
-            return this.GetTabFile(id);
+            IntPtr id = GetBufferIdFromTab(tabIndex);
+            return GetTabFile(id);
         }
 
         public List<string> GetAllOpenedDocuments
         {
             get
             {
-                int count = this.TabCount;
+                int count = TabCount;
 
                 List<string> files = new List<string>();
                 for (int i = 0; i < count; i++)
                 {
-                    string file = this.GetTabFileFromPosition(i);
+                    string file = GetTabFileFromPosition(i);
 
                     if (!string.IsNullOrEmpty(file))
                         files.Add(file);

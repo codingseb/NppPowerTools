@@ -67,6 +67,9 @@
     <StartProgram Condition="'$(Platform)'=='x86'">$(MSBuildProgramFiles32)\Notepad++\notepad++.exe</StartProgram>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CodingSeb.Converters, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.Converters.1.0.3\lib\net45\CodingSeb.Converters.dll</HintPath>
+    </Reference>
     <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.4.20.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.4.20\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
     </Reference>

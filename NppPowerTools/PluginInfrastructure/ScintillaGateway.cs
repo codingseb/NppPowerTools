@@ -64,7 +64,7 @@ namespace NppPowerTools.PluginInfrastructure
         /// </summary>
         public int GetCurrentLineNumber()
         {
-            return LineFromPosition(GetCurrentPos()); 
+            return LineFromPosition(GetCurrentPos());
         }
 
         /// <summary>

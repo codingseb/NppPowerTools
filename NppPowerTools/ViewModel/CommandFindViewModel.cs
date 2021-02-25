@@ -10,7 +10,7 @@ namespace NppPowerTools
     {
         private static readonly Regex expressionEvalRegex = new Regex("^:(?<histo>:)?(?<expression>.*)$", RegexOptions.Compiled);
 
-        CommandFindWindow commandFindWindow;
+        private CommandFindWindow commandFindWindow;
 
         public string Find { get; set; } = string.Empty;
 
@@ -143,7 +143,7 @@ namespace NppPowerTools
         {
             get
             {
-                return instance ?? (instance = new CommandFindViewModel());
+                return instance ??= new CommandFindViewModel();
             }
         }
 

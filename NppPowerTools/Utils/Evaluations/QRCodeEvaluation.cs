@@ -38,10 +38,7 @@ namespace NppPowerTools.Utils.Evaluations
                     {
                         object result = e.EvaluateArg(i);
 
-                        if (result is Color color)
-                            temp = color;
-                        else
-                            temp = e.EvaluateArg(i).ToString().ToColor();
+                        temp = result is Color color ? color : e.EvaluateArg(i).ToString().ToColor();
                     }
 
                     if (temp.A == 0 && temp.R == 0 && temp.G == 0 && temp.B == 0)

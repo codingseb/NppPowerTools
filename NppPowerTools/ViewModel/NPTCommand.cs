@@ -28,7 +28,6 @@ namespace NppPowerTools
 
         public object ResultOrInfoSup { get; set; }
 
-        
         public IEnumerable<Inline> Inlines
         {
             get

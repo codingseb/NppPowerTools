@@ -51,7 +51,7 @@ namespace NppPowerTools
         {
             get
             {
-                return instance ?? (instance = new ShowPropertiesViewModel());
+                return instance ??= new ShowPropertiesViewModel();
             }
         }
 

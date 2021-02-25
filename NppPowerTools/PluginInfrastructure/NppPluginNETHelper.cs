@@ -71,32 +71,30 @@ namespace NppPowerTools.PluginInfrastructure
 
     public class FuncItems : IDisposable
     {
-        List<FuncItem> _funcItems;
-        int _sizeFuncItem;
-        List<IntPtr> _shortCutKeys;
-        IntPtr _nativePointer;
-        bool _disposed = false;
+        private int _sizeFuncItem;
+        private List<IntPtr> _shortCutKeys;
+        private bool _disposed = false;
 
         public FuncItems()
         {
-            _funcItems = new List<FuncItem>();
+            Items = new List<FuncItem>();
             _sizeFuncItem = Marshal.SizeOf(typeof(FuncItem));
             _shortCutKeys = new List<IntPtr>();
         }
 
         [DllImport("kernel32")]
-        static extern void RtlMoveMemory(IntPtr Destination, IntPtr Source, int Length);
+        private static extern void RtlMoveMemory(IntPtr Destination, IntPtr Source, int Length);
         public void Add(FuncItem funcItem)
         {
-            int oldSize = _funcItems.Count * _sizeFuncItem;
-            _funcItems.Add(funcItem);
-            int newSize = _funcItems.Count * _sizeFuncItem;
+            int oldSize = Items.Count * _sizeFuncItem;
+            Items.Add(funcItem);
+            int newSize = Items.Count * _sizeFuncItem;
             IntPtr newPointer = Marshal.AllocHGlobal(newSize);
 
-            if (_nativePointer != IntPtr.Zero)
+            if (NativePointer != IntPtr.Zero)
             {
-                RtlMoveMemory(newPointer, _nativePointer, oldSize);
-                Marshal.FreeHGlobal(_nativePointer);
+                RtlMoveMemory(newPointer, NativePointer, oldSize);
+                Marshal.FreeHGlobal(NativePointer);
             }
             IntPtr ptrPosNewItem = (IntPtr)(newPointer.ToInt64() + oldSize);
             byte[] aB = Encoding.Unicode.GetBytes(funcItem._itemName + "\0");
@@ -120,32 +118,32 @@ namespace NppPowerTools.PluginInfrastructure
                 Marshal.WriteIntPtr(ptrPosNewItem, IntPtr.Zero);
             }
 
-            _nativePointer = newPointer;
+            NativePointer = newPointer;
         }
 
         public void RefreshItems()
         {
-            IntPtr ptrPosItem = _nativePointer;
-            for (int i = 0; i < _funcItems.Count; i++)
+            IntPtr ptrPosItem = NativePointer;
+            for (int i = 0; i < Items.Count; i++)
             {
                 FuncItem updatedItem = new FuncItem();
-                updatedItem._itemName = _funcItems[i]._itemName;
+                updatedItem._itemName = Items[i]._itemName;
                 ptrPosItem = (IntPtr)(ptrPosItem.ToInt64() + 128);
-                updatedItem._pFunc = _funcItems[i]._pFunc;
+                updatedItem._pFunc = Items[i]._pFunc;
                 ptrPosItem = (IntPtr)(ptrPosItem.ToInt64() + IntPtr.Size);
                 updatedItem._cmdID = Marshal.ReadInt32(ptrPosItem);
                 ptrPosItem = (IntPtr)(ptrPosItem.ToInt64() + 4);
-                updatedItem._init2Check = _funcItems[i]._init2Check;
+                updatedItem._init2Check = Items[i]._init2Check;
                 ptrPosItem = (IntPtr)(ptrPosItem.ToInt64() + 4);
-                updatedItem._pShKey = _funcItems[i]._pShKey;
+                updatedItem._pShKey = Items[i]._pShKey;
                 ptrPosItem = (IntPtr)(ptrPosItem.ToInt64() + IntPtr.Size);
 
-                _funcItems[i] = updatedItem;
+                Items[i] = updatedItem;
             }
         }
 
-        public IntPtr NativePointer { get { return _nativePointer; } }
-        public List<FuncItem> Items { get { return _funcItems; } }
+        public IntPtr NativePointer { get; private set; }
+        public List<FuncItem> Items { get; }
 
         public void Dispose()
         {
@@ -155,7 +153,7 @@ namespace NppPowerTools.PluginInfrastructure
                 try
                 {
                     foreach (IntPtr ptr in _shortCutKeys) Marshal.FreeHGlobal(ptr);
-                    if (_nativePointer != IntPtr.Zero) Marshal.FreeHGlobal(_nativePointer);
+                    if (NativePointer != IntPtr.Zero) Marshal.FreeHGlobal(NativePointer);
                 }
             catch { }
             }

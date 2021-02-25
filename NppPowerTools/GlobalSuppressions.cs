@@ -8,3 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Readability", "RCS1154:Sort enum members.", Justification = "<Pending>", Scope = "type", Target = "~T:NppPowerTools.PluginInfrastructure.NppTbMsg")]
 [assembly: SuppressMessage("Readability", "RCS1234:Duplicate enum value.", Justification = "<Pending>", Scope = "type", Target = "~T:NppPowerTools.PluginInfrastructure.NppTbMsg")]
 [assembly: SuppressMessage("Readability", "RCS1191:Declare enum value as combination of names.", Justification = "<Pending>", Scope = "type", Target = "~T:NppPowerTools.PluginInfrastructure.NppTbMsg")]
+[assembly: SuppressMessage("Readability", "RCS1154:Sort enum members.", Justification = "<Pending>", Scope = "type", Target = "~T:NppPowerTools.Main.WindowLongFlags")]
+[assembly: SuppressMessage("Redundancy", "RCS1163:Unused parameter.", Justification = "<Pending>", Scope = "member", Target = "~M:NppPowerTools.Main.OnNotification(NppPowerTools.PluginInfrastructure.ScNotification)")]
+[assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:NppPowerTools.Main.OnNotification(NppPowerTools.PluginInfrastructure.ScNotification)")]

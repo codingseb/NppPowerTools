@@ -21,7 +21,7 @@ namespace NppPowerTools.PluginInfrastructure
         /// <summary>
         /// environment specific window handle/pointer
         /// </summary>
-        public IntPtr hwndFrom; 
+        public IntPtr hwndFrom;
 
         /// <summary>
         /// CtrlID of the window issuing the notification
@@ -31,7 +31,7 @@ namespace NppPowerTools.PluginInfrastructure
         /// <summary>
         /// The SCN_* notification Code
         /// </summary>
-        public uint Code;       
+        public uint Code;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -2970,9 +2970,9 @@ namespace NppPowerTools.PluginInfrastructure
 
     public class TextToFind : IDisposable
     {
-        Sci_TextToFind _sciTextToFind;
-        IntPtr _ptrSciTextToFind;
-        bool _disposed = false;
+        private Sci_TextToFind _sciTextToFind;
+        private IntPtr _ptrSciTextToFind;
+        private bool _disposed = false;
 
         /// <summary>
         /// text to find
@@ -2999,7 +2999,7 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct Sci_TextToFind
+        private struct Sci_TextToFind
         {
             public CharacterRange chrg;
             public IntPtr lpstrText;
@@ -3011,20 +3011,20 @@ namespace NppPowerTools.PluginInfrastructure
         public CharacterRange chrg { get { _readNativeStruct(); return _sciTextToFind.chrg; } set { _sciTextToFind.chrg = value; _initNativeStruct(); } }
         public CharacterRange chrgText { get { _readNativeStruct(); return _sciTextToFind.chrgText; } }
 
-        void _initNativeStruct()
+        private void _initNativeStruct()
         {
             if (_ptrSciTextToFind == IntPtr.Zero)
                 _ptrSciTextToFind = Marshal.AllocHGlobal(Marshal.SizeOf(_sciTextToFind));
             Marshal.StructureToPtr(_sciTextToFind, _ptrSciTextToFind, false);
         }
 
-        void _readNativeStruct()
+        private void _readNativeStruct()
         {
             if (_ptrSciTextToFind != IntPtr.Zero)
                 _sciTextToFind = (Sci_TextToFind)Marshal.PtrToStructure(_ptrSciTextToFind, typeof(Sci_TextToFind));
         }
 
-        void _freeNativeString()
+        private void _freeNativeString()
         {
             if (_sciTextToFind.lpstrText != IntPtr.Zero) Marshal.FreeHGlobal(_sciTextToFind.lpstrText);
         }

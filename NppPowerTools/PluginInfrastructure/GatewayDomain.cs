@@ -23,7 +23,7 @@ namespace NppPowerTools.PluginInfrastructure
 		}
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="red">a number 0-255</param>
         /// <param name="green">a number 0-255</param>
@@ -63,8 +63,6 @@ namespace NppPowerTools.PluginInfrastructure
     /// </summary>
     public class Position : IEquatable<Position>
     {
-        private readonly int pos;
-
         public static Position From(int pos)
         {
             return new Position(pos);
@@ -72,13 +70,10 @@ namespace NppPowerTools.PluginInfrastructure
 
         public Position(int pos)
         {
-            this.pos = pos;
+            Value = pos;
         }
 
-        public int Value
-        {
-            get { return pos; }
-        }
+        public int Value { get; }
 
         public static implicit operator Position(int pos)
         {
@@ -92,22 +87,22 @@ namespace NppPowerTools.PluginInfrastructure
 
         public static Position operator +(Position a, int b)
         {
-            return new Position(a.pos + b);
+            return new Position(a.Value + b);
         }
 
         public static Position operator +(Position a, Position b)
         {
-            return new Position(a.pos + b.pos);
+            return new Position(a.Value + b.Value);
         }
 
         public static Position operator -(Position a, int b)
         {
-            return new Position(a.pos - b);
+            return new Position(a.Value - b);
         }
 
         public static Position operator -(Position a, Position b)
         {
-            return new Position(a.pos - b.pos);
+            return new Position(a.Value - b.Value);
         }
 
         public static bool operator ==(Position a, Position b)
@@ -118,7 +113,7 @@ namespace NppPowerTools.PluginInfrastructure
 				return false;
 			if (ReferenceEquals(b, null))
 				return false;
-			return  a.pos == b.pos;
+			return  a.Value == b.Value;
         }
 
         public static bool operator !=(Position a, Position b)
@@ -152,27 +147,27 @@ namespace NppPowerTools.PluginInfrastructure
 
 		public override string ToString()
         {
-            return "Position: " + pos;
+            return "Position: " + Value;
         }
 
         public bool Equals(Position other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return pos == other.pos;
+            return Value == other.Value;
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Position)obj);
         }
 
         public override int GetHashCode()
         {
-            return pos;
+            return Value;
         }
     }
 
@@ -224,21 +219,19 @@ namespace NppPowerTools.PluginInfrastructure
 
     public class Cells
     {
-        char[] charactersAndStyles;
-
         public Cells(char[] charactersAndStyles)
         {
-            this.charactersAndStyles = charactersAndStyles;
+            Value = charactersAndStyles;
         }
 
-        public char[] Value { get { return charactersAndStyles; } }
+        public char[] Value { get; }
     }
 
     public class TextRange : IDisposable
     {
-        Sci_TextRange _sciTextRange;
-        IntPtr _ptrSciTextRange;
-        bool _disposed = false;
+        private Sci_TextRange _sciTextRange;
+        private IntPtr _ptrSciTextRange;
+        private bool _disposed = false;
 
         public TextRange(CharacterRange chrRange, int stringCapacity)
         {
@@ -253,7 +246,7 @@ namespace NppPowerTools.PluginInfrastructure
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        struct Sci_TextRange
+        private struct Sci_TextRange
         {
             public CharacterRange chrg;
             public IntPtr lpstrText;
@@ -265,14 +258,14 @@ namespace NppPowerTools.PluginInfrastructure
 
         public CharacterRange chrg { get { _readNativeStruct(); return _sciTextRange.chrg; } set { _sciTextRange.chrg = value; _initNativeStruct(); } }
 
-        void _initNativeStruct()
+        private void _initNativeStruct()
         {
             if (_ptrSciTextRange == IntPtr.Zero)
                 _ptrSciTextRange = Marshal.AllocHGlobal(Marshal.SizeOf(_sciTextRange));
             Marshal.StructureToPtr(_sciTextRange, _ptrSciTextRange, false);
         }
 
-        void _readNativeStruct()
+        private void _readNativeStruct()
         {
             if (_ptrSciTextRange != IntPtr.Zero)
                 _sciTextRange = (Sci_TextRange)Marshal.PtrToStructure(_ptrSciTextRange, typeof(Sci_TextRange));

@@ -8,8 +8,8 @@ namespace NppPowerTools
     {
         #region Fields
 
-        readonly Action<object> execute;
-        readonly Predicate<object> canExecute;
+        private readonly Action<object> execute;
+        private readonly Predicate<object> canExecute;
 
         #endregion
 

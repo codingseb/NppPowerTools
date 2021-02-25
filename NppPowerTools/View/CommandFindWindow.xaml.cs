@@ -11,7 +11,7 @@ namespace NppPowerTools
     /// </summary>
     public partial class CommandFindWindow : Window
     {
-        const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
+        private const int DWMWA_EXTENDED_FRAME_BOUNDS = 9;
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
@@ -22,7 +22,7 @@ namespace NppPowerTools
         }
 
         [DllImport("dwmapi.dll")]
-        static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
+        private static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
 
         public CommandFindWindow()
         {
