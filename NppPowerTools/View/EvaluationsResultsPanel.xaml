@@ -49,7 +49,7 @@
             <local:ResultTemplateSelector.DefaultTemplate>
                 <DataTemplate>
                     <TextBox Text="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
-                             ToolTip="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}, Converter={local:ToJsonConverter}}"
+                             ToolTip="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}, Converter={local:ToJsonConverter ShowBaseType=True}}"
                              ToolTipService.ShowDuration="120000"
                              MinWidth="50"
                              Margin="5,0"

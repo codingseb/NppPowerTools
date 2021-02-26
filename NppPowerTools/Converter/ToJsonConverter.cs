@@ -8,11 +8,13 @@ namespace NppPowerTools
 {
     public class ToJsonConverter : MarkupExtension, IValueConverter
     {
+        public bool ShowBaseType { get; set; }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             try
             {
-                return JsonConvert.SerializeObject(value);
+                return (ShowBaseType ? value.GetType().Name + " : " : string.Empty) + JsonConvert.SerializeObject(value);
             }
             catch
             {
@@ -20,9 +22,7 @@ namespace NppPowerTools
             }
         }
 
-#pragma warning disable RCS1079 // Throwing of new NotImplementedException.
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
-        #pragma warning restore RCS1079 // Throwing of new NotImplementedException.
 
         public override object ProvideValue(IServiceProvider serviceProvider) => this;
     }

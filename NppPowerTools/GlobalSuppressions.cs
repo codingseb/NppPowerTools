@@ -11,3 +11,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Readability", "RCS1154:Sort enum members.", Justification = "<Pending>", Scope = "type", Target = "~T:NppPowerTools.Main.WindowLongFlags")]
 [assembly: SuppressMessage("Redundancy", "RCS1163:Unused parameter.", Justification = "<Pending>", Scope = "member", Target = "~M:NppPowerTools.Main.OnNotification(NppPowerTools.PluginInfrastructure.ScNotification)")]
 [assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:NppPowerTools.Main.OnNotification(NppPowerTools.PluginInfrastructure.ScNotification)")]
+[assembly: SuppressMessage("General", "RCS1079:Throwing of new NotImplementedException.", Justification = "<Pending>", Scope = "member", Target = "~M:NppPowerTools.ToJsonConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)~System.Object")]
