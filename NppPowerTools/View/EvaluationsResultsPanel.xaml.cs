@@ -16,14 +16,6 @@ namespace NppPowerTools
             InitializeComponent();
         }
 
-        private void ListBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Delete && sender is ListBox listBox && listBox.SelectedIndex >= 0)
-            {
-                EvaluationsResultPanelViewModel.Instance.Results.RemoveAt(listBox.SelectedIndex);
-            }
-        }
-
         private void Reset_Variables_Button_Click(object sender, RoutedEventArgs e)
         {
             Evaluation.ResetVariables();
@@ -54,6 +46,18 @@ namespace NppPowerTools
         {
             if(sender is FrameworkElement fe)
                 ShowPropertiesViewModel.Instance.ShowPropertiesWindow(fe.DataContext);
+        }
+
+        private void ListBox_Delete_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = sender is ListBox listBox && listBox.SelectedIndex >= 0;
+            e.Handled = true;
+        }
+
+        private void ListBox_Delete_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(sender is ListBox listBox && listBox.SelectedIndex >= 0)
+                EvaluationsResultPanelViewModel.Instance.Results.RemoveAt(listBox.SelectedIndex);
         }
     }
 }

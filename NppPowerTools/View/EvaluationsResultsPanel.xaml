@@ -76,13 +76,14 @@
         <ListBox Background="White" 
                  ScrollViewer.CanContentScroll="False"
                  ItemsSource="{Binding Results}"
-                 PreviewKeyDown="ListBox_PreviewKeyDown"
                  ItemTemplateSelector="{StaticResource ResultTemplateSelector}">
             <ListBox.Resources>
                 <ContextMenu x:Key="ContextMenu">
                     <MenuItem Header="Show _Properties" Click="Show_Properties_MenuItem_Click"/>
                     <Separator />
                     <MenuItem Header="_Copy" Command="ApplicationCommands.Copy" />
+                    <Separator />
+                    <MenuItem Header="_Delete" Command="ApplicationCommands.Delete" />
                 </ContextMenu>
             </ListBox.Resources>
             <ListBox.ItemContainerStyle>
@@ -94,6 +95,9 @@
                 <CommandBinding Command="ApplicationCommands.Copy"
                                 CanExecute="ListBox_Copy_CommandBinding_CanExecute"
                                 Executed="ListBox_Copy_CommandBinding_Executed"/>
+                <CommandBinding Command="ApplicationCommands.Delete"
+                                CanExecute="ListBox_Delete_CommandBinding_CanExecute"
+                                Executed="ListBox_Delete_CommandBinding_Executed" />
             </ListBox.CommandBindings>
         </ListBox>
     </DockPanel>
