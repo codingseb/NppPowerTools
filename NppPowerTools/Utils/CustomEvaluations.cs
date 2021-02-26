@@ -21,6 +21,7 @@ namespace NppPowerTools.Utils
             IniEvaluation.Instance,
             ClipboardEvaluation.Instance,
             new IpConfigCommands(),
+            ChartPlotEvaluation.Instance
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -34,6 +35,7 @@ namespace NppPowerTools.Utils
             new QRCodeEvaluation(),
             IniEvaluation.Instance,
             ClipboardEvaluation.Instance,
+            ChartPlotEvaluation.Instance,
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>

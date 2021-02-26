@@ -11,7 +11,19 @@ namespace NppPowerTools.Utils.Evaluations
         {
             if (e.Name.Equals("clipboard", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
             {
-                e.Value = Clipboard.ContainsImage() ? Clipboard.GetImage().GetBitmap() : (object)Clipboard.GetText();
+                if (e.This != null)
+                {
+                    if (e.This is Bitmap bitmap)
+                        Clipboard.SetDataObject(bitmap);
+                    else
+                        Clipboard.SetText(e.This?.ToString() ?? string.Empty);
+
+                    e.Value = e.This;
+                }
+                else
+                {
+                    e.Value = Clipboard.ContainsImage() ? Clipboard.GetImage().GetBitmap() : (object)Clipboard.GetText();
+                }
             }
 
             return e.HasValue;
@@ -21,17 +33,19 @@ namespace NppPowerTools.Utils.Evaluations
         {
             if (e.Name.Equals("clipboard", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("cb", StringComparison.OrdinalIgnoreCase))
             {
+                object arg =  null;
+
+                if (e.This != null)
+                    arg = e.This;
                 if (e.Args.Count > 0)
-                {
-                    object arg = e.EvaluateArg(0);
+                    arg = e.EvaluateArg(0);
 
-                    if (arg is Bitmap bitmap)
-                        Clipboard.SetDataObject(bitmap);
-                    else
-                        Clipboard.SetText(arg.ToString());
+                if (arg is Bitmap bitmap)
+                    Clipboard.SetDataObject(bitmap);
+                else
+                    Clipboard.SetText(arg?.ToString() ?? string.Empty);
 
-                    e.Value = arg;
-                }
+                e.Value = arg;
             }
 
             return e.FunctionReturnedValue;

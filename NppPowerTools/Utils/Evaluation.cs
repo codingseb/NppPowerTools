@@ -31,6 +31,8 @@ namespace NppPowerTools.Utils
                     .ForEach(kvp => LastVariables.Remove(kvp.Key));
             }
 
+            CustomEvaluations.Print = null;
+
             ExpressionEvaluator evaluator = new XEval(LastVariables)
             {
                 OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault,
@@ -42,8 +44,6 @@ namespace NppPowerTools.Utils
             evaluator.Namespaces.Add("System.Windows");
 
             CustomEvaluations.EvaluatorInit(evaluator);
-
-            CustomEvaluations.Print = string.Empty;
 
             evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
             evaluator.EvaluateVariable += CustomEvaluations.Evaluator_EvaluateVariable;

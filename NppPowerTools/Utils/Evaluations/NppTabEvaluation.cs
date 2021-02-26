@@ -106,13 +106,7 @@ namespace NppPowerTools.Utils.Evaluations
 
         private static NppAccessEvaluation instance = null;
 
-        public static NppAccessEvaluation Instance
-        {
-            get
-            {
-                return instance ??= new NppAccessEvaluation();
-            }
-        }
+        public static NppAccessEvaluation Instance => instance ??= new NppAccessEvaluation();
 
         private NppAccessEvaluation()
         { }
