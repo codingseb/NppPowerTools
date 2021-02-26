@@ -66,6 +66,13 @@
     <StartProgram Condition="'$(Platform)'=='x64'">$(ProgramW6432)\Notepad++\notepad++.exe</StartProgram>
     <StartProgram Condition="'$(Platform)'=='x86'">$(MSBuildProgramFiles32)\Notepad++\notepad++.exe</StartProgram>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CodingSeb.Converters, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.Converters.1.0.3\lib\net45\CodingSeb.Converters.dll</HintPath>
@@ -75,6 +82,9 @@
     </Reference>
     <Reference Include="CodingSeb.Layouts, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.Layouts.1.0.1\lib\net47\CodingSeb.Layouts.dll</HintPath>
+    </Reference>
+    <Reference Include="CodingSeb.Mvvm, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.Mvvm.1.2.0\lib\net45\CodingSeb.Mvvm.dll</HintPath>
     </Reference>
     <Reference Include="ColorPickerWPF, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ColorPickerWPF.1.0.9\lib\net461\ColorPickerWPF.dll</HintPath>
@@ -268,8 +278,8 @@
     </Reference>
     <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
-    <Reference Include="WriteableBitmapEx.Wpf, Version=1.6.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WriteableBitmapEx.1.6.5\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
+    <Reference Include="WriteableBitmapEx.Wpf, Version=1.6.7.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
+      <HintPath>..\packages\WriteableBitmapEx.1.6.7\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -281,6 +291,7 @@
     <Compile Include="Converter\CustomBoolToVisibilityConverter.cs" />
     <Compile Include="Converter\DrawingColorToWPFBrush.cs" />
     <Compile Include="Converter\ImageTypesToImageSourceConverter.cs" />
+    <Compile Include="Converter\QRCodeTextToImageSourceConverter.cs" />
     <Compile Include="Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Converter\ResultToBrushConverter.cs" />
     <Compile Include="Converter\StringToNullableIntConverter.cs" />
@@ -332,7 +343,6 @@
     <Compile Include="Utils\IniFile.cs" />
     <Compile Include="Utils\LoremIpsum.cs" />
     <Compile Include="Utils\ResultOut.cs" />
-    <Compile Include="Utils\TreeHelperExtensions.cs" />
     <Compile Include="Utils\XEval.cs" />
     <Compile Include="ViewModel\CommandFindViewModel.cs" />
     <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />
@@ -361,10 +371,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="FodyWeavers.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="PluginInfrastructure\DllExport\NppPlugin.DllExport.targets" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml">

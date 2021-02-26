@@ -24,7 +24,7 @@ namespace NppPowerTools
             }
         }
 
-        private void Reset_Variables_Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Reset_Variables_Button_Click(object sender, RoutedEventArgs e)
         {
             Evaluation.ResetVariables();
         }

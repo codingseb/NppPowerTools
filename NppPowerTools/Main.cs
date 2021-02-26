@@ -1,6 +1,7 @@
 using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils;
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -60,6 +61,7 @@ namespace NppPowerTools
 
         public static void OnNotification(ScNotification notification)
         {
+            
         }
 
         internal static void CommandMenuInit()
@@ -156,7 +158,8 @@ namespace NppPowerTools
                         Title = OPTION_WINDOW_TITLE,
                         MinWidth = 450,
                         MinHeight = 350,
-                        SizeToContent = System.Windows.SizeToContent.WidthAndHeight,
+                        Width = 500,
+                        Height = 400,
                         Content = new OptionsWindowContent(),
                     };
 

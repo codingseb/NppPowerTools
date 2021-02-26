@@ -1,5 +1,6 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using QRCoder;
+using System;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
@@ -53,7 +54,7 @@ namespace NppPowerTools.Utils.Evaluations
                 if(e.Args.Count > 2)
                     lightColor = GetColor(2, Config.Instance.QRCodeLightColor);
 
-                e.Value = qrCode.GetGraphic(size, darkColor, lightColor, true);
+                e.Value = qrCode.GetGraphic(Math.Max(Math.Min(size, 500), 1), darkColor, lightColor, true);
 
                 return true;
             }

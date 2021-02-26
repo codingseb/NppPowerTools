@@ -229,7 +229,7 @@ namespace NppPowerTools.Utils
         {
             get
             {
-                return Sections.Select<KeyValuePair<string, Section>, string>(pair => pair.Key).ToList<string>();
+                return Sections.Select(pair => pair.Key).ToList();
             }
         }
 
@@ -1175,7 +1175,7 @@ namespace NppPowerTools.Utils
 
             try
             {
-                result = GetValue(section, key, defaut.Count == 0 ? "" : defaut.Aggregate<string, string, string>("", (total, next) => total + next + sep.ToString(), total => total.Substring(0, total.Length - 1))).Split(sep).ToList<string>();
+                result = GetValue(section, key, defaut.Count == 0 ? "" : defaut.Aggregate("", (total, next) => total + next + sep.ToString(), total => total.Substring(0, total.Length - 1))).Split(sep).ToList();
             }
             catch
             {
@@ -1212,7 +1212,7 @@ namespace NppPowerTools.Utils
 
             try
             {
-                result = GetValue(section, key, defaut).Split(sep).ToList<string>();
+                result = GetValue(section, key, defaut).Split(sep).ToList();
             }
             catch
             { }
@@ -1235,7 +1235,7 @@ namespace NppPowerTools.Utils
 
             try
             {
-                result = GetValueWithoutCreating(section, key, defaut.Count == 0 ? "" : defaut.Aggregate<string, string, string>("", (total, next) => total + next + sep.ToString(), total => total.Substring(0, total.Length - 1))).Split(sep).ToList<string>();
+                result = GetValueWithoutCreating(section, key, defaut.Count == 0 ? "" : defaut.Aggregate("", (total, next) => total + next + sep.ToString(), total => total.Substring(0, total.Length - 1))).Split(sep).ToList();
             }
             catch
             {
@@ -1273,7 +1273,7 @@ namespace NppPowerTools.Utils
 
             try
             {
-                result = GetValueWithoutCreating(section, key, defaut).Split(sep).ToList<string>();
+                result = GetValueWithoutCreating(section, key, defaut).Split(sep).ToList();
             }
             catch
             { }

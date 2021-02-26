@@ -18,22 +18,21 @@ namespace NppPowerTools
             InitializeComponent();
         }
 
-        private void Color_Label_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Color_Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Color color;
-            if(sender is Label label && ColorPickerWindow.ShowDialog(out color))
+            if (sender is Label label && ColorPickerWindow.ShowDialog(out Color color))
             {
                 label.Background = new SolidColorBrush(color);
             }
         }
 
-        private void ClearHistory_Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void ClearHistory_Button_Click(object sender, RoutedEventArgs e)
         {
             Config.Instance.LastScripts = new List<string>();
             MessageBox.Show("History Cleared !!!");
         }
 
-        private void UserControl_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 this.FindVisualParent<Window>().Close();

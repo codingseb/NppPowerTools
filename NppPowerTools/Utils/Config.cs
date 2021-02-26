@@ -110,6 +110,8 @@ namespace NppPowerTools.Utils
 
         public Color QRCodeLightColor { get; set; } = Color.White;
 
+        public string QRCodeTestText { get; set; } = "Test";
+
         public bool ShowExceptionInMessageBox { get; set; } = true;
 
         public bool ShowExceptionInOutput { get; set; } = true;

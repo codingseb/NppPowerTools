@@ -34,7 +34,7 @@ namespace NppPowerTools
             FindTextBox.SelectAll();
         }
 
-        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyboardDevice.Modifiers == ModifierKeys.None && e.Key == Key.Escape)
             {
@@ -47,7 +47,7 @@ namespace NppPowerTools
             }
         }
 
-        private void Window_Deactivated(object sender, System.EventArgs e)
+        private void Window_Deactivated(object sender, EventArgs e)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace NppPowerTools
 
         private void Item_StackPanel_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.OriginalSource.GetDataContext() is NPTCommand command)
+            if (e.OriginalSource is FrameworkElement fe && fe.DataContext is NPTCommand command)
             {
                 command.Execute(this);
                 e.Handled = true;

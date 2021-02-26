@@ -66,18 +66,30 @@
                 </StackPanelEx>
             </TabItem>
             <TabItem Header="_QR Codes" >
-                <AutoGrid Columns="Auto,*" ChildMargin="3">
-                    <Label Content="_Square default size"
-                           Target="{Binding ElementName=QrCodeDefaultSizeTextBox}"/>
-                    <TextBox x:Name="QrCodeDefaultSizeTextBox" Text="{Binding QrCodeDefaultSize, UpdateSourceTrigger=PropertyChanged}" />
-                    <Label Content="Dark Color" />
-                    <Label Background="{Binding QRCodeDarkColor, Converter={local:DrawingColorToWPFBrush}, Mode=TwoWay}" 
-                           BorderBrush="Black" 
-                           BorderThickness="1"
-                           MouseDown="Color_Label_MouseDown"/>
-                    <Label Content="Light Color" />
-                    <Label Background="{Binding QRCodeLightColor, Converter={local:DrawingColorToWPFBrush}}" BorderBrush="Black" BorderThickness="1"/>
-                </AutoGrid>
+                <DockPanel>
+                    <AutoGrid DockPanel.Dock="Top" Columns="Auto,*" ChildMargin="3">
+                        <Label Content="_Square default size"
+                               Target="{Binding ElementName=QrCodeDefaultSizeTextBox}"/>
+                        <TextBox x:Name="QrCodeDefaultSizeTextBox" Text="{Binding QrCodeDefaultSize, UpdateSourceTrigger=PropertyChanged}" />
+                        <Label Content="Dark Color" />
+                        <Label Background="{Binding QRCodeDarkColor, Converter={local:DrawingColorToWPFBrush}, Mode=TwoWay}" 
+                               BorderBrush="Black" 
+                               BorderThickness="1"
+                               MouseDown="Color_Label_MouseDown"/>
+                        <Label Content="Light Color" />
+                        <Label Background="{Binding QRCodeLightColor, Converter={local:DrawingColorToWPFBrush}, Mode=TwoWay}" 
+                               BorderBrush="Black" 
+                               BorderThickness="1"
+                               MouseDown="Color_Label_MouseDown"/>
+                        <Label Content="Test Text" />
+                        <TextBox x:Name="QRTestTextBox" Text="{Binding QRCodeTestText, UpdateSourceTrigger=PropertyChanged}" />
+                    </AutoGrid>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <Image HorizontalAlignment="Left" VerticalAlignment="Top"
+                                Source="{XMultiBinding {Binding Text, ElementName=QRTestTextBox}, {Binding QRCodeDarkColor}, {Binding QRCodeLightColor}, {Binding QrCodeDefaultSize}, Converter={ChainingMultiBindingConverter {ExpressionEvalMultiBindingConverter 'bindings[0]'}, {local:QRCodeTextToImageSourceConverter}}}"
+                                Margin="10"/>
+                    </ScrollViewer>
+                </DockPanel>
             </TabItem>
             <TabItem Header="Pro_xy for http requests" >
                 <DockPanel>
