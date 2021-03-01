@@ -1,4 +1,5 @@
-﻿using NppPowerTools.Utils;
+﻿using Microsoft.Win32;
+using NppPowerTools.Utils;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,6 +59,25 @@ namespace NppPowerTools
         {
             if(sender is ListBox listBox && listBox.SelectedIndex >= 0)
                 EvaluationsResultPanelViewModel.Instance.Results.RemoveAt(listBox.SelectedIndex);
+        }
+
+        private void Save_As_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is ListBox listBox && listBox.SelectedValue != null)
+            {
+                var saveFileDialog = new SaveFileDialog();
+                string filter = "ToString() in textFile|*.txt|Json file|*.json";
+
+                if (listBox.SelectedValue is Bitmap)
+                    filter = "PNG Picture|*.png|" + filter;
+
+                saveFileDialog.Filter = filter;
+
+                if(saveFileDialog.ShowDialog(this.GetTopFrameworkElement() as Window) == true)
+                {
+
+                }
+            }
         }
     }
 }

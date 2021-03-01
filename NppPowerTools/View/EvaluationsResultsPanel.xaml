@@ -81,6 +81,7 @@
                 <ContextMenu x:Key="ContextMenu">
                     <MenuItem Header="Show _Properties" Click="Show_Properties_MenuItem_Click"/>
                     <Separator />
+                    <MenuItem Header="_Save as..." Click="Save_As_MenuItem_Click"/>
                     <MenuItem Header="_Copy" Command="ApplicationCommands.Copy" />
                     <Separator />
                     <MenuItem Header="_Delete" Command="ApplicationCommands.Delete" />
