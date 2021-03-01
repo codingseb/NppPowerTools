@@ -1,6 +1,11 @@
 ﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using NppPowerTools.Utils;
+using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -63,19 +68,48 @@ namespace NppPowerTools
 
         private void Save_As_MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is ListBox listBox && listBox.SelectedValue != null)
+            if (sender is FrameworkElement fe && fe.DataContext != null)
             {
                 var saveFileDialog = new SaveFileDialog();
-                string filter = "ToString() in textFile|*.txt|Json file|*.json";
+                string filter = "ToString() in text file|*.txt|Json file|*.json";
 
-                if (listBox.SelectedValue is Bitmap)
+                int filterOffset = 0;
+
+                if (fe.DataContext is Bitmap)
+                {
                     filter = "PNG Picture|*.png|" + filter;
+                    filterOffset++;
+                }
 
                 saveFileDialog.Filter = filter;
+                saveFileDialog.AddExtension = true;
 
-                if(saveFileDialog.ShowDialog(this.GetTopFrameworkElement() as Window) == true)
+                if (saveFileDialog.ShowDialog() == true)
                 {
+                    try
+                    {
+                        if (saveFileDialog.FilterIndex == 1 && fe.DataContext is Bitmap bitmap)
+                        {
+                            bitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
+                        }
+                        else if (saveFileDialog.FilterIndex == 1 + filterOffset)
+                        {
+                            File.WriteAllText(saveFileDialog.FileName, fe.DataContext.ToString());
+                        }
+                        else if (saveFileDialog.FilterIndex == 2 + filterOffset)
+                        {
+                            File.WriteAllText(saveFileDialog.FileName, JsonConvert.SerializeObject(fe.DataContext, Formatting.Indented));
+                        }
 
+                        if(MessageBox.Show("Do you want to open the resulting file ?", "Open file", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        {
+                            Process.Start(saveFileDialog.FileName);
+                        }
+                    }
+                    catch(Exception exception)
+                    {
+                        MessageBox.Show(exception.Message, "Error while saving", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }
