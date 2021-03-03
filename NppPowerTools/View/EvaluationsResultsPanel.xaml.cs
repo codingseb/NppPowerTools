@@ -80,6 +80,11 @@ namespace NppPowerTools
                     filter = "PNG Picture|*.png|" + filter;
                     filterOffset++;
                 }
+                else if(fe.DataContext is PDFFile)
+                {
+                    filter = "PDF Document|*.pdf|" + filter;
+                    filterOffset++;
+                }
 
                 saveFileDialog.Filter = filter;
                 saveFileDialog.AddExtension = true;
@@ -91,6 +96,10 @@ namespace NppPowerTools
                         if (saveFileDialog.FilterIndex == 1 && fe.DataContext is Bitmap bitmap)
                         {
                             bitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
+                        }
+                        else if (saveFileDialog.FilterIndex == 1 && fe.DataContext is PDFFile pdfFile)
+                        {
+                            pdfFile.Save(saveFileDialog.FileName);
                         }
                         else if (saveFileDialog.FilterIndex == 1 + filterOffset)
                         {
