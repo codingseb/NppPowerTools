@@ -18,7 +18,7 @@ namespace NppPowerTools.Utils
         {
             using (MemoryStream memory = new MemoryStream())
             {
-                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                bitmap.Save(memory, ImageFormat.Png);
                 memory.Position = 0;
                 BitmapImage bitmapimage = new BitmapImage();
                 bitmapimage.BeginInit();
@@ -34,7 +34,7 @@ namespace NppPowerTools.Utils
         {
             using (MemoryStream ms = new MemoryStream())
             {
-                bitmap.Save(ms, bitmap.RawFormat);
+                bitmap.Save(ms, ImageFormat.Png);
                 return ms.ToArray();
             }
         }
