@@ -9,10 +9,10 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class ChartPlotEvaluation : IVariableEvaluation, IFunctionEvaluation
+    public sealed class ChartPlotEvaluation : IVariableEvaluation, IFunctionEvaluation
     {
         private static readonly Regex plotRegex = new Regex($@"plot(?<type>{string.Join("|", Enum.GetNames(typeof(SeriesChartType)))})((?<size>\d+)|w(?<width>\d+)h(?<height>\d+))?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex labelVariableRegex = new Regex(@"[%](?<variable>[pv])({(?<format>[^}]+)})?", RegexOptions.Compiled);
+        private static readonly Regex labelVariableRegex = new Regex("[%](?<variable>[pv])({(?<format>[^}]+)})?", RegexOptions.Compiled);
 
         private Chart GetChart(Match plotMatch, object data, string[] labels = null)
         {
@@ -77,11 +77,9 @@ namespace NppPowerTools.Utils.Evaluations
             else if(new string[] { "topng", "topic", "topicture", "toimage" }.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 && e.This is Chart chart)
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    chart.SaveImage(ms, ChartImageFormat.Png);
-                    e.Value = new Bitmap(ms);
-                }
+                using MemoryStream ms = new MemoryStream();
+                chart.SaveImage(ms, ChartImageFormat.Png);
+                e.Value = new Bitmap(ms);
             }
 
             return e.HasValue;
@@ -106,11 +104,9 @@ namespace NppPowerTools.Utils.Evaluations
             else if (new string[] { "topng", "topic", "topicture", "toimage" }.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 && e.This is Chart chart)
             {
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    chart.SaveImage(ms, ChartImageFormat.Png);
-                    e.Value = new Bitmap(ms);
-                }
+                using MemoryStream ms = new MemoryStream();
+                chart.SaveImage(ms, ChartImageFormat.Png);
+                e.Value = new Bitmap(ms);
             }
 
             return e.FunctionReturnedValue;

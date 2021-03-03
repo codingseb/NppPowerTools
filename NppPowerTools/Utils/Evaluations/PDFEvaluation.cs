@@ -3,7 +3,7 @@ using System;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class PDFEvaluation : IVariableEvaluation, IFunctionEvaluation, IEvaluatorInitializator
+    public sealed class PDFEvaluation : IVariableEvaluation, IFunctionEvaluation, IEvaluatorInitializator
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
