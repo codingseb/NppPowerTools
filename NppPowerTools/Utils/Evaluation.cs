@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
+using System.Diagnostics;
 
 namespace NppPowerTools.Utils
 {
@@ -42,6 +43,10 @@ namespace NppPowerTools.Utils
 
             evaluator.Namespaces.Add("NppPowerTools");
             evaluator.Namespaces.Add("System.Windows");
+            evaluator.Namespaces.Add("System.Diagnostics");
+            evaluator.Types.Add(typeof(IniFile));
+            evaluator.Types.Add(typeof(PDFFile));
+            evaluator.StaticTypesForExtensionsMethods.Add(typeof(Extensions));
 
             CustomEvaluations.EvaluatorInit(evaluator);
 

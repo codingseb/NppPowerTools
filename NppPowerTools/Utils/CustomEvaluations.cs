@@ -21,7 +21,8 @@ namespace NppPowerTools.Utils
             IniEvaluation.Instance,
             ClipboardEvaluation.Instance,
             new IpConfigCommands(),
-            ChartPlotEvaluation.Instance
+            ChartPlotEvaluation.Instance,
+            PDFEvaluation.Instance,
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -36,11 +37,13 @@ namespace NppPowerTools.Utils
             IniEvaluation.Instance,
             ClipboardEvaluation.Instance,
             ChartPlotEvaluation.Instance,
+            PDFEvaluation.Instance,
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
         {
             ExcelEvaluation.Instance,
+            PDFEvaluation.Instance,
         };
 
         public static string Print { get; set; }

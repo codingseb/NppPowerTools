@@ -60,12 +60,12 @@ namespace NppPowerTools
         }
 
         public static void OnNotification(ScNotification notification)
-        {
-            
-        }
+        {}
 
         internal static void CommandMenuInit()
         {
+            //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
             NPTCommands.InitCommands();
             NPTCommands.InitLanguages();
 
@@ -123,6 +123,11 @@ namespace NppPowerTools
             PluginBase.SetCommand(menuIndex++, "Options", ShowOptionWindow, new ShortcutKey(true, false, true, Keys.O));
             PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version}\r\nAuthor : CodingSeb", "About"));
         }
+
+        //private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        //{
+        //    return null;
+        //}
 
         public static void SetEvaluationOutput(int value)
         {

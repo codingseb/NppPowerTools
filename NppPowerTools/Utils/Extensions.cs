@@ -30,6 +30,15 @@ namespace NppPowerTools.Utils
             }
         }
 
+        public static byte[] ToByteArray(this Bitmap bitmap)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitmap.Save(ms, bitmap.RawFormat);
+                return ms.ToArray();
+            }
+        }
+
         public static Bitmap GetBitmap(this BitmapSource source)
         {
             Bitmap bmp = new Bitmap(
