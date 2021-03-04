@@ -107,7 +107,7 @@ namespace NppPowerTools.Utils.Evaluations
 
         #region singleton
 
-        private static IniEvaluation instance = null;
+        private static IniEvaluation instance;
 
         public static IniEvaluation Instance
         {

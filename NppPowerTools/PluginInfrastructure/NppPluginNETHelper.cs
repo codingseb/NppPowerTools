@@ -73,7 +73,7 @@ namespace NppPowerTools.PluginInfrastructure
     {
         private int _sizeFuncItem;
         private List<IntPtr> _shortCutKeys;
-        private bool _disposed = false;
+        private bool _disposed;
 
         public FuncItems()
         {

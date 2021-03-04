@@ -14,7 +14,7 @@ namespace NppPowerTools
     {
         internal const string PluginName = "Npp Power Tools";
 
-        private static System.Windows.Window optionsWindow = null;
+        private static System.Windows.Window optionsWindow;
         private const string OPTION_WINDOW_TITLE = "Options - Npp Power Tools";
 
         //Import the FindWindow API to find our window

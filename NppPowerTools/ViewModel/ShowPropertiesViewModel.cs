@@ -8,7 +8,7 @@ namespace NppPowerTools
 {
     public sealed class ShowPropertiesViewModel
     {
-        private Window propertiesWindow = null;
+        private Window propertiesWindow;
 
         public void ShowPropertiesWindow(object obj)
         {
@@ -45,7 +45,7 @@ namespace NppPowerTools
         }
 
         #region singleton
-        private static ShowPropertiesViewModel instance = null;
+        private static ShowPropertiesViewModel instance;
 
         public static ShowPropertiesViewModel Instance
         {

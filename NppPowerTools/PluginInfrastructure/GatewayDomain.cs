@@ -231,7 +231,7 @@ namespace NppPowerTools.PluginInfrastructure
     {
         private Sci_TextRange _sciTextRange;
         private IntPtr _ptrSciTextRange;
-        private bool _disposed = false;
+        private bool _disposed;
 
         public TextRange(CharacterRange chrRange, int stringCapacity)
         {

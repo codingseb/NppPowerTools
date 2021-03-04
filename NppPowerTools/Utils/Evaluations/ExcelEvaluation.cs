@@ -55,18 +55,13 @@ namespace NppPowerTools.Utils.Evaluations
         }
 
         #region singleton
-        private static ExcelEvaluation instance = null;
+        private static ExcelEvaluation instance;
 
         public static ExcelEvaluation Instance
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = new ExcelEvaluation();
-                }
-
-                return instance;
+                return instance ??= new ExcelEvaluation();
             }
         }
 

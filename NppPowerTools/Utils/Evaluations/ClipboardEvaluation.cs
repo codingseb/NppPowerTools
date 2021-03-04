@@ -52,7 +52,7 @@ namespace NppPowerTools.Utils.Evaluations
         }
 
         #region singleton
-        private static ClipboardEvaluation instance = null;
+        private static ClipboardEvaluation instance;
 
         public static ClipboardEvaluation Instance
         {

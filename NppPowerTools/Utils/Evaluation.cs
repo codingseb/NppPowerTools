@@ -11,6 +11,7 @@ namespace NppPowerTools.Utils
     public static class Evaluation
     {
         internal static IDictionary<string, object> LastVariables { get; set; } = new Dictionary<string, object>();
+        private static ExpressionEvaluator evaluator;
 
         internal static void ResetVariables()
         {
@@ -18,13 +19,43 @@ namespace NppPowerTools.Utils
             MessageBox.Show("Variables reseted");
         }
 
+        public static void ResetEvaluator()
+        {
+            evaluator.EvaluateFunction -= CustomEvaluations.Evaluator_EvaluateFunction;
+            evaluator.EvaluateVariable -= CustomEvaluations.Evaluator_EvaluateVariable;
+
+            evaluator = null;
+        }
+
+        private static void Init()
+        {
+            if (evaluator == null)
+            {
+                evaluator = new XEval();
+
+                evaluator.Namespaces.Add("NppPowerTools");
+                evaluator.Namespaces.Add("System.Windows");
+                evaluator.Namespaces.Add("System.Diagnostics");
+                evaluator.Types.Add(typeof(IniFile));
+                evaluator.Types.Add(typeof(PDFFile));
+                evaluator.StaticTypesForExtensionsMethods.Add(typeof(Extensions));
+
+                CustomEvaluations.EvaluatorInit(evaluator);
+
+                evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
+                evaluator.EvaluateVariable += CustomEvaluations.Evaluator_EvaluateVariable;
+            }
+        }
+
         internal static void Process(bool isScript, string script = null,  Action<object> setResult = null, bool forceErrorInOutput = false)
         {
+            Init();
+
             if (!Config.Instance.KeepVariablesBetweenEvaluations)
             {
                 LastVariables = new Dictionary<string, object>();
             }
-            else if(LastVariables != null)
+            else if (LastVariables != null)
             {
                 LastVariables
                     .ToList()
@@ -32,26 +63,11 @@ namespace NppPowerTools.Utils
                     .ForEach(kvp => LastVariables.Remove(kvp.Key));
             }
 
-            CustomEvaluations.Print = null;
+            evaluator.Variables = LastVariables;
 
-            ExpressionEvaluator evaluator = new XEval(LastVariables)
-            {
-                OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault,
-                OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive,
-                OptionScriptNeedSemicolonAtTheEndOfLastExpression = false,
-            };
-
-            evaluator.Namespaces.Add("NppPowerTools");
-            evaluator.Namespaces.Add("System.Windows");
-            evaluator.Namespaces.Add("System.Diagnostics");
-            evaluator.Types.Add(typeof(IniFile));
-            evaluator.Types.Add(typeof(PDFFile));
-            evaluator.StaticTypesForExtensionsMethods.Add(typeof(Extensions));
-
-            CustomEvaluations.EvaluatorInit(evaluator);
-
-            evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
-            evaluator.EvaluateVariable += CustomEvaluations.Evaluator_EvaluateVariable;
+            evaluator.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault;
+            evaluator.OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive;
+            evaluator.OptionScriptNeedSemicolonAtTheEndOfLastExpression = false;
 
             try
             {
@@ -79,7 +95,7 @@ namespace NppPowerTools.Utils
                         end = scintilla.GetLineEndPosition(i);
                     }
 
-                    if(setResult == null)
+                    if (setResult == null)
                         scintilla.SetSel(new Position(start), new Position(end));
                 }
 
@@ -89,7 +105,7 @@ namespace NppPowerTools.Utils
 
                 Config.Instance.LastScripts.Insert(0, script);
                 while (Config.Instance.LastScripts.Count > Config.Instance.NbrOfLastScriptToKeep)
-                    Config.Instance.LastScripts.RemoveAt(Config.Instance.LastScripts.Count -1);
+                    Config.Instance.LastScripts.RemoveAt(Config.Instance.LastScripts.Count - 1);
 
                 Config.Instance.LastScripts = Config.Instance.LastScripts.Distinct().ToList();
 
@@ -114,8 +130,6 @@ namespace NppPowerTools.Utils
             }
             finally
             {
-                evaluator.EvaluateFunction -= CustomEvaluations.Evaluator_EvaluateFunction;
-                evaluator.EvaluateVariable -= CustomEvaluations.Evaluator_EvaluateVariable;
                 LastVariables = evaluator.Variables;
             }
         }

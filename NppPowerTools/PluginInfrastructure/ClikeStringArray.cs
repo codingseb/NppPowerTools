@@ -8,7 +8,7 @@ namespace NppPowerTools.PluginInfrastructure
     public class ClikeStringArray : IDisposable
     {
         private List<IntPtr> _nativeItems;
-        private bool _disposed = false;
+        private bool _disposed;
 
         public ClikeStringArray(int num, int stringCapacity)
         {

@@ -12,7 +12,7 @@ namespace NppPowerTools
 {
     public sealed class EvaluationsResultPanelViewModel : ViewModelBase
     {
-        private Window resultWindow = null;
+        private Window resultWindow;
 
         public ObservableCollection<object> Results { get; set; } = new ObservableCollection<object>();
 
@@ -32,7 +32,7 @@ namespace NppPowerTools
         {
             ShowResultsWindow();
 
-            result = result ?? Config.Instance.TextWhenResultIsNull;
+            result ??= Config.Instance.TextWhenResultIsNull;
 
             if (ReverseSorting)
                 Results.Insert(0, result);
@@ -75,24 +75,17 @@ namespace NppPowerTools
 
         #region Singleton and propertyChanged
 
-        private static EvaluationsResultPanelViewModel instance = null;
+        private static EvaluationsResultPanelViewModel instance;
 
-        public static EvaluationsResultPanelViewModel Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new EvaluationsResultPanelViewModel();
-                }
-
-                return instance;
-            }
-        }
+        public static EvaluationsResultPanelViewModel Instance => instance ??= new EvaluationsResultPanelViewModel();
 
         private EvaluationsResultPanelViewModel()
         {
-            ClearCommand = new RelayCommand(_ => Results.Clear());
+            ClearCommand = new RelayCommand(_ =>
+            {
+                Results.Clear();
+                Evaluation.ResetEvaluator();
+            });
         }
 
         #endregion

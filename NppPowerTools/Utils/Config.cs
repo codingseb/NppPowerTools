@@ -136,7 +136,7 @@ namespace NppPowerTools.Utils
 
         private static readonly string fileName = Path.Combine(new NotepadPPGateway().PluginsConfigDirectory, "NppPowerTools", "Config.json");
 
-        private static Config instance = null;
+        private static Config instance;
 
         public static Config Instance
         {

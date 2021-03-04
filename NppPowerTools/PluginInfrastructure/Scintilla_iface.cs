@@ -2972,7 +2972,7 @@ namespace NppPowerTools.PluginInfrastructure
     {
         private Sci_TextToFind _sciTextToFind;
         private IntPtr _ptrSciTextToFind;
-        private bool _disposed = false;
+        private bool _disposed;
 
         /// <summary>
         /// text to find

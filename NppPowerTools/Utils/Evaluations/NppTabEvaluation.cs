@@ -104,7 +104,7 @@ namespace NppPowerTools.Utils.Evaluations
 
         #region singleton
 
-        private static NppAccessEvaluation instance = null;
+        private static NppAccessEvaluation instance;
 
         public static NppAccessEvaluation Instance => instance ??= new NppAccessEvaluation();
 

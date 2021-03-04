@@ -137,7 +137,7 @@ namespace NppPowerTools
         #endregion
 
         #region singleton
-        private static CommandFindViewModel instance = null;
+        private static CommandFindViewModel instance;
 
         public static CommandFindViewModel Instance
         {

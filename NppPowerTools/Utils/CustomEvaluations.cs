@@ -63,21 +63,21 @@ namespace NppPowerTools.Utils
             {
                 e.Value = random;
             }
-            else if ((e.Name.Equals("hex", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("hexd", StringComparison.OrdinalIgnoreCase)) && e.This is int intHexValue)
+            else if ((e.Name.Equals("hex", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("hex_d", StringComparison.OrdinalIgnoreCase)) && e.This is int intHexValue)
             {
-                e.Value = $"{(e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0x")}{intHexValue.ToString("X")}";
+                e.Value = (e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0x") + intHexValue.ToString("X");
             }
-            else if ((e.Name.Equals("hex", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("hexd", StringComparison.OrdinalIgnoreCase)) && e.This is double doubleHexValue)
+            else if ((e.Name.Equals("hex", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("hex_d", StringComparison.OrdinalIgnoreCase)) && e.This is double doubleHexValue)
             {
-                e.Value = $"{(e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0x")}{((int)doubleHexValue).ToString("X")}";
+                e.Value = (e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0x") + ((int)doubleHexValue).ToString("X");
             }
-            else if ((e.Name.Equals("bin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("bind", StringComparison.OrdinalIgnoreCase)) && e.This is int intBinValue)
+            else if ((e.Name.Equals("bin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("bin_d", StringComparison.OrdinalIgnoreCase)) && e.This is int intBinValue)
             {
-                e.Value = $"{(e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0b")}{Convert.ToString(intBinValue, 2)}";
+                e.Value = (e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0b") + Convert.ToString(intBinValue, 2);
             }
-            else if ((e.Name.Equals("bin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("bind", StringComparison.OrdinalIgnoreCase)) && e.This is double doubleBinValue)
+            else if ((e.Name.Equals("bin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("bin_d", StringComparison.OrdinalIgnoreCase)) && e.This is double doubleBinValue)
             {
-                e.Value = $"{(e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0b")}{Convert.ToString((int)doubleBinValue, 2)}";
+                e.Value = (e.Name.EndsWith("d", StringComparison.OrdinalIgnoreCase) ? string.Empty : "0b") + Convert.ToString((int)doubleBinValue, 2);
             }
             else if (e.Name.Equals("guid"))
             {
