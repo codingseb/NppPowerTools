@@ -19,18 +19,6 @@
     </UserControl.Resources>
     <DockPanel Margin="5">
         <TabControl>
-            <TabItem Header="_Command panel">
-                <AutoGrid Columns="Auto,*" ChildMargin="3">
-                    <Label Content="_Width"
-                           Target="{Binding ElementName=CommandPanelWidthTextBox}"/>
-                    <TextBox x:Name="CommandPanelWidthTextBox"
-                             Text="{Binding CommandPanelWidth, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Label Content="_Height (max)"
-                           Target="{Binding ElementName=CommandPanelHeightTextBox}"/>
-                    <TextBox x:Name="CommandPanelHeightTextBox"
-                             Text="{Binding CommandPanelHeight, UpdateSourceTrigger=PropertyChanged}"/>
-                </AutoGrid>
-            </TabItem>
             <TabItem Header="_Evaluation">
                 <StackPanelEx>
                     <AutoGrid Columns="Auto,*" ChildMargin="3">
@@ -65,6 +53,18 @@
                     <Button Content="Clea_r History" Click="ClearHistory_Button_Click" />
                 </StackPanelEx>
             </TabItem>
+            <TabItem Header="_Command panel">
+                <AutoGrid Columns="Auto,*" ChildMargin="3">
+                    <Label Content="_Width"
+                           Target="{Binding ElementName=CommandPanelWidthTextBox}"/>
+                    <TextBox x:Name="CommandPanelWidthTextBox"
+                             Text="{Binding CommandPanelWidth, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Content="_Height (max)"
+                           Target="{Binding ElementName=CommandPanelHeightTextBox}"/>
+                    <TextBox x:Name="CommandPanelHeightTextBox"
+                             Text="{Binding CommandPanelHeight, UpdateSourceTrigger=PropertyChanged}"/>
+                </AutoGrid>
+            </TabItem>
             <TabItem Header="_QR Codes" >
                 <DockPanel>
                     <AutoGrid DockPanel.Dock="Top" Columns="Auto,*" ChildMargin="3">
@@ -81,7 +81,7 @@
                                BorderBrush="Black" 
                                BorderThickness="1"
                                MouseDown="Color_Label_MouseDown"/>
-                        <Label Content="Test Text" />
+                        <Label Content="_Test Text" Target="{Binding ElementName=QRTestTextBox}" />
                         <TextBox x:Name="QRTestTextBox" Text="{Binding QRCodeTestText, UpdateSourceTrigger=PropertyChanged}" />
                     </AutoGrid>
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

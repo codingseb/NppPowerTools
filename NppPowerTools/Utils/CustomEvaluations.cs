@@ -38,6 +38,7 @@ namespace NppPowerTools.Utils
             ClipboardEvaluation.Instance,
             ChartPlotEvaluation.Instance,
             PDFEvaluation.Instance,
+            new DBEvaluation(),
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
