@@ -61,6 +61,8 @@ namespace NppPowerTools
                     using var connection = dBConfig.GetConnection();
                     connection.Open();
 
+                    Config.Instance.Save();
+
                     MessageBox.Show("Connection OK", "Success");
                 }
                 catch (Exception exception)
