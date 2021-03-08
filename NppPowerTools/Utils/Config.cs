@@ -2,6 +2,7 @@
 using NppPowerTools.PluginInfrastructure;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -115,6 +116,8 @@ namespace NppPowerTools.Utils
         public bool ShowExceptionInMessageBox { get; set; } = true;
 
         public bool ShowExceptionInOutput { get; set; } = true;
+
+        public ObservableCollection<DBConfig> DBConfigs { get; set; } = new ObservableCollection<DBConfig>();
 
         [JsonIgnore]
         public ResultOut CurrentResultOut => ResultOuts[CurrentResultOutIndex];

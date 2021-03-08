@@ -14,13 +14,13 @@
         <local:ResultTemplateSelector x:Key="ResultTemplateSelector" >
             <local:ResultTemplateSelector.Templates>
                 <DataTemplate DataType="{x:Type draw:Bitmap}">
-                    <Image Source="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}, Converter={local:ImageTypesToImageSourceConverter}}"
+                    <Image Source="{Binding DataContext.Result, RelativeSource={RelativeSource Mode=Self}, Converter={local:ImageTypesToImageSourceConverter}}"
                            Margin="10"/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type ex:Exception}">
                     <DockPanel>
                         <TextBox DockPanel.Dock="Bottom"
-                                 Text="{Binding StackTrace, Mode=OneTime}"
+                                 Text="{Binding Result.StackTrace, Mode=OneTime}"
                                  Margin="20,0"
                                  Visibility="{Binding IsChecked, ElementName=ShowStackTraceToggleButton, Converter={local:CustomBoolToVisibilityConverter}}"
                                  IsReadOnly="True"
@@ -35,7 +35,7 @@
                                       BorderBrush="Transparent"
                                       Width="20"
                                       Content="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}, Converter={local:BoolToStringConverter TrueValue='-', FalseValue='+'}}"/>
-                        <TextBox Text="{Binding Message, Mode=OneTime}" 
+                        <TextBox Text="{Binding Result.Message, Mode=OneTime}" 
                                  IsReadOnly="True"
                                  Foreground="Red" 
                                  FontWeight="Bold"
@@ -47,9 +47,9 @@
                 </DataTemplate>
             </local:ResultTemplateSelector.Templates>
             <local:ResultTemplateSelector.DefaultTemplate>
-                <DataTemplate>
-                    <TextBox Text="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}"
-                             ToolTip="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}, Converter={local:ToJsonConverter ShowBaseType=True}}"
+                <DataTemplate DataType="{x:Type local:EvaluationResult}">
+                    <TextBox Text="{Binding Result}"
+                             ToolTip="{Binding Result, Converter={local:ToJsonConverter ShowBaseType=True}}"
                              ToolTipService.ShowDuration="120000"
                              MinWidth="50"
                              Margin="5,0"
@@ -86,6 +86,10 @@
                     <Separator />
                     <MenuItem Header="_Delete" Command="ApplicationCommands.Delete" />
                 </ContextMenu>
+                <Style TargetType="TextBox">
+                    <EventSetter Event="GotFocus" Handler="ListBox_Control_GotFocus" />
+                    <EventSetter Event="PreviewKeyDown" Handler="ListBox_Control_PreviewKeyDown" />
+                </Style>
             </ListBox.Resources>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">

@@ -68,6 +68,7 @@ namespace NppPowerTools
 
             NPTCommands.InitCommands();
             NPTCommands.InitLanguages();
+            DBConfig.InitDBTypesList();
 
             int menuIndex = 0;
 

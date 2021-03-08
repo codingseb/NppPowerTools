@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Input;
+using System;
 
 namespace NppPowerTools
 {
@@ -36,6 +37,37 @@ namespace NppPowerTools
         {
             if (e.Key == Key.Escape)
                 this.FindVisualParent<Window>().Close();
+        }
+
+        private void AddConnection_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var dbConfig = new DBConfig()
+            {
+                Id = "mydb",
+                Name = "New Connection"
+            };
+
+            Config.Instance.DBConfigs.Add(dbConfig);
+            DBConfigsListBox.SelectedValue = dbConfig;
+        }
+
+        private void DBCheck_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(sender is FrameworkElement frameworkElement
+                && frameworkElement.DataContext is DBConfig dBConfig)
+            {
+                try
+                {
+                    using var connection = dBConfig.GetConnection();
+                    connection.Open();
+
+                    MessageBox.Show("Connection OK", "Success");
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message, "Connection Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

@@ -1,26 +1,73 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using System;
-using System.Data;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
     public class DBEvaluation : IFunctionEvaluation
     {
-        private Regex sqlRegex = new Regex("sql_(?<connection>[a-zA-Z0-9])_(?<command>s)");
+        private static readonly Regex sqlRegex = new Regex("(?<value>v)?sql_(?<connection>[a-zA-Z0-9]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
-            if(e.Name.Equals("sql", StringComparison.OrdinalIgnoreCase))
+            Match match = sqlRegex.Match(e.Name);
+
+            if(match.Success)
             {
-                IDbConnection dbConnection = new MySqlConnector.MySqlConnection("Server=localhost;User ID=root;Password=PTM2000;Database=mmdb");
-                var command = dbConnection.CreateCommand();
+                DBConfig dBConfig = Config.Instance.DBConfigs.FirstOrDefault(dBConfig => dBConfig.Id.Equals(match.Groups["connection"].Value, StringComparison.OrdinalIgnoreCase));
 
-                command.CommandText = e.EvaluateArg<string>(0);
+                if (dBConfig != null)
+                {
+                    using var dbConnection = dBConfig.GetConnection();
+                    dbConnection.Open();
 
-                e.Value = command;
+                    using var command = dbConnection.CreateCommand();
+                    command.CommandText = e.EvaluateArg<string>(0);
 
-                //while(reader)
+                    if (e.Args.Count > 1)
+                    {
+                        Delegate lambda = e.EvaluateArg<Delegate>(1);
+                    }
+                    else
+                    {
+                        var reader = command.ExecuteReader();
+
+                        List<List<object>> result = new List<List<object>>();
+
+                        while(reader.Read())
+                        {
+                            object[] row = new object[reader.FieldCount];
+
+                            reader.GetValues(row);
+
+                            result.Add(row.ToList());
+                        }
+
+                        if (match.Groups["value"].Success)
+                        {
+                            if (result.Count == 0)
+                            {
+                                e.Value = null;
+                            }
+                            else if (result.Count == 1)
+                            {
+                                if (result[0].Count == 1)
+                                    e.Value = result[0][0];
+                                else
+                                    e.Value = result[0];
+                            }
+                        }
+
+                        if (!e.FunctionReturnedValue)
+                            e.Value = result;
+                    }
+                }
+                else
+                {
+                    throw new ExpressionEvaluatorSyntaxErrorException($"No DB Connection with ID = {match.Groups["connection"].Value}");
+                }
             }
 
             return e.FunctionReturnedValue;

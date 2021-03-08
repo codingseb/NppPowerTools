@@ -91,6 +91,54 @@
                     </ScrollViewer>
                 </DockPanel>
             </TabItem>
+            <TabItem Header="_Databases">
+                <DockPanel>
+                    <DockPanel Width="150">
+                        <Button DockPanel.Dock="Top" 
+                                Content="_Add Connection"
+                                Click="AddConnection_Button_Click"/>
+                        <ListBox MinHeight="200"
+                                 x:Name="DBConfigsListBox"
+                                 ItemsSource="{Binding DBConfigs}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock Text="{XMultiBinding {Binding Name}, {Binding Id}, Converter={StringFormatMultiBindingConverter Format='{}{0} ({1})' }}" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                    <AutoGrid Margin="5"
+                              Columns="Auto,*"
+                              DataContext="{Binding SelectedValue, ElementName=DBConfigsListBox}">
+                        <Label Content="_Name"
+                               Target="{Binding ElementName=DbNameTextBox}"/>
+                        <TextBox x:Name="DbNameTextBox" Text="{Binding Name}" />
+                        <Label Content="_Id"
+                               Target="{Binding ElementName=DbIdTextBox}"/>
+                        <TextBox x:Name="DbIdTextBox" Text="{Binding Id}" />
+                        <Label Content="Connection _type"
+                               Target="{Binding ElementName=DbTypeComboBox}"/>
+                        <ComboBox x:Name="DbTypeComboBox" 
+                                  SelectedValue="{Binding DBTypeName}"
+                                  ItemsSource="{Binding Source={x:Static utils:DBConfig.DBTypesList}}"
+                                  SelectedValuePath="Name">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name, Converter={StringReplaceConverter OldString='Connection', NewString=''}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Label Content="Connection_String"
+                               Target="{Binding ElementName=DbIdTextBox}"/>
+                        <TextBox x:Name="DbConnectionStringTextBox" Text="{Binding ConnectionString}" />
+                        <Button Grid.ColumnSpan="2" 
+                                Content="_Check Connection"
+                                Click="DBCheck_Button_Click"/>
+                    </AutoGrid>
+                </DockPanel>
+            </TabItem>
             <TabItem Header="Pro_xy for http requests" >
                 <DockPanel>
                     <DockPanel.Resources>

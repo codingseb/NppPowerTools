@@ -13,7 +13,10 @@ namespace NppPowerTools
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            return Templates.Find(t => (t.DataType as Type).IsAssignableFrom(item.GetType())) ?? DefaultTemplate;
+            if (item is EvaluationResult evaluationResult)
+                return Templates.Find(t => (t.DataType as Type).IsAssignableFrom(evaluationResult.Result.GetType())) ?? DefaultTemplate;
+            else
+                return null;
         }
     }
 }

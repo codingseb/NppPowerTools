@@ -14,7 +14,7 @@ namespace NppPowerTools
     {
         private Window resultWindow;
 
-        public ObservableCollection<object> Results { get; set; } = new ObservableCollection<object>();
+        public ObservableCollection<EvaluationResult> Results { get; set; } = new ObservableCollection<EvaluationResult>();
 
         public ICommand ClearCommand { get; set; }
 
@@ -24,7 +24,7 @@ namespace NppPowerTools
             set
             {
                 Config.Instance.ReverseSortingInResultsWindow = value;
-                Results = new ObservableCollection<object>(Results.Reverse());
+                Results = new ObservableCollection<EvaluationResult>(Results.Reverse());
             }
         }
 
@@ -35,9 +35,9 @@ namespace NppPowerTools
             result ??= Config.Instance.TextWhenResultIsNull;
 
             if (ReverseSorting)
-                Results.Insert(0, result);
+                Results.Insert(0, new EvaluationResult { Result = result });
             else
-                Results.Add(result);
+                Results.Add(new EvaluationResult { Result = result });
         }
 
         public void ShowResultsWindow()
