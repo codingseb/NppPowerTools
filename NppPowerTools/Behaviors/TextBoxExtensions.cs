@@ -24,6 +24,17 @@ namespace NppPowerTools.Behaviors
             if (d is TextBox Target)
             {
                 Target.SelectionStart = (int)e.NewValue;
+
+                if (Target.SelectionStart != (int)e.NewValue)
+                {
+                    void Target_TextChanged(object _, TextChangedEventArgs __)
+                    {
+                        Target.SelectionStart = (int)e.NewValue;
+                        Target.TextChanged -= Target_TextChanged;
+                    }
+
+                    Target.TextChanged += Target_TextChanged;
+                }
             }
         }
 

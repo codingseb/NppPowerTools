@@ -1,5 +1,6 @@
 ﻿using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils;
+using PropertyChanged;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -14,8 +15,10 @@ namespace NppPowerTools
 
         public string Find { get; set; } = string.Empty;
 
+        [DoNotCheckEquality]
         public int FindSelectionStart { get; set; }
 
+        [DoNotCheckEquality]
         public int FindSelectionLength { get; set; }
 
         public IEnumerable<NPTCommand> CommandsList => GetFilteredList(Find);

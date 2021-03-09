@@ -33,9 +33,9 @@
                          GotFocus="FindTextBox_GotFocus"
                          PreviewKeyDown="FindTextBox_PreviewKeyDown"
                          BorderThickness="0"
+                         Text="{Binding Find, UpdateSourceTrigger=PropertyChanged, Delay=300}" 
                          b:TextBoxExtensions.SelectionStart="{Binding FindSelectionStart}"
                          b:TextBoxExtensions.SelectionLength="{Binding FindSelectionLength}"
-                         Text="{Binding Find, UpdateSourceTrigger=PropertyChanged, Delay=300}" 
                          Padding="5" />
             </Border>
             <ListBox x:Name="CommandsListBox"
@@ -46,15 +46,9 @@
                      Visibility="{Binding CommandsList.Count, Converter={local:CollectionCountToVisibilityConverter} }">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type local:NPTCommand}" >
-                        <DockPanel Margin="5" ToolTip="{Binding Name}">
-                            <!--<Border Margin="10,0"
-                                    Visibility="{Binding Shortcut, Converter={local:NullToVisibilityConverter}}"
-                                    Padding="5,1"
-                                    DockPanel.Dock="Right"
-                                    Background="LightGray"
-                                    CornerRadius="4">
-                                <TextBlock  Text="{Binding Shortcut}" />
-                            </Border>-->
+                        <DockPanel Margin="5" 
+                                   ToolTip="{Binding Name}" 
+                                   IsHitTestVisible="False">
                             <TextBlock DockPanel.Dock="Bottom"
                                        Text="{Binding ResultOrInfoSup}"
                                        FontWeight="Bold"

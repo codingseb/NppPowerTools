@@ -100,8 +100,8 @@ namespace NppPowerTools
             {
                 CommandFindViewModel.Instance.Show();
                 CommandFindViewModel.Instance.Find = "::";
-                CommandFindViewModel.Instance.FindSelectionLength = 0;
                 CommandFindViewModel.Instance.FindSelectionStart = 2;
+                CommandFindViewModel.Instance.FindSelectionLength = 0;
             }, new ShortcutKey(true, false, false, Keys.D0));
 
             for(int i = 0; i < 9; i++)
