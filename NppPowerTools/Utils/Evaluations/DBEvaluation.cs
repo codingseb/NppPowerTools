@@ -23,6 +23,15 @@ namespace NppPowerTools.Utils.Evaluations
                     using var dbConnection = dBConfig.GetConnection();
                     dbConnection.Open();
 
+                    if (!string.IsNullOrWhiteSpace(dBConfig.InitCommands))
+                    {
+                        using (var initCommand = dbConnection.CreateCommand())
+                        {
+                            initCommand.CommandText = dBConfig.InitCommands;
+                            initCommand.ExecuteNonQuery();
+                        }
+                    }
+
                     using var command = dbConnection.CreateCommand();
                     command.CommandText = e.EvaluateArg<string>(0);
 

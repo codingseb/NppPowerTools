@@ -17,6 +17,7 @@ namespace NppPowerTools.Utils
         public string Name { get; set; }
         public string ConnectionString { get; set; }
         public string DBTypeName { get; set; }
+        public string InitCommands { get; set; }
 
         public IDbConnection GetConnection() => (IDbConnection)Activator.CreateInstance(DBTypesList.Find(t => t.Name.Equals(DBTypeName)), new object[] { ConnectionString });
 

@@ -164,8 +164,8 @@ namespace NppPowerTools
                         Title = OPTION_WINDOW_TITLE,
                         MinWidth = 450,
                         MinHeight = 350,
-                        Width = 500,
-                        Height = 400,
+                        Width = 600,
+                        Height = 500,
                         Content = new OptionsWindowContent(),
                     };
 

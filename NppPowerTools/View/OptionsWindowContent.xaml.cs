@@ -71,5 +71,23 @@ namespace NppPowerTools
                 }
             }
         }
+
+        private void DBListBox_Delete_CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = sender is ListBox listBox && listBox.SelectedIndex >= 0;
+            e.Handled = true;
+        }
+
+        private void DBListBox_Delete_CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (sender is ListBox listBox)
+                DBDelete(listBox);
+        }
+
+        private void DBDelete(ListBox listBox)
+        {
+            if (listBox?.SelectedIndex >= 0 && MessageBox.Show("This will delete the selected DB connection.\r\nDo you want to continue", "Delete DB connection", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                Config.Instance.DBConfigs.RemoveAt(listBox.SelectedIndex);
+        }
     }
 }

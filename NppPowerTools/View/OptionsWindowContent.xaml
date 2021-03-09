@@ -100,6 +100,11 @@
                         <ListBox MinHeight="200"
                                  x:Name="DBConfigsListBox"
                                  ItemsSource="{Binding DBConfigs}">
+                            <ListBox.CommandBindings>
+                                <CommandBinding Command="ApplicationCommands.Delete"
+                                    CanExecute="DBListBox_Delete_CommandBinding_CanExecute"
+                                    Executed="DBListBox_Delete_CommandBinding_Executed" />
+                            </ListBox.CommandBindings>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
@@ -133,8 +138,16 @@
                         <Label Content="Connection_String"
                                Target="{Binding ElementName=DbIdTextBox}"/>
                         <TextBox x:Name="DbConnectionStringTextBox" Text="{Binding ConnectionString}" />
+                        <Label Content="_Init"
+                               Target="{Binding ElementName=DbInitTextBox}"/>
+                        <TextBox x:Name="DbInitTextBox" Text="{Binding InitCommands}"
+                                 AcceptsReturn="True"
+                                 ScrollViewer.CanContentScroll="True"
+                                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                 Height="50"/>
                         <Button Grid.ColumnSpan="2" 
-                                Content="_Check Connection"
+                                Margin="5"
+                                Content="Check Connec_tion"
                                 Click="DBCheck_Button_Click"/>
                     </AutoGrid>
                 </DockPanel>
