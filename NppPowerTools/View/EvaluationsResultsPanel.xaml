@@ -17,6 +17,17 @@
                     <Image Source="{Binding DataContext.Result, RelativeSource={RelativeSource Mode=Self}, Converter={local:ImageTypesToImageSourceConverter}}"
                            Margin="10"/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type local:DBResultViewModel}">
+                    <Grid>
+                        <DataGrid Margin="5"
+                                  MaxHeight="300"
+                                  MaxWidth="{Binding ActualWidth ,RelativeSource={RelativeSource AncestorType=ListBox}, Converter={DoubleAddValueConverter -50 }}"
+                                  Loaded="DataGrid_Loaded"
+                                  ItemsSource="{Binding Result.Results}" 
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"/>
+                    </Grid>
+                </DataTemplate>
                 <DataTemplate DataType="{x:Type ex:Exception}">
                     <DockPanel>
                         <TextBox DockPanel.Dock="Bottom"

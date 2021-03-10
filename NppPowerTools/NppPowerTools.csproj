@@ -386,6 +386,7 @@
     <Compile Include="Utils\ResultOut.cs" />
     <Compile Include="Utils\XEval.cs" />
     <Compile Include="ViewModel\CommandFindViewModel.cs" />
+    <Compile Include="ViewModel\DBResultViewModel.cs" />
     <Compile Include="ViewModel\EvaluationResult.cs" />
     <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />
     <Compile Include="ViewModel\NPTCommand.cs" />

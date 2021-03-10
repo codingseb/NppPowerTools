@@ -1,10 +1,9 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using NppPowerTools.PluginInfrastructure;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
-using System.Diagnostics;
 
 namespace NppPowerTools.Utils
 {

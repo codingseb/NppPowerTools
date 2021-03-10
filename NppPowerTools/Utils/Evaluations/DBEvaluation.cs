@@ -1,14 +1,17 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Dynamic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class DBEvaluation : IFunctionEvaluation
+    public class DBEvaluation : IFunctionEvaluation, IVariableEvaluation
     {
-        private static readonly Regex sqlRegex = new Regex("(?<value>v)?sql_(?<connection>[a-zA-Z0-9]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex sqlRegex = new Regex("sql_(?<connection>[a-zA-Z0-9]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex valuePropRegex = new Regex("^(to_?)?v(al(ue)?)?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
@@ -43,34 +46,20 @@ namespace NppPowerTools.Utils.Evaluations
                     {
                         var reader = command.ExecuteReader();
 
-                        List<List<object>> result = new List<List<object>>();
+                        List<dynamic> result = new List<dynamic>();
 
-                        while(reader.Read())
+                        int i = 0;
+
+                        while(i < 100 && reader.Read())
                         {
-                            object[] row = new object[reader.FieldCount];
-
-                            reader.GetValues(row);
-
-                            result.Add(row.ToList());
+                            result.Add(ToExpando(reader));
+                            i++;
                         }
 
-                        if (match.Groups["value"].Success)
+                        e.Value = new DBResultViewModel()
                         {
-                            if (result.Count == 0)
-                            {
-                                e.Value = null;
-                            }
-                            else if (result.Count == 1)
-                            {
-                                if (result[0].Count == 1)
-                                    e.Value = result[0][0];
-                                else
-                                    e.Value = result[0];
-                            }
-                        }
-
-                        if (!e.FunctionReturnedValue)
-                            e.Value = result;
+                            Results = result
+                        };
                     }
                 }
                 else
@@ -81,5 +70,47 @@ namespace NppPowerTools.Utils.Evaluations
 
             return e.FunctionReturnedValue;
         }
+
+        private static dynamic ToExpando(IDataRecord record)
+        {
+            var expandoObject = new ExpandoObject() as IDictionary<string, object>;
+
+            for (var i = 0; i < record.FieldCount; i++)
+                expandoObject.Add(record.GetName(i), record[i]);
+
+            return expandoObject;
+        }
+
+        public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
+        {
+            if(e.This is DBResultViewModel dBResultViewModel && valuePropRegex.IsMatch(e.Name))
+            {
+                if(dBResultViewModel.Results.Count == 1 && dBResultViewModel.Results[0] is IDictionary<string,object> dict)
+                {
+                    if (dict.Count == 1)
+                        e.Value = dict[dict.Keys.First()];
+                    else
+                        e.Value = dBResultViewModel.Results[0];
+                }
+                else
+                {
+                    e.Value = dBResultViewModel.Results;
+                }
+            }
+
+            return e.HasValue;
+        }
+
+        #region Singleton          
+
+        private static DBEvaluation instance;
+
+        public static DBEvaluation Instance => instance ?? (instance = new DBEvaluation());
+
+        private DBEvaluation()
+        { }
+
+        #endregion
+
     }
 }

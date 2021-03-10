@@ -7,18 +7,18 @@
              xmlns:pt="http://propertytools.org/wpf"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
+    <DockPanel DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}">
         <GroupBox Header="Json"
                   DockPanel.Dock="Bottom"
                   MaxHeight="300">
             <TextBox TextWrapping="WrapWithOverflow"
-                     Text="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}, Converter={local:ToJsonConverter}}"
+                     Text="{Binding Result, Converter={local:ToJsonConverter}}"
                      Background="Transparent"
                      AcceptsReturn="True" 
                      IsReadOnly="True"
                      VerticalScrollBarVisibility="Auto"
                      HorizontalScrollBarVisibility="Auto" />
         </GroupBox>
-        <pt:PropertyGrid SelectedObject="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}"  />
+        <pt:PropertyGrid SelectedObject="{Binding Result}" />
     </DockPanel>
 </UserControl>

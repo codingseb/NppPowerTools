@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Collections.Generic;
+using System.Windows.Data;
 
 namespace NppPowerTools
 {
@@ -164,6 +165,27 @@ namespace NppPowerTools
                         return;
                     Copy(listBox);
                     e.Handled = true;
+                }
+            }
+        }
+
+        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is DataGrid dataGrid && dataGrid.Columns.Count == 0)
+            {
+                var rows = dataGrid.ItemsSource.OfType<IDictionary<string, object>>();
+                var columns = rows.SelectMany(d => d.Keys).Distinct(StringComparer.OrdinalIgnoreCase);
+
+                foreach (string text in columns)
+                {
+                    // now set up a column and binding for each property
+                    var column = new DataGridTextColumn
+                    {
+                        Header = text,
+                        Binding = new Binding(text)
+                    };
+
+                    dataGrid.Columns.Add(column);
                 }
             }
         }
