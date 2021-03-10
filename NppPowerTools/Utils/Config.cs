@@ -140,13 +140,16 @@ namespace NppPowerTools.Utils
         private static readonly string fileName = Path.Combine(new NotepadPPGateway().PluginsConfigDirectory, "NppPowerTools", "Config.json");
 
         private static Config instance;
+        private static bool inCreation;
+        private static bool canSave;
 
         public static Config Instance
         {
             get
             {
-                if (instance == null)
+                if (instance == null && !inCreation)
                 {
+                    inCreation = true;
                     if (File.Exists(fileName))
                     {
                         try
@@ -156,11 +159,14 @@ namespace NppPowerTools.Utils
                         catch { }
                     }
 
+                    canSave = true;
+
                     if (instance == null)
                     {
                         instance = new Config();
                         instance.Save();
                     }
+                    inCreation = false;
                 }
 
                 return instance;
@@ -169,29 +175,40 @@ namespace NppPowerTools.Utils
 
         public void Save()
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+            if (canSave)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
 
-            try
-            {
-                File.WriteAllText(fileName, JsonConvert.SerializeObject(this, Formatting.Indented));
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.ToString(), "Config save error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    File.WriteAllText(fileName, JsonConvert.SerializeObject(this, Formatting.Indented));
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString(), "Config save error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
         private Config()
-        { }
+        {
+            DBConfigs.CollectionChanged += DBConfigs_CollectionChanged;
+        }
 
         #endregion
 
         #region NotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Save();
+        }
+
+        private void DBConfigs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
             Save();
         }
 

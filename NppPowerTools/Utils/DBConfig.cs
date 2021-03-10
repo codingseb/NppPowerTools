@@ -1,15 +1,17 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace NppPowerTools.Utils
 {
-    public class DBConfig
+    public class DBConfig : INotifyPropertyChanged
     {
         private static readonly string connectionsDirectory = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "DBConnectors");
 
@@ -33,5 +35,18 @@ namespace NppPowerTools.Utils
                     result => result);
             DBTypesList.Add(typeof(System.Data.SQLite.SQLiteConnection));
         }
+
+        #region NotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Config.Instance?.Save();
+        }
+
+        #endregion
+
     }
 }
