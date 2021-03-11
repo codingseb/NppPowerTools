@@ -171,17 +171,14 @@ namespace NppPowerTools
 
         private void DataGrid_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender is DataGrid dataGrid && dataGrid.Columns.Count == 0)
+            if (sender is DataGrid dataGrid && dataGrid.DataContext is EvaluationResult evaluationResult && evaluationResult.Result is DBResultViewModel dBResultViewModel)
             {
-                var rows = dataGrid.ItemsSource.OfType<IDictionary<string, object>>();
-                var columns = rows.SelectMany(d => d.Keys).Distinct(StringComparer.OrdinalIgnoreCase);
-
-                foreach (string text in columns)
+                foreach (string text in dBResultViewModel.ColumnsNames)
                 {
                     // now set up a column and binding for each property
                     var column = new DataGridTextColumn
                     {
-                        Header = text,
+                        Header = new TextBlock() { Text = text },
                         Binding = new Binding(text)
                     };
 

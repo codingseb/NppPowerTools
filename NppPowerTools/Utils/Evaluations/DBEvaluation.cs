@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class DBEvaluation : IFunctionEvaluation, IVariableEvaluation
+    public sealed class DBEvaluation : IFunctionEvaluation, IVariableEvaluation
     {
-        private static readonly Regex sqlRegex = new Regex("sql_(?<connection>[a-zA-Z0-9]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex sqlRegex = new Regex(@"sql((?<full>f(ull)?)|(?<number>\d+))?_(?<connection>[a-zA-Z0-9]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex valuePropRegex = new Regex("^(to_?)?v(al(ue)?)?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex csvRegex = new Regex("^(to_?)?csv(?<noheader>_?no?(h(ead(er)?)?))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
@@ -28,15 +30,29 @@ namespace NppPowerTools.Utils.Evaluations
 
                     if (!string.IsNullOrWhiteSpace(dBConfig.InitCommands))
                     {
-                        using (var initCommand = dbConnection.CreateCommand())
-                        {
-                            initCommand.CommandText = dBConfig.InitCommands;
-                            initCommand.ExecuteNonQuery();
-                        }
+                        using var initCommand = dbConnection.CreateCommand();
+                        initCommand.CommandText = dBConfig.InitCommands;
+                        initCommand.ExecuteNonQuery();
                     }
 
                     using var command = dbConnection.CreateCommand();
                     command.CommandText = e.EvaluateArg<string>(0);
+                    Func<int, bool> numberLimit;
+
+                    if(match.Groups["full"].Success)
+                    {
+                        numberLimit = _ => true;
+                    }
+                    else if(match.Groups["number"].Success)
+                    {
+                        int number = int.Parse(match.Groups["number"].Value);
+
+                        numberLimit = i => i < number;
+                    }
+                    else
+                    {
+                        numberLimit = i => i < 100;
+                    }
 
                     if (e.Args.Count > 1)
                     {
@@ -48,16 +64,14 @@ namespace NppPowerTools.Utils.Evaluations
 
                         List<dynamic> result = new List<dynamic>();
 
-                        int i = 0;
-
-                        while(i < 100 && reader.Read())
+                        for (int i = 0; reader.Read() && numberLimit(i); i++)
                         {
                             result.Add(ToExpando(reader));
-                            i++;
                         }
 
                         e.Value = new DBResultViewModel()
                         {
+                            ColumnsNames = Enumerable.Range(0, reader.FieldCount).Select(n => reader.GetName(n)).ToList(),
                             Results = result
                         };
                     }
@@ -65,6 +79,51 @@ namespace NppPowerTools.Utils.Evaluations
                 else
                 {
                     throw new ExpressionEvaluatorSyntaxErrorException($"No DB Connection with ID = {match.Groups["connection"].Value}");
+                }
+            }
+            else if (e.This is DBResultViewModel dBResultViewModel)
+            {
+                Match csvMatch;
+
+                if (valuePropRegex.IsMatch(e.Name))
+                {
+                    if (dBResultViewModel.Results.Count == 1 && dBResultViewModel.Results[0] is IDictionary<string, object> dict)
+                    {
+                        if (dict.Count == 1)
+                            e.Value = dict[dict.Keys.First()];
+                        else
+                            e.Value = dBResultViewModel.Results[0];
+                    }
+                    else
+                    {
+                        e.Value = dBResultViewModel.Results;
+                    }
+                }
+                else if ((csvMatch = csvRegex.Match(e.Name)).Success)
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    object[] args = e.EvaluateArgs();
+
+                    string separator = args.OfType<string>().FirstOrDefault() ?? ";";
+
+                    if (!csvMatch.Groups["noheader"].Success)
+                    {
+                        stringBuilder.AppendLine(string.Join(separator, dBResultViewModel.ColumnsNames.Select(n => "\"" + n + "\"")));
+                    }
+
+                    foreach (IDictionary<string, object> result in dBResultViewModel.Results)
+                    {
+                        stringBuilder.AppendLine(string.Join(separator, dBResultViewModel.ColumnsNames.Select(n =>
+                        {
+                            if (result[n] is string s)
+                                return "\"" + s.Replace("\"", "\"\"");
+                            else
+                                return result[n].ToString();
+                        })));
+                    }
+
+                    e.Value = stringBuilder.ToString();
                 }
             }
 
@@ -83,18 +142,45 @@ namespace NppPowerTools.Utils.Evaluations
 
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
-            if(e.This is DBResultViewModel dBResultViewModel && valuePropRegex.IsMatch(e.Name))
+            if (e.Name.Equals("test"))
             {
-                if(dBResultViewModel.Results.Count == 1 && dBResultViewModel.Results[0] is IDictionary<string,object> dict)
+                e.Value = DateTime.Now.ToString("dd.MM.yyyy");
+                return true;
+            }
+
+            if (e.This is DBResultViewModel dBResultViewModel)
+            {
+                Match csvMatch;
+
+                if (valuePropRegex.IsMatch(e.Name))
                 {
-                    if (dict.Count == 1)
-                        e.Value = dict[dict.Keys.First()];
+                    if (dBResultViewModel.Results.Count == 1 && dBResultViewModel.Results[0] is IDictionary<string, object> dict)
+                    {
+                        if (dict.Count == 1)
+                            e.Value = dict[dict.Keys.First()];
+                        else
+                            e.Value = dBResultViewModel.Results[0];
+                    }
                     else
-                        e.Value = dBResultViewModel.Results[0];
+                    {
+                        e.Value = dBResultViewModel.Results;
+                    }
                 }
-                else
+                else if ((csvMatch = csvRegex.Match(e.Name)).Success)
                 {
-                    e.Value = dBResultViewModel.Results;
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    if(!csvMatch.Groups["noheader"].Success)
+                    {
+                        stringBuilder.AppendLine(string.Join(";", dBResultViewModel.ColumnsNames.Select(n => "\"" + n + "\"")));
+                    }
+
+                    foreach(IDictionary<string, object> result in dBResultViewModel.Results)
+                    {
+                        stringBuilder.AppendLine(string.Join(";", dBResultViewModel.ColumnsNames.Select(n => result[n].ToString().Replace("\"", "\"\""))));
+                    }
+
+                    e.Value = stringBuilder.ToString();
                 }
             }
 
@@ -105,7 +191,7 @@ namespace NppPowerTools.Utils.Evaluations
 
         private static DBEvaluation instance;
 
-        public static DBEvaluation Instance => instance ?? (instance = new DBEvaluation());
+        public static DBEvaluation Instance => instance ??= new DBEvaluation();
 
         private DBEvaluation()
         { }
