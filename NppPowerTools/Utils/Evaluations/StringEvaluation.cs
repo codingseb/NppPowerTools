@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class StringJoinEvaluation : IVariableEvaluation, IFunctionEvaluation
+    public class StringEvaluation : IVariableEvaluation, IFunctionEvaluation
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
@@ -38,13 +38,13 @@ namespace NppPowerTools.Utils.Evaluations
                 {
                     e.Value = string.Join(e.EvaluateArg<string>(0), enumerable2.Cast<object>());
                 }
-
-                return true;
             }
-            else
+            else if (e.Name.Equals("format", System.StringComparison.OrdinalIgnoreCase) && e.This is string format)
             {
-                return false;
+                e.Value = string.Format(format, e.EvaluateArgs());
             }
+
+            return e.FunctionReturnedValue;
         }
     }
 }
