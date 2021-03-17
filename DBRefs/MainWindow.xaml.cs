@@ -1,5 +1,8 @@
-﻿using System;
+﻿using MySqlConnector;
+using Oracle.ManagedDataAccess.Client;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +26,10 @@ namespace DBRefs
         public MainWindow()
         {
             InitializeComponent();
+
+            IDbConnection mysqldb = new MySqlConnection();
+            IDbConnection oracledb = new OracleConnection();
+            IDbConnection postgresdb = new Npgsql.NpgsqlConnection();
         }
     }
 }

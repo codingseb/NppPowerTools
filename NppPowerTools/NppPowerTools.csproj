@@ -12,7 +12,7 @@
     <RootNamespace>NppPowerTools</RootNamespace>
     <AssemblyName>NppPowerTools</AssemblyName>
     <OutputPath>bin\Debug\</OutputPath>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <LangVersion>8.0</LangVersion>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
