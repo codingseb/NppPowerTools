@@ -49,9 +49,13 @@ namespace NppPowerTools.Utils.Evaluations
 
                         numberLimit = i => i < number;
                     }
+                    else if(Config.Instance.DBAutoLimitRequests)
+                    {
+                        numberLimit = i => i < Config.Instance.DBAutoLimitRequestsValue;
+                    }
                     else
                     {
-                        numberLimit = i => i < 100;
+                        numberLimit = _ => true;
                     }
 
                     if (e.Args.Count > 1)

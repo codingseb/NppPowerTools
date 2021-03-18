@@ -117,6 +117,12 @@ namespace NppPowerTools.Utils
 
         public bool ShowExceptionInOutput { get; set; } = true;
 
+        public int DBGridHeightInResults { get; set; } = 300;
+
+        public bool DBAutoLimitRequests { get; set; } = true;
+
+        public int DBAutoLimitRequestsValue { get; set; } = 100;
+
         public ObservableCollection<DBConfig> DBConfigs { get; set; } = new ObservableCollection<DBConfig>();
 
         [JsonIgnore]

@@ -20,7 +20,10 @@
     <DockPanel Margin="5">
         <TabControl>
             <TabItem Header="_Evaluation">
-                <StackPanelEx>
+                <DockPanel>
+                    <Button Content="Clea_r History"
+                            DockPanel.Dock="Bottom"
+                            Click="ClearHistory_Button_Click" />
                     <AutoGrid Columns="Auto,*" ChildMargin="3">
                         <Label Content="Executions _outputs"
                                Target="{Binding ElementName=OutputsComboBox}"/>
@@ -50,8 +53,8 @@
                                Target="{Binding ElementName=NbrOfLastScriptToKeepTextBox}"/>
                         <TextBox x:Name="NbrOfLastScriptToKeepTextBox" Text="{Binding NbrOfLastScriptToKeep, UpdateSourceTrigger=PropertyChanged}" />
                     </AutoGrid>
-                    <Button Content="Clea_r History" Click="ClearHistory_Button_Click" />
-                </StackPanelEx>
+                    
+                </DockPanel>
             </TabItem>
             <TabItem Header="_Command panel">
                 <AutoGrid Columns="Auto,*" ChildMargin="3">
@@ -93,7 +96,18 @@
             </TabItem>
             <TabItem Header="_Databases">
                 <DockPanel>
-                    <DockPanel Width="150">
+                    <AutoGrid DockPanel.Dock="Bottom"
+                              ChildMargin="5,0"
+                              Columns="Auto,*" >
+                        <Label Content="Grids _Height" Target="{Binding ElementName=DBGridHeightTextBox}"/>
+                        <TextBox x:Name="DBGridHeightTextBox" Text="{Binding DBGridHeightInResults, UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox x:Name="DBAutoLimitCheckBox" Content="Auto limit requests" IsChecked="{Binding DBAutoLimitRequests}"/>
+                        <TextBox x:Name="DBAutoLimitTextBox" 
+                                 IsEnabled="{Binding DBAutoLimitRequests}"
+                                 Text="{Binding DBAutoLimitRequestsValue, UpdateSourceTrigger=PropertyChanged}" />
+                    </AutoGrid>
+                    <DockPanel Width="150"
+                               DockPanel.Dock="Left">
                         <Button DockPanel.Dock="Top" 
                                 Content="_Add Connection"
                                 Click="AddConnection_Button_Click"/>

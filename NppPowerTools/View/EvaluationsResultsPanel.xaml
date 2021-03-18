@@ -6,6 +6,7 @@
              xmlns:ex="clr-namespace:System;assembly=mscorlib"
              xmlns:draw="clr-namespace:System.Drawing;assembly=System.Drawing"
              xmlns:local="clr-namespace:NppPowerTools"
+             xmlns:utils="clr-namespace:NppPowerTools.Utils"
              mc:Ignorable="d" 
              Background="WhiteSmoke"
              d:DataContext="{x:Static local:EvaluationsResultPanelViewModel.Instance}"
@@ -20,7 +21,7 @@
                 <DataTemplate DataType="{x:Type local:DBResultViewModel}">
                     <Grid>
                         <DataGrid Margin="5"
-                                  Height="300"
+                                  Height="{Binding DBGridHeightInResults, Source={x:Static utils:Config.Instance}}"
                                   Width="{Binding ActualWidth ,RelativeSource={RelativeSource AncestorType=ListBox}, Converter={DoubleAddValueConverter -50 }}"
                                   Loaded="DataGrid_Loaded"
                                   ItemsSource="{Binding Result.Results}" 
