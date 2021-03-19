@@ -14,6 +14,7 @@ namespace NppPowerTools.Utils.Evaluations
         private static readonly Regex sqlRegex = new Regex(@"sql((?<full>f(ull)?)|(?<number>\d+))?_(?<connection>[a-zA-Z0-9]+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex valuePropRegex = new Regex("^(to_?)?v(al(ue)?)?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex csvRegex = new Regex("^(to_?)?csv(?<noheader>_?no?(h(ead(er)?)?))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex excelRegex = new Regex("^(to_?)?((xl(sx?)?)|(ex(cel)?))((?<noheader>_?no?(h(ead(er)?)?))|_(?<filter>f(ilter)?))?$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
@@ -88,6 +89,7 @@ namespace NppPowerTools.Utils.Evaluations
             else if (e.This is DBResultViewModel dBResultViewModel)
             {
                 Match csvMatch;
+                Match excelMatch;
 
                 if (valuePropRegex.IsMatch(e.Name))
                 {
@@ -128,6 +130,10 @@ namespace NppPowerTools.Utils.Evaluations
                     }
 
                     e.Value = stringBuilder.ToString();
+                }
+                else if((excelMatch = excelRegex.Match(e.Name)).Success)
+                {
+
                 }
             }
 
