@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -101,6 +102,20 @@ namespace NppPowerTools.Utils
         public static bool TabEquals(this string tab, string compareText)
         {
             return tab.Equals(compareText) || Path.GetFileName(tab).Equals(compareText);
+        }
+
+        public static object GetFirstValueOfKeys(this IDictionary<string,object> dict, params string[] keys)
+        {
+            string key = Array.Find(keys, key => dict.ContainsKey(key));
+
+            return key == null ? null : dict[key];
+        }
+
+        public static T GetFirstValueOfKeys<T>(this IDictionary<string,object> dict, params string[] keys)
+        {
+            string key = Array.Find(keys, key => dict.ContainsKey(key));
+
+            return (T)(key == null ? null : dict[key]);
         }
     }
 }

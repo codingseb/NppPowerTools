@@ -1,8 +1,10 @@
 ﻿using CodingSeb.ExpressionEvaluator;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -125,7 +127,7 @@ namespace NppPowerTools.Utils.Evaluations
                             if (result[n] is string s)
                                 return "\"" + s.Replace("\"", "\"\"");
                             else
-                                return result[n].ToString();
+                                return result[n]?.ToString() ?? string.Empty;
                         })));
                     }
 
@@ -133,21 +135,15 @@ namespace NppPowerTools.Utils.Evaluations
                 }
                 else if((excelMatch = excelRegex.Match(e.Name)).Success)
                 {
+                    var args = e.EvaluateArgs();
+                    var options = args.OfType<IDictionary<string, object>>().FirstOrDefault();
+                    string fileName = args.OfType<string>().FirstOrDefault();
 
+                    e.Value = CreateExcel(dBResultViewModel, excelMatch, options, fileName);
                 }
             }
 
             return e.FunctionReturnedValue;
-        }
-
-        private static dynamic ToExpando(IDataRecord record)
-        {
-            var expandoObject = new ExpandoObject() as IDictionary<string, object>;
-
-            for (var i = 0; i < record.FieldCount; i++)
-                expandoObject.Add(record.GetName(i), record[i]);
-
-            return expandoObject;
         }
 
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
@@ -161,6 +157,7 @@ namespace NppPowerTools.Utils.Evaluations
             if (e.This is DBResultViewModel dBResultViewModel)
             {
                 Match csvMatch;
+                Match excelMatch;
 
                 if (valuePropRegex.IsMatch(e.Name))
                 {
@@ -192,9 +189,68 @@ namespace NppPowerTools.Utils.Evaluations
 
                     e.Value = stringBuilder.ToString();
                 }
+                else if ((excelMatch = excelRegex.Match(e.Name)).Success)
+                {
+                    e.Value = CreateExcel(dBResultViewModel, excelMatch);
+                }
             }
 
             return e.HasValue;
+        }
+
+        private static dynamic ToExpando(IDataRecord record)
+        {
+            var expandoObject = new ExpandoObject() as IDictionary<string, object>;
+
+            for (var i = 0; i < record.FieldCount; i++)
+                expandoObject.Add(record.GetName(i), record[i]);
+
+            return expandoObject;
+        }
+
+        private static ExcelPackage CreateExcel(DBResultViewModel dBResultViewModel, Match excelMatch, IDictionary<string, object> options = null, string fileName = null)
+        {
+            var package = new ExcelPackage();
+
+            if(options != null)
+                options = new Dictionary<string, object>(options, StringComparer.OrdinalIgnoreCase);
+
+            fileName ??= options?.GetFirstValueOfKeys<string>("f", "fn", "file", "filename");
+
+            if (!string.IsNullOrWhiteSpace(fileName))
+                package.File = new FileInfo(fileName);
+
+            string sheetName = options?.GetFirstValueOfKeys<string>("sn","sname", "sheetname") ?? "data";
+
+            var sheet = package.Workbook.Worksheets.Add(sheetName);
+
+            int row = 1;
+
+            if (!excelMatch.Groups["noheader"].Success)
+            {
+                for (int col = 1; col <= dBResultViewModel.ColumnsNames.Count; col++)
+                {
+                    sheet.Cells[row, col].Value = dBResultViewModel.ColumnsNames[col - 1];
+                }
+                row++;
+            }
+
+            foreach (IDictionary<string, object> result in dBResultViewModel.Results)
+            {
+                for (int col = 1; col <= dBResultViewModel.ColumnsNames.Count; col++)
+                {
+                    sheet.Cells[row, col].Value = result[dBResultViewModel.ColumnsNames[col - 1]];
+                }
+
+                row++;
+            }
+
+            for (int col = 1; col <= dBResultViewModel.ColumnsNames.Count; col++)
+            {
+                sheet.Column(col).AutoFit();
+            }
+
+            return package;
         }
 
         #region Singleton          

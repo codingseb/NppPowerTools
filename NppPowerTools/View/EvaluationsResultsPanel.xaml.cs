@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Collections.Generic;
 using System.Windows.Data;
+using OfficeOpenXml;
 
 namespace NppPowerTools
 {
@@ -101,6 +102,11 @@ namespace NppPowerTools
                     filter = "PDF Document|*.pdf|" + filter;
                     filterOffset++;
                 }
+                else if(evaluationResult.Result is ExcelPackage)
+                {
+                    filter = "Excel file|*.xlsx|" + filter;
+                    filterOffset++;
+                }
 
                 saveFileDialog.Filter = filter;
                 saveFileDialog.AddExtension = true;
@@ -116,6 +122,11 @@ namespace NppPowerTools
                         else if (saveFileDialog.FilterIndex == 1 && evaluationResult.Result is PDFFile pdfFile)
                         {
                             pdfFile.Save(saveFileDialog.FileName);
+                        }
+                        else if (saveFileDialog.FilterIndex == 1 && evaluationResult.Result is ExcelPackage excelFile)
+                        {
+                            excelFile.File = new FileInfo(saveFileDialog.FileName);
+                            excelFile.Save();
                         }
                         else if (saveFileDialog.FilterIndex == 1 + filterOffset)
                         {
