@@ -1,4 +1,5 @@
 ﻿using CodingSeb.ExpressionEvaluator;
+using System;
 using System.Collections;
 using System.Linq;
 
@@ -8,13 +9,13 @@ namespace NppPowerTools.Utils.Evaluations
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
-            if ((e.Name.Equals("stringjoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sjoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", System.StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForJoin)
+            if ((e.Name.Equals("stringjoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sjoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForJoin)
             {
                 e.Value = string.Join("", enumerableForJoin.Cast<object>());
 
                 return true;
             }
-            if ((e.Name.Equals("linejoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("ljoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("lj", System.StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForLJoin)
+            if ((e.Name.Equals("linejoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("ljoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("lj", StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForLJoin)
             {
                 e.Value = string.Join(BNpp.CurrentEOL, enumerableForLJoin.Cast<object>());
 
@@ -28,7 +29,7 @@ namespace NppPowerTools.Utils.Evaluations
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
-            if ((e.Name.Equals("stringjoin", System.StringComparison.OrdinalIgnoreCase) ||e.Name.Equals("sjoin", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", System.StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", System.StringComparison.OrdinalIgnoreCase)) && (e.This is IEnumerable || (e.Args.Count > 1 && e.EvaluateArg(1) is IEnumerable)))
+            if ((e.Name.Equals("stringjoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sjoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", StringComparison.OrdinalIgnoreCase)) && (e.This is IEnumerable || (e.Args.Count > 1 && e.EvaluateArg(1) is IEnumerable)))
             {
                 if (e.This is IEnumerable enumerable)
                 {
@@ -39,7 +40,7 @@ namespace NppPowerTools.Utils.Evaluations
                     e.Value = string.Join(e.EvaluateArg<string>(0), enumerable2.Cast<object>());
                 }
             }
-            else if (e.Name.Equals("format", System.StringComparison.OrdinalIgnoreCase) && e.This is string format)
+            else if (e.Name.Equals("format", StringComparison.OrdinalIgnoreCase) && e.This is string format)
             {
                 e.Value = string.Format(format, e.EvaluateArgs());
             }

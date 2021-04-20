@@ -78,11 +78,11 @@
     <Reference Include="CodingSeb.Converters, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.Converters.1.0.3\lib\net45\CodingSeb.Converters.dll</HintPath>
     </Reference>
-    <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.4.25.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.4.25\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
+    <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.4.26.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.4.26\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
     </Reference>
-    <Reference Include="CodingSeb.Layouts, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.Layouts.1.0.1\lib\net47\CodingSeb.Layouts.dll</HintPath>
+    <Reference Include="CodingSeb.Layouts, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.Layouts.1.0.2\lib\net47\CodingSeb.Layouts.dll</HintPath>
     </Reference>
     <Reference Include="CodingSeb.Mvvm, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.Mvvm.1.2.1\lib\net45\CodingSeb.Mvvm.dll</HintPath>
@@ -117,8 +117,8 @@
     <Reference Include="MySqlConnector, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
       <HintPath>..\packages\MySqlConnector.1.3.1\lib\net471\MySqlConnector.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
