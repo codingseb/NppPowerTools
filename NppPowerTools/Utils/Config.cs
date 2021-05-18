@@ -117,6 +117,12 @@ namespace NppPowerTools.Utils
 
         public bool ShowExceptionInOutput { get; set; } = true;
 
+        public string ExcelDefaultFileName{ get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NppPowerTools.xlsx");
+
+        public string ExcelDefaultSheetName { get; set; } = "Sheet{0}";
+
+        public string ExcelDateTimeDefaultFormat { get; set; } = "dd.mm.yyyy HH:mm:ss";
+
         public int DBGridHeightInResults { get; set; } = 300;
 
         public bool DBAutoLimitRequests { get; set; } = true;

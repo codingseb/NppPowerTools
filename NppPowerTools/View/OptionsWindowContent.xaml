@@ -94,6 +94,23 @@
                     </ScrollViewer>
                 </DockPanel>
             </TabItem>
+            <TabItem Header="_Excel">
+                <AutoGrid ChildMargin="5,0"
+                          Columns="Auto,*" >
+                    <Label Content="Default _FileName"
+                           Target="{Binding ElementName=ExcelDefaultFileNameTextBox}"/>
+                    <TextBox x:Name="ExcelDefaultFileNameTextBox"
+                        Text="{Binding ExcelDefaultFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Content="Default _sheet name"
+                           Target="{Binding ElementName=ExcelDefaultSheetNameTextBox}"/>
+                    <TextBox x:Name="ExcelDefaultSheetNameTextBox"
+                        Text="{Binding ExcelDefaultSheetName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label Content="_DateTime default format"
+                           Target="{Binding ElementName=ExcelDateTimeDefaultFormatTextBox}"/>
+                    <TextBox x:Name="ExcelDateTimeDefaultFormatTextBox"
+                        Text="{Binding ExcelDateTimeDefaultFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </AutoGrid>
+            </TabItem>
             <TabItem Header="_Databases">
                 <DockPanel>
                     <AutoGrid DockPanel.Dock="Bottom"

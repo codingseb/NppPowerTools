@@ -14,7 +14,12 @@ namespace NppPowerTools
         {
             try
             {
-                return (ShowBaseType ? value.GetType().Name + " : " : string.Empty) + JsonConvert.SerializeObject(value);
+                return (ShowBaseType ? value.GetType().Name + " : " : string.Empty)
+                    + JsonConvert.SerializeObject(value, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                        PreserveReferencesHandling = PreserveReferencesHandling.All
+                    });
             }
             catch
             {

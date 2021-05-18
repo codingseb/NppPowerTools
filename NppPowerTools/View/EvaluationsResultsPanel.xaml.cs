@@ -1,19 +1,16 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using NppPowerTools.Utils;
+using OfficeOpenXml;
 using System;
-using System.Linq;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Collections.Generic;
 using System.Windows.Data;
-using OfficeOpenXml;
+using System.Windows.Input;
 
 namespace NppPowerTools
 {
@@ -126,6 +123,10 @@ namespace NppPowerTools
                         else if (saveFileDialog.FilterIndex == 1 && evaluationResult.Result is ExcelPackage excelFile)
                         {
                             excelFile.File = new FileInfo(saveFileDialog.FileName);
+
+                            if (excelFile.Workbook.Worksheets.Count == 0)
+                                excelFile.Workbook.Worksheets.Add(Config.Instance.ExcelDefaultSheetName);
+
                             excelFile.Save();
                         }
                         else if (saveFileDialog.FilterIndex == 1 + filterOffset)
