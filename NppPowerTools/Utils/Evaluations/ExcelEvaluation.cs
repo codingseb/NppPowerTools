@@ -258,7 +258,7 @@ namespace NppPowerTools.Utils.Evaluations
                 sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
             }
 
-            dynamic postDo = config.FirstOrDefault(kvp => Regex.IsMatch(kvp.Key, "^((post_?((do)|(execute)))|(after_?((do)|(execute)))|(((do)|(execute))_?((after)|(at_?(the_?)?end))))$", RegexOptions.IgnoreCase)).Value;
+            dynamic postDo = config?.FirstOrDefault(kvp => Regex.IsMatch(kvp.Key, "^((post_?((do)|(execute)))|(after_?((do)|(execute)))|(((do)|(execute))_?((after)|(at_?(the_?)?end))))$", RegexOptions.IgnoreCase)).Value;
 
             if (postDo != null)
             {
