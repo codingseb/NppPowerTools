@@ -66,7 +66,12 @@ namespace NppPowerTools.Utils
 
             evaluator.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault;
             evaluator.OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive;
-            evaluator.OptionScriptNeedSemicolonAtTheEndOfLastExpression = false;
+            evaluator.OptionsSyntaxRules.MandatoryLastStatementTerminalPunctuator = false;
+            evaluator.OptionsSyntaxRules.IsNewKeywordForAnonymousExpandoObjectOptional = true;
+            evaluator.OptionsSyntaxRules.AllowSimplifiedCollectionSyntax = true;
+            evaluator.OptionsSyntaxRules.SimplifiedCollectionMode = SimplifiedCollectionMode.List;
+            evaluator.OptionsSyntaxRules.InitializerPropertyValueSeparators = new[] { "=", ":" };
+            evaluator.OptionsSyntaxRules.InitializerAllowStringForProperties = true;
 
             try
             {

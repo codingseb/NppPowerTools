@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -23,7 +22,6 @@ namespace NppPowerTools.Utils
 
         protected override void Init()
         {
-            ParsingMethods.Add(EvaluateSimplifiedSyntaxForExpandoObject);
             ParsingMethods.Add(EvaluateDollarAsCmdOperator);
         }
 
@@ -50,25 +48,6 @@ namespace NppPowerTools.Utils
             Variables.Remove(variable);
         }
 
-        protected virtual bool EvaluateSimplifiedSyntaxForExpandoObject(string expression, Stack<object> stack, ref int i)
-        {
-            if(expression[i] == '{')
-            {
-                i++;
-
-                object element = new ExpandoObject();
-
-                List<string> initArgs = GetExpressionsBetweenParenthesesOrOtherImbricableBrackets(expression, ref i, true, OptionInitializersSeparator, "{", "}");
-
-                InitSimpleObjet(element, initArgs);
-
-                stack.Push(element);
-
-                return true;
-            }
-
-            return false;
-        }
         protected virtual bool EvaluateDollarAsCmdOperator(string expression, Stack<object> stack, ref int i)
         {
             Match match = cmdRegex.Match(expression.Substring(i));
