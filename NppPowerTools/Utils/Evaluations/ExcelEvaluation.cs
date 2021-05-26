@@ -209,13 +209,13 @@ namespace NppPowerTools.Utils.Evaluations
             if (toExcelMatch.Groups["fatheader"].Success
                 || (config?.FirstOrDefault(kvp => Regex.IsMatch(kvp.Key, "^(f(at)?|b(old)?)_?h(ead(er)?)?$", RegexOptions.IgnoreCase)).Value as bool?).GetValueOrDefault())
             {
-                sheet.Cells[1, 1, 1, headers.Count].Style.Font.Bold = true;
+                sheet.Cells[1, 1, 1, sheet.Dimension.Columns].Style.Font.Bold = true;
             }
 
             if (toExcelMatch.Groups["autofilter"].Success
                 || (config?.FirstOrDefault(kvp => Regex.IsMatch(kvp.Key, "^(a(uto)?)_?f(ilter)?$", RegexOptions.IgnoreCase)).Value as bool?).GetValueOrDefault())
             {
-                sheet.Cells[1, 1, rowList.Count, headers.Count].AutoFilter = true;
+                sheet.Cells[1, 1, sheet.Dimension.Rows, sheet.Dimension.Columns].AutoFilter = true;
             }
 
             if (toExcelMatch.Groups["freeze"].Success)
