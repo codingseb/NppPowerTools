@@ -79,7 +79,7 @@
       <HintPath>..\packages\CodingSeb.Converters.1.0.3\lib\net45\CodingSeb.Converters.dll</HintPath>
     </Reference>
     <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.5.0-alpha0001\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
+      <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.5.0-alpha0002\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
     </Reference>
     <Reference Include="CodingSeb.Layouts, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.Layouts.1.0.2\lib\net47\CodingSeb.Layouts.dll</HintPath>
