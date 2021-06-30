@@ -207,10 +207,6 @@ namespace NppPowerTools.Utils
             DBConfigs.CollectionChanged += DBConfigs_CollectionChanged;
         }
 
-        #endregion
-
-        #region NotifyPropertyChanged
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         public virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -223,7 +219,5 @@ namespace NppPowerTools.Utils
         {
             Save();
         }
-
-        #endregion
     }
 }
