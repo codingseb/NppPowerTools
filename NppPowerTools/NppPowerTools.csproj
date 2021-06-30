@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\PropertyChanged.Fody.3.3.3\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.3.3.3\build\PropertyChanged.Fody.props')" />
+  <Import Project="..\packages\PropertyChanged.Fody.3.4.0\build\PropertyChanged.Fody.props" Condition="Exists('..\packages\PropertyChanged.Fody.3.4.0\build\PropertyChanged.Fody.props')" />
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="..\packages\Costura.Fody.5.3.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.5.3.0\build\Costura.Fody.props')" />
   <PropertyGroup>
@@ -75,8 +75,8 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodingSeb.Converters, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.Converters.1.0.3\lib\net45\CodingSeb.Converters.dll</HintPath>
+    <Reference Include="CodingSeb.Converters, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.Converters.1.0.4-eealpha0002\lib\net45\CodingSeb.Converters.dll</HintPath>
     </Reference>
     <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.5.0-alpha0002\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
@@ -84,8 +84,8 @@
     <Reference Include="CodingSeb.Layouts, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.Layouts.1.0.2\lib\net47\CodingSeb.Layouts.dll</HintPath>
     </Reference>
-    <Reference Include="CodingSeb.Mvvm, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.Mvvm.1.2.1\lib\net45\CodingSeb.Mvvm.dll</HintPath>
+    <Reference Include="CodingSeb.Mvvm, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.Mvvm.1.2.3-EEalpha0002\lib\net45\CodingSeb.Mvvm.dll</HintPath>
     </Reference>
     <Reference Include="ColorPickerWPF, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ColorPickerWPF.1.0.9\lib\net461\ColorPickerWPF.dll</HintPath>
@@ -123,8 +123,8 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Aero" />
-    <Reference Include="PropertyChanged, Version=3.3.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
-      <HintPath>..\packages\PropertyChanged.Fody.3.3.3\lib\net40\PropertyChanged.dll</HintPath>
+    <Reference Include="PropertyChanged, Version=3.4.0.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.3.4.0\lib\net40\PropertyChanged.dll</HintPath>
     </Reference>
     <Reference Include="PropertyTools, Version=3.1.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyTools.3.1.0\lib\net45\PropertyTools.dll</HintPath>
@@ -464,7 +464,7 @@
     <Error Condition="!Exists('..\packages\Costura.Fody.5.3.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.3.0\build\Costura.Fody.targets'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.3.3\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.3.3\build\PropertyChanged.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\PropertyChanged.Fody.3.4.0\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PropertyChanged.Fody.3.4.0\build\PropertyChanged.Fody.props'))" />
   </Target>
   <Import Project="..\packages\SkiaSharp.2.80.2\build\net462\SkiaSharp.targets" Condition="Exists('..\packages\SkiaSharp.2.80.2\build\net462\SkiaSharp.targets')" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.113.3\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
