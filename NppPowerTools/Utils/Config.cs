@@ -147,8 +147,6 @@ namespace NppPowerTools.Utils
             }
         }
 
-        #region Json singleton
-
         private static readonly string fileName = Path.Combine(new NotepadPPGateway().PluginsConfigDirectory, "NppPowerTools", "Config.json");
 
         private static Config instance;
