@@ -1,6 +1,7 @@
 using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -92,7 +93,7 @@ namespace NppPowerTools
 
             PluginBase.SetCommand(menuIndex++, "Reset to last Script or Expression", () =>
             {
-                BNpp.Text = (Config.Instance.LastScripts.Count > 0 ? Config.Instance.LastScripts[0] : string.Empty);
+                BNpp.Text = Config.Instance.LastScripts.Count > 0 ? Config.Instance.LastScripts[0] : string.Empty;
                 BNpp.Scintilla.DocumentEnd();
             }, new ShortcutKey(true, false, true, Keys.L));
 
@@ -108,8 +109,7 @@ namespace NppPowerTools
             {
                 int value = i;
                 PluginBase.SetCommand(menuIndex++,
-                    $"Keep {value + 1} line",
-                    () =>
+                    $"Keep {value + 1} line", () =>
                     {
                         BNpp.Text = string.Join("\r\n", BNpp.Text.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None).Take(value + 1));
                         BNpp.Scintilla.DocumentEnd();
@@ -122,6 +122,7 @@ namespace NppPowerTools
             PluginBase.SetCommand(menuIndex++, "Clear Results", () => EvaluationsResultPanelViewModel.Instance.Results.Clear(), new ShortcutKey(false, true, true, Keys.Delete));
             PluginBase.SetCommand(menuIndex++, "---", null);
             PluginBase.SetCommand(menuIndex++, "Options", ShowOptionWindow, new ShortcutKey(true, false, true, Keys.O));
+            PluginBase.SetCommand(menuIndex++, "Show config file directory", () => Process.Start(Path.Combine(new NotepadPPGateway().PluginsConfigDirectory, "NppPowerTools")));
             PluginBase.SetCommand(menuIndex++, "About", () => MessageBox.Show($"Npp Power Tools\r\nVersion : {Assembly.GetExecutingAssembly().GetName().Version}\r\nAuthor : CodingSeb", "About"));
         }
 

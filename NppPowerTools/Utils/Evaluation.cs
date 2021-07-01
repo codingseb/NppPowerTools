@@ -135,6 +135,7 @@ namespace NppPowerTools.Utils
             finally
             {
                 LastVariables = evaluator.Variables;
+                Config.Instance.Save();
             }
         }
     }
