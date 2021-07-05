@@ -1,6 +1,9 @@
 ﻿using CodingSeb.ExpressionEvaluator;
+using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace NppPowerTools.Utils.Evaluations
@@ -13,7 +16,29 @@ namespace NppPowerTools.Utils.Evaluations
         {
             if(e.Name.Equals("pdf", StringComparison.OrdinalIgnoreCase))
             {
-                e.Value = new PDFFile();
+                if (e.This == null)
+                {
+                    e.Value = new PDFFile();
+                }
+                else if (e.This is Bitmap bitmap)
+                {
+                    e.Value = new PDFFile()
+                    {
+                        FirstAction = container => container.Image(bitmap.ToByteArray())
+                    };
+                }
+                else if (e.This is string text)
+                {
+                    e.Value = new PDFFile()
+                    {
+                        FirstAction = container => container.Text(text)
+                    };
+                }
+            }
+            else if (e.This is PDFFile pDFFile && (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
+            {
+                pDFFile.SaveOpen(Config.Instance.PDFDefaultFileName);
+                e.Value = pDFFile;
             }
 
             return e.HasValue;
@@ -23,17 +48,39 @@ namespace NppPowerTools.Utils.Evaluations
         {
             if (e.Name.Equals("pdf", StringComparison.OrdinalIgnoreCase))
             {
+                PDFFile pdf = null;
+
                 if (e.Args.Count > 0 && e.EvaluateArg(0) is Delegate del)
                 {
-                    e.Value = new PDFFile()
+                    pdf = new PDFFile()
                     {
                         ComposeAction = del
                     };
                 }
                 else
                 {
-                    e.Value = new PDFFile();
+                    pdf = new PDFFile();
                 }
+
+                if (e.This is Bitmap bitmap)
+                {
+                    pdf.FirstAction = container => container.Image(bitmap.ToByteArray());
+                }
+                else if (e.This is string text)
+                {
+                    pdf.FirstAction = container => container.Text(text);
+                }
+
+                e.Value = pdf;
+            }
+            else if (e.This is PDFFile pDFFile && (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
+            {
+                if (e.Args.Count > 0 && e.EvaluateArg(0) is string fileName)
+                    pDFFile.SaveOpen(fileName);
+                else
+                    pDFFile.SaveOpen(Config.Instance.PDFDefaultFileName);
+
+                e.Value = pDFFile;
             }
 
             return e.FunctionReturnedValue;

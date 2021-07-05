@@ -123,6 +123,8 @@ namespace NppPowerTools.Utils
 
         public string ExcelDateTimeDefaultFormat { get; set; } = "dd.mm.yyyy HH:mm:ss";
 
+        public string PDFDefaultFileName { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "NppPowerTools.pdf");
+
         public int DBGridHeightInResults { get; set; } = 300;
 
         public bool DBAutoLimitRequests { get; set; } = true;
