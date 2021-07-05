@@ -47,7 +47,7 @@ namespace NppPowerTools.Utils.Evaluations
                     .Where(t => t.Namespace.StartsWith("QuestPDF.Fluent") && t.Name.EndsWith("Extensions")).ToList();
             }
 
-            evaluator.StaticTypesForExtensionsMethods = evaluator.StaticTypesForExtensionsMethods.Concat(extentionTypes).ToList(); 
+            evaluator.StaticTypesForExtensionsMethods = evaluator.StaticTypesForExtensionsMethods.Concat(extentionTypes).ToList();
         }
 
         #region Singleton          

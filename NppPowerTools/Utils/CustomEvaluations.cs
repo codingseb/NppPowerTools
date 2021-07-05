@@ -24,6 +24,7 @@ namespace NppPowerTools.Utils
             ChartPlotEvaluation.Instance,
             PDFEvaluation.Instance,
             DBEvaluation.Instance,
+            ImageEvaluation.Instance,
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -40,12 +41,14 @@ namespace NppPowerTools.Utils
             ChartPlotEvaluation.Instance,
             PDFEvaluation.Instance,
             DBEvaluation.Instance,
+            ImageEvaluation.Instance,
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
         {
             ExcelEvaluation.Instance,
             PDFEvaluation.Instance,
+            ImageEvaluation.Instance,
         };
 
         public static string Print { get; set; }

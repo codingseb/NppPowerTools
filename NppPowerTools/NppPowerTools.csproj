@@ -102,6 +102,9 @@
     <Reference Include="EPPlus, Version=4.5.3.3, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.3.3\lib\net40\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="ImageProcessor, Version=2.9.1.225, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ImageProcessor.2.9.1\lib\net452\ImageProcessor.dll</HintPath>
+    </Reference>
     <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=4.73.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
       <HintPath>..\packages\CompareNETObjects.4.73.0\lib\net48\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
     </Reference>
@@ -298,6 +301,9 @@
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -369,6 +375,7 @@
     <Compile Include="Utils\Evaluations\HttpEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IEvaluatorInitializator.cs" />
     <Compile Include="Utils\Evaluations\IFunctionEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\ImageEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IniEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IVariableEvaluation.cs" />
     <Compile Include="Utils\Evaluations\JsonEvaluation.cs" />
