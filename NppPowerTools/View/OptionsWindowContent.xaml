@@ -111,6 +111,15 @@
                         Text="{Binding ExcelDateTimeDefaultFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </AutoGrid>
             </TabItem>
+            <TabItem Header="_PDF">
+                <AutoGrid ChildMargin="5,0"
+                          Columns="Auto,*" >
+                    <Label Content="Default _FileName"
+                           Target="{Binding ElementName=PDFDefaultFileNameTextBox}"/>
+                    <TextBox x:Name="PDFDefaultFileNameTextBox"
+                        Text="{Binding PDFDefaultFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </AutoGrid>
+            </TabItem>
             <TabItem Header="_Databases">
                 <DockPanel>
                     <AutoGrid DockPanel.Dock="Bottom"

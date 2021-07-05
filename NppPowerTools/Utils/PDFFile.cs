@@ -8,6 +8,8 @@ namespace NppPowerTools.Utils
 {
     public class PDFFile : IDocument
     {
+        public string FileName { get; set; }
+
         public Action<IContainer> FirstAction { get; set; }
         public Delegate ComposeAction { get; set; }
 
@@ -21,11 +23,13 @@ namespace NppPowerTools.Utils
 
         public void Save(string fileName)
         {
+            FileName = fileName;
             this.GeneratePdf(fileName);
         }
 
         public void SaveOpen(string fileName)
         {
+            FileName = fileName;
             this.GeneratePdf(fileName);
             Process.Start(fileName);
         }
