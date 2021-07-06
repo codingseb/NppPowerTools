@@ -74,7 +74,7 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 e.Value = string.Join("\r\n", Enum.GetNames(typeof(SeriesChartType)));
             }
-            else if(new string[] { "topng", "topic", "topicture", "toimage" }.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+            else if (new string[] { "topng", "topic", "topicture", "toimage","to_png", "to_pic", "to_picture", "to_image" }.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 && e.This is Chart chart)
             {
                 using MemoryStream ms = new MemoryStream();
