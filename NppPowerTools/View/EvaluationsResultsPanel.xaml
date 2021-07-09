@@ -34,6 +34,7 @@
                     <TextBox Text="{Binding Result}"
                              ToolTip="{Binding Result}"
                              ToolTipService.ShowDuration="120000"
+                             ToolTipService.IsEnabled="{Binding ShowTooltipInResultWindow, Source={x:Static utils:Config.Instance}}"
                              Width="{Binding ActualWidth ,RelativeSource={RelativeSource AncestorType=ListBox}, Converter={DoubleAddValueConverter -50 }}"
                              MaxHeight="300"
                              AcceptsReturn="True"
@@ -81,6 +82,7 @@
                     <TextBox Text="{Binding Result}"
                              ToolTip="{Binding Result, Converter={local:ToJsonConverter ShowBaseType=True}}"
                              ToolTipService.ShowDuration="120000"
+                             ToolTipService.IsEnabled="{Binding ShowTooltipInResultWindow, Source={x:Static utils:Config.Instance}}"
                              Width="{Binding ActualWidth ,RelativeSource={RelativeSource AncestorType=ListBox}, Converter={DoubleAddValueConverter -50 }}"
                              MaxHeight="300"
                              AcceptsReturn="True"
@@ -107,6 +109,9 @@
             <CheckBox Content="_Reverse sorting" 
                       IsChecked="{Binding ReverseSorting}"
                       VerticalAlignment="Center"/>
+            <CheckBox Content="Show _Tooltip" 
+                      IsChecked="{Binding ShowTooltipInResultWindow, Source={x:Static utils:Config.Instance}}"
+                      VerticalAlignment="Center" />
         </StackPanelEx>
         <ListBox Background="White" 
                  ScrollViewer.CanContentScroll="False"

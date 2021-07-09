@@ -1,5 +1,6 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -21,14 +22,19 @@ namespace NppPowerTools.Utils.Evaluations
             Chart chart = new Chart();
             chart.ChartAreas.Add("A1");
 
-            if (data is IEnumerable<double> enumerable)
+            IEnumerable<double> doubleEnumerable = data as IEnumerable<double>;
+
+            if (doubleEnumerable == null && data is IEnumerable enumerable && enumerable.Cast<object>().All(v => v is double))
+                doubleEnumerable = enumerable.Cast<double>();
+
+            if (doubleEnumerable != null)
             {
                 Series serie = chart.Series.Add("S1");
                 serie.ChartType = (SeriesChartType)Enum.Parse(typeof(SeriesChartType), plotMatch.Groups["type"].Value, true);
 
-                double total = enumerable.Sum();
+                double total = doubleEnumerable.Sum();
 
-                foreach (double point in enumerable)
+                foreach (double point in doubleEnumerable)
                 {
                     int index = serie.Points.AddY(point);
 
