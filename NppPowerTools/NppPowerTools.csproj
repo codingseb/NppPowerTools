@@ -102,6 +102,9 @@
     <Reference Include="EPPlus, Version=4.5.3.3, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.3.3\lib\net40\EPPlus.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.34.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.34\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="ImageProcessor, Version=2.9.1.225, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageProcessor.2.9.1\lib\net452\ImageProcessor.dll</HintPath>
     </Reference>
@@ -372,6 +375,7 @@
     <Compile Include="Utils\Evaluations\ClipboardEvaluation.cs" />
     <Compile Include="Utils\Evaluations\DBEvaluation.cs" />
     <Compile Include="Utils\Evaluations\ExcelEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\HTMLEvaluation.cs" />
     <Compile Include="Utils\Evaluations\HttpEvaluation.cs" />
     <Compile Include="Utils\Evaluations\IEvaluatorInitializator.cs" />
     <Compile Include="Utils\Evaluations\IFunctionEvaluation.cs" />

@@ -24,8 +24,8 @@ namespace NppPowerTools.Utils.Evaluations
 
             IEnumerable<double> doubleEnumerable = data as IEnumerable<double>;
 
-            if (doubleEnumerable == null && data is IEnumerable enumerable && enumerable.Cast<object>().All(v => v is double))
-                doubleEnumerable = enumerable.Cast<double>();
+            if (doubleEnumerable == null && data is IEnumerable enumerable && enumerable.Cast<object>().All(v => v is double || v is int))
+                doubleEnumerable = enumerable.Cast<object>().Select(v => v as double? ?? (double)(v as int?)).ToList();
 
             if (doubleEnumerable != null)
             {

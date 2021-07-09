@@ -25,6 +25,7 @@ namespace NppPowerTools.Utils
             PDFEvaluation.Instance,
             DBEvaluation.Instance,
             ImageEvaluation.Instance,
+            HTMLEvaluation.Instance,
         };
 
         private static readonly List<IFunctionEvaluation> functionsEvaluations = new List<IFunctionEvaluation>
@@ -42,6 +43,7 @@ namespace NppPowerTools.Utils
             PDFEvaluation.Instance,
             DBEvaluation.Instance,
             ImageEvaluation.Instance,
+            HTMLEvaluation.Instance
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
