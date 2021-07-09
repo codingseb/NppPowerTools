@@ -13,8 +13,10 @@ namespace NppPowerTools.Utils.Evaluations
     {
         private static readonly Regex plotRegex = new Regex($@"plot(?<type>{string.Join("|", Enum.GetNames(typeof(SeriesChartType)))})((?<size>\d+)|w(?<width>\d+)h(?<height>\d+))?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex labelVariableRegex = new Regex("[%](?<variable>[pv])({(?<format>[^}]+)})?", RegexOptions.Compiled);
+        private static readonly string[] toPicKeywords = new string[] { "topng", "topic", "topicture", "toimage", "to_png", "to_pic", "to_picture", "to_image" };
+        private static readonly string[] plotListKeywords = new string[] { "chartlist", "charttypes", "chartslist", "chartstypes", "plotlist", "plottypes" };
 
-        private Chart GetChart(Match plotMatch, object data, string[] labels = null)
+    private Chart GetChart(Match plotMatch, object data, string[] labels = null)
         {
             Chart chart = new Chart();
             chart.ChartAreas.Add("A1");
@@ -70,11 +72,11 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 e.Value = GetChart(plotMatch, e.This);
             }
-            else if (new string[] { "chartlist", "charttypes", "chartslist", "chartstypes", "plotlist", "plottypes" }.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            else if (plotListKeywords.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
             {
                 e.Value = string.Join("\r\n", Enum.GetNames(typeof(SeriesChartType)));
             }
-            else if (new string[] { "topng", "topic", "topicture", "toimage","to_png", "to_pic", "to_picture", "to_image" }.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+            else if (toPicKeywords.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 && e.This is Chart chart)
             {
                 using MemoryStream ms = new MemoryStream();
@@ -97,11 +99,11 @@ namespace NppPowerTools.Utils.Evaluations
                     e.This ?? args[0],
                     (Array.Find(args, a => a is IEnumerable<string>) as IEnumerable<string> ?? args.OfType<string>())?.ToArray());
             }
-            else if (new string[] { "chartlist", "charttypes", "chartslist", "chartstypes", "plotlist", "plottypes" }.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            else if (plotListKeywords.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
             {
                 e.Value = string.Join("\r\n", Enum.GetNames(typeof(SeriesChartType)));
             }
-            else if (new string[] { "topng", "topic", "topicture", "toimage" }.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+            else if (toPicKeywords.Any(name => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
                 && e.This is Chart chart)
             {
                 using MemoryStream ms = new MemoryStream();
@@ -122,6 +124,5 @@ namespace NppPowerTools.Utils.Evaluations
         { }
 
         #endregion
-
     }
 }
