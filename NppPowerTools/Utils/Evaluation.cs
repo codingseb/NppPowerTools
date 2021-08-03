@@ -129,7 +129,7 @@ namespace NppPowerTools.Utils
                     setResult(exception);
                 }
 
-                if (!string.IsNullOrEmpty(CustomEvaluations.Print))
+       if (!string.IsNullOrEmpty(CustomEvaluations.Print))
                     setResult(CustomEvaluations.Print);
             }
             finally
