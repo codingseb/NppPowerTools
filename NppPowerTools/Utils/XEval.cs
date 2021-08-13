@@ -7,12 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils
 {
-    /// <summary>
-    /// -- Describe here to what is this class used for. (What is it's purpose) --
-    /// </summary>
     public class XEval : ExpressionEvaluator
     {
-        private static readonly Regex cmdRegex = new Regex(@"^[$]\s*(?<cmd>.*)", RegexOptions.Compiled);
+        private static readonly Regex cmdRegex = new Regex(@"^[$]((?<wait>w[ait]?)?(?<process>p)?)*\s*(?<cmd>.*)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public XEval()
         {}
@@ -56,7 +53,7 @@ namespace NppPowerTools.Utils
             {
                 i+= match.Length - 1;
 
-                stack.Push(ExecuteCommand(match.Groups["cmd"].Value));
+                stack.Push(ExecuteCommand(match.Groups["cmd"].Value, match.Groups["wait"].Success, match.Groups["process"].Success));
 
                 return true;
             }
@@ -64,9 +61,28 @@ namespace NppPowerTools.Utils
             return false;
         }
 
-        private string ExecuteCommand(string command)
+        private object ExecuteCommand(string command, bool wait, bool returnProcess)
         {
-            ProcessStartInfo procStartInfo = new ProcessStartInfo("cmd", "/c " + command)
+            string fileName = "cmd";
+            string args = "/c " + command;
+
+            if(returnProcess)
+            {
+                var fileNameMatch = Regex.Match(command, @"^((?<fileName1>\S+)|(""(?<fileName2>[^""]+)""))(\s+(?<args>.*))?");
+
+                if(fileNameMatch.Success && fileNameMatch.Groups["fileName1"].Success)
+                {
+                    fileName = fileNameMatch.Groups["fileName1"].Value;
+                    args = fileNameMatch.Groups["args"].Value;
+                }
+                else if(fileNameMatch.Success && fileNameMatch.Groups["fileName2"].Success)
+                {
+                    fileName = fileNameMatch.Groups["fileName2"].Value;
+                    args = fileNameMatch.Groups["args"].Value;
+                }
+            }
+            
+            ProcessStartInfo procStartInfo = new ProcessStartInfo(fileName, args)
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
@@ -77,14 +93,20 @@ namespace NppPowerTools.Utils
                 StandardOutputEncoding = Encoding.GetEncoding(850)
             };
 
-            using Process proc = new Process
+            Process proc = new Process
             {
                 StartInfo = procStartInfo
             };
 
             proc.Start();
 
-            return proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
+            if (wait)
+                proc.WaitForExit();
+
+            if (returnProcess)
+                return proc;
+            else
+                return proc.StandardOutput.ReadToEnd() + proc.StandardError.ReadToEnd();
         }
     }
 }

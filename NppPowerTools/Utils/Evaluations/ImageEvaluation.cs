@@ -1,8 +1,6 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using ImageProcessor;
-using ImageProcessor.Imaging.Filters.Photo;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -42,12 +40,12 @@ namespace NppPowerTools.Utils.Evaluations
 
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
-            if (convertToImageFactoryRegex.IsMatch(e.Name) 
+            if (convertToImageFactoryRegex.IsMatch(e.Name)
                 && e.This is Image image)
             {
                 e.Value = new ImageFactory().Load(image);
             }
-            else if (convertToBitmapRegex.IsMatch(e.Name) 
+            else if (convertToBitmapRegex.IsMatch(e.Name)
                 && e.This is ImageFactory factory)
             {
                 using MemoryStream ms = new MemoryStream();

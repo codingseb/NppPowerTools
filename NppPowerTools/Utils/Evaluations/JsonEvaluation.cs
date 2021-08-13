@@ -11,7 +11,7 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 e.Value = JsonConvert.SerializeObject(e.This);
             }
-            if (e.Name.Equals("jsoni", System.StringComparison.OrdinalIgnoreCase) && e.This != null)
+            else if (e.Name.Equals("jsoni", System.StringComparison.OrdinalIgnoreCase) && e.This != null)
             {
                 e.Value = JsonConvert.SerializeObject(e.This, Formatting.Indented);
             }
