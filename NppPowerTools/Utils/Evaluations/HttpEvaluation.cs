@@ -1,10 +1,12 @@
 ﻿using CodingSeb.ExpressionEvaluator;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
@@ -46,6 +48,7 @@ namespace NppPowerTools.Utils.Evaluations
             HttpClient client = new HttpClient(httpClientHandler);
 
             HttpRequestMessage httpRequestMessage = null;
+            HttpContent httpContent = null;
 
             List<object> args = e.EvaluateArgs().ToList();
             string url = e.This?.ToString() ?? args[0].ToString();
@@ -99,10 +102,28 @@ namespace NppPowerTools.Utils.Evaluations
                             header = config["h"] as IDictionary<string, object>;
 
                         if(header != null)
-                            header.Keys.ToList().ForEach(key => httpRequestMessage.Headers.Add(key, header[key].ToString()));
+                        {
+                            header.Keys.ToList().ForEach(key =>
+                            {
+                                if (httpRequestMessage.Method == HttpMethod.Post)
+                                    client.DefaultRequestHeaders.Add(key, header[key].ToString());
+                                else
+                                    httpRequestMessage.Headers.Add(key, header[key].ToString());
+                            });
+                        }
+
+                        if (config.ContainsKey("content"))
+                        {
+                            var json = JsonConvert.SerializeObject(config["content"]);
+                            httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+                        }
                     }
 
-                    HttpResponseMessage response = client.SendAsync(httpRequestMessage).Result;
+                    HttpResponseMessage response;
+                    if (httpRequestMessage.Method == HttpMethod.Post)
+                        response = client.PostAsync(httpRequestMessage.RequestUri, httpContent).Result;
+                    else
+                        response = client.SendAsync(httpRequestMessage).Result;
 
                     if (!e.Args.Last().Trim().Equals("f", StringComparison.OrdinalIgnoreCase))
                     {

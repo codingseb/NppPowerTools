@@ -15,7 +15,7 @@ namespace NppPowerTools.Utils.Evaluations
             if (tabVarMatch.Success && (tabVarMatch.Groups["pos"].Success || tabVarMatch.Groups["fileName"].Success))
             {
                 string currentTab = BNpp.NotepadPP.CurrentFileName;
-
+                
                 if (tabVarMatch.Groups["all"].Success)
                 {
                     List<string> texts = new List<string>();
