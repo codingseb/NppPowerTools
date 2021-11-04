@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
@@ -52,7 +51,6 @@ namespace NppPowerTools.Utils.Evaluations
 
             List<object> args = e.EvaluateArgs().ToList();
             string url = e.This?.ToString() ?? args[0].ToString();
-            IDictionary<string, object> config = args.Find(a => a is IDictionary<string, object>) as IDictionary<string, object>;
             IDictionary<string, object> header = null;
 
             if (e.Name.Equals("httppost", StringComparison.OrdinalIgnoreCase))
@@ -88,7 +86,7 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 try
                 {
-                    if(config != null)
+                    if(args.Find(a => a is IDictionary<string, object>) is IDictionary<string, object> config)
                     {
                         config = new Dictionary<string, object>(config, StringComparer.OrdinalIgnoreCase);
 
@@ -114,9 +112,27 @@ namespace NppPowerTools.Utils.Evaluations
 
                         if (config.ContainsKey("content"))
                         {
-                            var json = JsonConvert.SerializeObject(config["content"]);
-                            httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+                            var content = JsonConvert.SerializeObject(config["content"]);
+                            httpContent = new StringContent(content, Encoding.UTF8, "application/json");
                         }
+                        else if (config.ContainsKey("json"))
+                        {
+                            var content = JsonConvert.SerializeObject(config["json"]);
+                            httpContent = new StringContent(content, Encoding.UTF8, "application/json");
+                        }
+                        else if (config.ContainsKey("form"))
+                        {
+                            var content = JsonConvert.SerializeObject(config["form"]);
+                            httpContent = new StringContent(content, Encoding.UTF8, "application/json");
+                        }
+                        //else if (config.ContainsKey("multipart") && config[("multipart"] is IDictionary<string, object> contentDict)
+                        //{
+                        //    var multipart = new MultipartContent();
+                        //    contentDict.Keys.ToList().ForEach(key =>
+                        //    {
+                        //        multipart.Add()
+                        //    });
+                        //}
                     }
 
                     HttpResponseMessage response;
