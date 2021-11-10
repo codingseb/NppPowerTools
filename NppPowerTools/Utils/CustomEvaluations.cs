@@ -43,7 +43,8 @@ namespace NppPowerTools.Utils
             PDFEvaluation.Instance,
             DBEvaluation.Instance,
             ImageEvaluation.Instance,
-            HTMLEvaluation.Instance
+            HTMLEvaluation.Instance,
+            TextToSpeechEvaluation.Instance
         };
 
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
