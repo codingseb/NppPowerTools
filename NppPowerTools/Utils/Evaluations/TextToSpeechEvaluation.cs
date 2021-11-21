@@ -11,13 +11,13 @@ namespace NppPowerTools.Utils.Evaluations
     {
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
-            if(e.Name.Equals("say", StringComparison.OrdinalIgnoreCase))
+            if (e.Name.Equals("say", StringComparison.OrdinalIgnoreCase))
             {
                 string text = e.EvaluateArg(0).ToString();
                 var synthesizer = new SpeechSynthesizer();
                 synthesizer.SetOutputToDefaultAudioDevice();
 
-                if(e.Args.Count > 1)
+                if (e.Args.Count > 1)
                 {
                     var builder = new PromptBuilder();
                     string voice = e.EvaluateArg(1).ToString();
@@ -36,7 +36,7 @@ namespace NppPowerTools.Utils.Evaluations
                         List<InstalledVoice> installedVoices = synthesizer.GetInstalledVoices().ToList();
                         InstalledVoice installedvoice = installedVoices.Find(v => v.VoiceInfo.Gender.ToString().Equals(voice, StringComparison.OrdinalIgnoreCase))
                             ?? installedVoices.Find(v => v.VoiceInfo.Name.Equals(voice, StringComparison.OrdinalIgnoreCase))
-                            ?? installedVoices.Find(v => v.VoiceInfo.Name.Replace("Microsoft", "").Trim().Equals(voice, StringComparison.OrdinalIgnoreCase));
+                            ?? installedVoices.Find(v => v.VoiceInfo.Name.Replace("Microsoft", "").Replace("Desktop", "").Trim().Equals(voice, StringComparison.OrdinalIgnoreCase));
 
                         if (installedvoice != null)
                         {
@@ -55,19 +55,19 @@ namespace NppPowerTools.Utils.Evaluations
                 {
                     synthesizer.Speak(text);
                     e.Value = text + " said";
-                }                
+                }
             }
-            else if(e.Name.Equals("voices", StringComparison.OrdinalIgnoreCase))
+            else if (e.Name.Equals("voices", StringComparison.OrdinalIgnoreCase))
             {
                 var synthesizer = new SpeechSynthesizer();
                 e.Value = synthesizer.GetInstalledVoices();
             }
-            else if(e.Name.Equals("voicesnames", StringComparison.OrdinalIgnoreCase))
+            else if (e.Name.Equals("voicesnames", StringComparison.OrdinalIgnoreCase))
             {
                 var synthesizer = new SpeechSynthesizer();
                 e.Value = synthesizer.GetInstalledVoices().Select(v => v.VoiceInfo.Name).ToList();
             }
-            else if(e.Name.Equals("culturesnames", StringComparison.OrdinalIgnoreCase))
+            else if (e.Name.Equals("culturesnames", StringComparison.OrdinalIgnoreCase))
             {
                 e.Value = CultureInfo.GetCultures(CultureTypes.NeutralCultures).Select(c => c.Name).ToList();
             }
