@@ -9,9 +9,15 @@ namespace NppPowerTools.Utils.Evaluations
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
-            if ((e.Name.Equals("stringjoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sjoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForJoin)
+            if ((e.Name.Equals("stringjoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("j", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("join", StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForJoin)
             {
                 e.Value = string.Join("", enumerableForJoin.Cast<object>());
+
+                return true;
+            }
+            if ((e.Name.Equals("spacejoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sjoin", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("sj", StringComparison.OrdinalIgnoreCase)) && e.This is IEnumerable enumerableForSJoin)
+            {
+                e.Value = string.Join(" ", enumerableForSJoin.Cast<object>());
 
                 return true;
             }

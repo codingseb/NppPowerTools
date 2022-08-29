@@ -5,14 +5,38 @@ using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public class LoopEvaluation : IFunctionEvaluation
+    public sealed class LoopEvaluation : IFunctionEvaluation, IVariableEvaluation
     {
-        private static readonly Regex loopVariableEvalRegex = new Regex(@"^(lp|loop)(f(?<from>\d+)|(t()?<to>\d+)|[nc]?(?<count>\d+))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex loopVariableEvalRegex = new Regex(@"^(lp|loop|r|range)(f(?<from>\d+)|(t(?<to>\d+))|[nc]?(?<count>\d+))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public bool TryEvaluate(object sender, FunctionEvaluationEventArg e)
         {
-            Match loopVariableEvalMatch = loopVariableEvalRegex.Match(e.Name);
+            object value = null;
 
+            if(GenericTryToEvaluate(loopVariableEvalRegex.Match(e.Name), e.Evaluator, e.Args, ref value))
+            {
+                e.Value = value;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
+        {
+            object value = null;
+
+            if(GenericTryToEvaluate(loopVariableEvalRegex.Match(e.Name), e.Evaluator, new List<string>(), ref value))
+            {
+                e.Value = value;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenericTryToEvaluate(Match loopVariableEvalMatch,ExpressionEvaluator evaluator, List<string> args, ref object value)
+        {
             if (loopVariableEvalMatch.Success)
             {
                 List<object> results = new List<object>();
@@ -25,8 +49,8 @@ namespace NppPowerTools.Utils.Evaluations
                 {
                     for (int i = from; i <= int.Parse(loopVariableEvalMatch.Groups["to"].Value, CultureInfo.InvariantCulture); i++)
                     {
-                        e.Evaluator.Variables[e.Args.Count > 1 ? e.Args[1].Trim() : "i"] = i;
-                        results.Add(e.Evaluator.Evaluate(e.Args[0]).ToString());
+                        evaluator.Variables[args.Count > 1 ? args[1].Trim() : "i"] = i;
+                        results.Add(args.Count > 0 ? evaluator.Evaluate(args[0]) : i);
                     }
                 }
                 else
@@ -37,12 +61,12 @@ namespace NppPowerTools.Utils.Evaluations
 
                     for (int i = 0; i < count; i++)
                     {
-                        e.Evaluator.Variables[e.Args.Count > 1 ? e.Args[1].Trim() : "i"] = i + from;
-                        results.Add(e.Evaluator.Evaluate(e.Args[0]));
+                        evaluator.Variables[args.Count > 1 ? args[1].Trim() : "i"] = i + from;
+                        results.Add(args.Count > 0 ? evaluator.Evaluate(args[0]) : i + from);
                     }
                 }
 
-                e.Value = results;
+                value = results;
 
                 return true;
             }
@@ -51,5 +75,17 @@ namespace NppPowerTools.Utils.Evaluations
                 return false;
             }
         }
+
+        #region Singleton          
+
+        private static LoopEvaluation instance;
+
+        public static LoopEvaluation Instance => instance ??= new LoopEvaluation();
+
+        private LoopEvaluation()
+        { }
+
+        #endregion Singleton
+
     }
 }
