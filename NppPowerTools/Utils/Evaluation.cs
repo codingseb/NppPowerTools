@@ -43,6 +43,7 @@ namespace NppPowerTools.Utils
 
                 evaluator.EvaluateFunction += CustomEvaluations.Evaluator_EvaluateFunction;
                 evaluator.EvaluateVariable += CustomEvaluations.Evaluator_EvaluateVariable;
+                evaluator.PreEvaluateIndexing += CustomEvaluations.Evaluator_PreEvaluateIndexing;
             }
         }
 

@@ -48,6 +48,11 @@ namespace NppPowerTools.Utils
             TextToSpeechEvaluation.Instance
         };
 
+        private static readonly List<IIndexingEvaluation> indexingEvaluations = new List<IIndexingEvaluation>
+        {
+            JsonEvaluation.Instance,
+        };
+
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new List<IEvaluatorInitializator>
         {
             ExcelEvaluation.Instance,
@@ -161,6 +166,11 @@ namespace NppPowerTools.Utils
             {
                 functionsEvaluations.Find(eval => eval.TryEvaluate(sender, e));
             }
+        }
+
+        public static void Evaluator_PreEvaluateIndexing(object sender, IndexingPreEvaluationEventArg e)
+        {
+            indexingEvaluations.Find(eval => eval.TryEvaluate(sender, e));
         }
     }
 }

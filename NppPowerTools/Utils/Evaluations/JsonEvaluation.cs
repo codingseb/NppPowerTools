@@ -1,9 +1,10 @@
 ﻿using CodingSeb.ExpressionEvaluator;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace NppPowerTools.Utils.Evaluations
 {
-    public sealed class JsonEvaluation : IVariableEvaluation, IFunctionEvaluation
+    public sealed class JsonEvaluation : IVariableEvaluation, IFunctionEvaluation, IIndexingEvaluation
     {
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
@@ -22,6 +23,10 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 e.Value = JsonConvert.DeserializeObject(e.This.ToString());
             }
+            else if(e.This is JToken jToken)
+            {
+                e.Value = jToken.SelectToken(e.Name, true);
+            }
 
             return e.HasValue;
         }
@@ -37,6 +42,16 @@ namespace NppPowerTools.Utils.Evaluations
             }
 
             return e.FunctionReturnedValue;
+        }
+
+        public bool TryEvaluate(object sender, IndexingPreEvaluationEventArg e)
+        {
+            if (e.This is JToken jToken && e.Args.Count == 1)
+            {
+                e.Value = jToken.SelectToken(e.EvaluateArg<string>(0), true);
+            }
+
+            return e.HasValue;
         }
 
         #region Singleton          

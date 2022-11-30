@@ -86,7 +86,7 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 try
                 {
-                    if(args.Find(a => a is IDictionary<string, object>) is IDictionary<string, object> config)
+                    if (args.Find(a => a is IDictionary<string, object>) is IDictionary<string, object> config)
                     {
                         config = new Dictionary<string, object>(config, StringComparer.OrdinalIgnoreCase);
 
@@ -99,7 +99,7 @@ namespace NppPowerTools.Utils.Evaluations
                         else if (config.ContainsKey("h"))
                             header = config["h"] as IDictionary<string, object>;
 
-                        if(header != null)
+                        if (header != null)
                         {
                             header.Keys.ToList().ForEach(key =>
                             {
