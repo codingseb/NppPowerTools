@@ -9,7 +9,7 @@ namespace NppPowerTools.Utils
 {
     public static class Evaluation
     {
-        internal static IDictionary<string, object> LastVariables { get; set; } = new Dictionary<string, object>();
+        public static IDictionary<string, object> LastVariables { get; set; } = new Dictionary<string, object>();
         private static ExpressionEvaluator evaluator;
 
         internal static void ResetVariables()
@@ -47,7 +47,35 @@ namespace NppPowerTools.Utils
             }
         }
 
-        internal static void Process(bool isScript, string script = null,  Action<object> setResult = null, bool forceErrorInOutput = false)
+        public static void ExecuteExpression()
+        {
+            Init();
+
+            if (!Config.Instance.KeepVariablesBetweenEvaluations)
+            {
+                LastVariables = new Dictionary<string, object>();
+            }
+            else if (LastVariables != null)
+            {
+                LastVariables
+                    .ToList()
+                    .FindAll(kvp => kvp.Value is StronglyTypedVariable)
+                    .ForEach(kvp => LastVariables.Remove(kvp.Key));
+            }
+
+            evaluator.Variables = LastVariables;
+
+            evaluator.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault;
+            evaluator.OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive;
+            evaluator.OptionsSyntaxRules.MandatoryLastStatementTerminalPunctuator = false;
+            evaluator.OptionsSyntaxRules.IsNewKeywordForAnonymousExpandoObjectOptional = true;
+            evaluator.OptionsSyntaxRules.AllowSimplifiedCollectionSyntax = true;
+            evaluator.OptionsSyntaxRules.SimplifiedCollectionMode = SimplifiedCollectionMode.List;
+            evaluator.OptionsSyntaxRules.InitializerPropertyValueSeparators = new[] { "=", ":" };
+            evaluator.OptionsSyntaxRules.InitializerAllowStringForProperties = true;
+        }
+
+        public static void Process(bool isScript, string script = null,  Action<object> setResult = null, bool forceErrorInOutput = false)
         {
             Init();
 
