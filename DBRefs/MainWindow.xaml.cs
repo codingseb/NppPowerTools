@@ -1,4 +1,6 @@
-﻿using MySqlConnector;
+﻿using Microsoft.Data.SqlClient;
+using MySqlConnector;
+using Npgsql;
 using System.Data;
 using System.Data.OracleClient;
 using System.Windows;
@@ -17,7 +19,8 @@ namespace DBRefs
 
             IDbConnection mysqldb = new MySqlConnection();
             IDbConnection oracledb = new OracleConnection();
-            IDbConnection postgresdb = new Npgsql.NpgsqlConnection();
+            IDbConnection postgresdb = new NpgsqlConnection();
+            IDbConnection sqlserver = new SqlConnection();
         }
     }
 }

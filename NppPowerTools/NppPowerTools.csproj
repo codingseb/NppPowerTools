@@ -141,8 +141,8 @@
     <Reference Include="PropertyTools.Wpf, Version=3.1.0.0, Culture=neutral, PublicKeyToken=ea0c9f2b460934d0, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyTools.Wpf.3.1.0\lib\net45\PropertyTools.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="QRCoder, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\QRCoder.1.4.1\lib\net40\QRCoder.dll</HintPath>
+    <Reference Include="QRCoder, Version=1.5.1.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.5.1\lib\net40\QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="QuestPDF, Version=2024.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\QuestPDF.2024.3.3\lib\netstandard2.0\QuestPDF.dll</HintPath>

@@ -46,34 +46,6 @@ namespace NppPowerTools.Utils
             }
         }
 
-        public static void ExecuteExpression()
-        {
-            Init();
-
-            if (!Config.Instance.KeepVariablesBetweenEvaluations)
-            {
-                LastVariables = new Dictionary<string, object>();
-            }
-            else if (LastVariables != null)
-            {
-                LastVariables
-                    .ToList()
-                    .FindAll(kvp => kvp.Value is StronglyTypedVariable)
-                    .ForEach(kvp => LastVariables.Remove(kvp.Key));
-            }
-
-            evaluator.Variables = LastVariables;
-
-            evaluator.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault = Config.Instance.OptionForceIntegerNumbersEvaluationsAsDoubleByDefault;
-            evaluator.OptionCaseSensitiveEvaluationActive = Config.Instance.CaseSensitive;
-            evaluator.OptionsSyntaxRules.MandatoryLastStatementTerminalPunctuator = false;
-            evaluator.OptionsSyntaxRules.IsNewKeywordForAnonymousExpandoObjectOptional = true;
-            evaluator.OptionsSyntaxRules.AllowSimplifiedCollectionSyntax = true;
-            evaluator.OptionsSyntaxRules.SimplifiedCollectionMode = SimplifiedCollectionMode.List;
-            evaluator.OptionsSyntaxRules.InitializerPropertyValueSeparators = new[] { "=", ":" };
-            evaluator.OptionsSyntaxRules.InitializerAllowStringForProperties = true;
-        }
-
         public static void Process(bool isScript, string script = null,  Action<object> setResult = null, bool forceErrorInOutput = false)
         {
             Init();
@@ -82,10 +54,9 @@ namespace NppPowerTools.Utils
             {
                 LastVariables = new Dictionary<string, object>();
             }
-            else if (LastVariables != null)
+            else
             {
-                LastVariables
-                    .ToList()
+                LastVariables?.ToList()
                     .FindAll(kvp => kvp.Value is StronglyTypedVariable)
                     .ForEach(kvp => LastVariables.Remove(kvp.Key));
             }
