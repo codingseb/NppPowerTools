@@ -1,5 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using System;
 
 namespace NppPowerTools.Utils.Evaluations

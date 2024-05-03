@@ -1,6 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
-
-namespace NppPowerTools.Utils.Evaluations
+﻿namespace NppPowerTools.Utils.Evaluations
 {
     public interface IVariableEvaluation
     {

@@ -1,6 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
-using QuestPDF.Fluent;
-using QuestPDF.Infrastructure;
+﻿using QuestPDF.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -24,15 +22,15 @@ namespace NppPowerTools.Utils.Evaluations
                 {
                     e.Value = new PDFFile()
                     {
-                        FirstAction = container => container.Image(bitmap.ToByteArray())
+                        FirstAction = container => container.Page(pageDescriptor => pageDescriptor.Content().Image(bitmap.ToByteArray()))
                     };
                 }
                 else if (e.This is string text)
                 {
-                    e.Value = new PDFFile()
-                    {
-                        FirstAction = container => container.Text(text)
-                    };
+                e.Value = new PDFFile()
+                {
+                    FirstAction = container => container.Page(pageDescriptor => pageDescriptor.Content().Text(text))
+                };
                 }
             }
             else if (e.This is PDFFile pDFFile && (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
@@ -64,11 +62,11 @@ namespace NppPowerTools.Utils.Evaluations
 
                 if (e.This is Bitmap bitmap)
                 {
-                    pdf.FirstAction = container => container.Image(bitmap.ToByteArray());
+                    pdf.FirstAction = container => container.Page(pageDescriptor => pageDescriptor.Content().Image(bitmap.ToByteArray()));
                 }
                 else if (e.This is string text)
                 {
-                    pdf.FirstAction = container => container.Text(text);
+                    pdf.FirstAction = container => container.Page(pageDescriptor => pageDescriptor.Content().Text(text));
                 }
 
                 e.Value = pdf;
@@ -88,10 +86,10 @@ namespace NppPowerTools.Utils.Evaluations
 
         public void Init(ExpressionEvaluator evaluator)
         {
-            if(extentionTypes == null)
+            if (extentionTypes == null)
             {
                 extentionTypes = typeof(QuestPDF.Fluent.GenerateExtensions).Assembly.GetTypes()
-                    .Where(t => t.Namespace.StartsWith("QuestPDF.Fluent") && t.Name.EndsWith("Extensions")).ToList();
+                    .Where(t => t.Namespace?.StartsWith("QuestPDF.Fluent") == true && t.Name.EndsWith("Extensions")).ToList();
             }
 
             evaluator.StaticTypesForExtensionsMethods = evaluator.StaticTypesForExtensionsMethods.Concat(extentionTypes).ToList();

@@ -1,5 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
-using ImageProcessor;
+﻿using ImageProcessor;
 using System;
 using System.Drawing;
 using System.IO;

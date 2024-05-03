@@ -1,5 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 
 namespace NppPowerTools.Utils.Evaluations

@@ -1,5 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
-using NppPowerTools.PluginInfrastructure;
+﻿using NppPowerTools.PluginInfrastructure;
 using NppPowerTools.Utils.Evaluations;
 using System;
 using System.Collections.Generic;

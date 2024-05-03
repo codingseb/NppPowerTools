@@ -76,16 +76,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CodingSeb.Converters, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.Converters.1.0.5-eealpha0003\lib\net45\CodingSeb.Converters.dll</HintPath>
+      <HintPath>..\packages\CodingSeb.Converters.1.0.5\lib\net462\CodingSeb.Converters.dll</HintPath>
     </Reference>
-    <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.5.0-alpha0003\lib\net45\CodingSeb.ExpressionEvaluator.dll</HintPath>
+    <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.4.40.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.4.40\lib\net462\CodingSeb.ExpressionEvaluator.dll</HintPath>
     </Reference>
     <Reference Include="CodingSeb.Layouts, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.Layouts.1.0.4\lib\net47\CodingSeb.Layouts.dll</HintPath>
     </Reference>
     <Reference Include="CodingSeb.Mvvm, Version=1.2.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.Mvvm.1.2.4-EEalpha0003\lib\net45\CodingSeb.Mvvm.dll</HintPath>
+      <HintPath>..\packages\CodingSeb.Mvvm.1.2.4\lib\net45\CodingSeb.Mvvm.dll</HintPath>
     </Reference>
     <Reference Include="ColorPickerWPF, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ColorPickerWPF.1.0.9\lib\net461\ColorPickerWPF.dll</HintPath>
@@ -127,7 +127,7 @@
       <HintPath>..\packages\MySqlConnector.2.3.7\lib\net471\MySqlConnector.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -144,8 +144,8 @@
     <Reference Include="QRCoder, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\QRCoder.1.4.1\lib\net40\QRCoder.dll</HintPath>
     </Reference>
-    <Reference Include="QuestPDF, Version=2021.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\QuestPDF.2021.5.2\lib\net462\QuestPDF.dll</HintPath>
+    <Reference Include="QuestPDF, Version=2024.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QuestPDF.2024.3.3\lib\netstandard2.0\QuestPDF.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="SkiaSharp, Version=2.88.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -482,6 +482,7 @@
     <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
     <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets'))" />
     <Error Condition="!Exists('..\packages\Fody.6.8.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.8.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\QuestPDF.2024.3.3\build\net4\QuestPDF.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\QuestPDF.2024.3.3\build\net4\QuestPDF.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
@@ -490,6 +491,7 @@
   <Import Project="..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.macOS.2.88.8\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.Win32.2.88.8\build\net462\SkiaSharp.NativeAssets.Win32.targets')" />
   <Import Project="..\packages\Fody.6.8.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.8.0\build\Fody.targets')" />
+  <Import Project="..\packages\QuestPDF.2024.3.3\build\net4\QuestPDF.targets" Condition="Exists('..\packages\QuestPDF.2024.3.3\build\net4\QuestPDF.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,5 +1,3 @@
-using CodingSeb.ExpressionEvaluator;
-
 namespace NppPowerTools.Utils.Evaluations
 {
     public interface IIndexingEvaluation
