@@ -65,6 +65,7 @@ namespace NppPowerTools
 
         internal static void CommandMenuInit()
         {
+            QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
             //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             NPTCommands.InitCommands();
