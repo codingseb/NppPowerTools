@@ -1828,7 +1828,7 @@ namespace NppPowerTools.Utils
 
         private IList<ParsingMethodDelegate> parsingMethods;
 
-        protected virtual IList<ParsingMethodDelegate> ParsingMethods => parsingMethods ?? (parsingMethods = new List<ParsingMethodDelegate>()
+        protected virtual IList<ParsingMethodDelegate> ParsingMethods => parsingMethods ??= new List<ParsingMethodDelegate>()
         {
             EvaluateCast,
             EvaluateNumber,
@@ -1841,7 +1841,7 @@ namespace NppPowerTools.Utils
             EvaluateIndexing,
             EvaluateString,
             EvaluateTernaryConditionalOperator,
-        });
+        };
 
         /// <summary>
         /// Evaluate the specified math or pseudo C# expression
@@ -2354,8 +2354,7 @@ namespace NppPowerTools.Utils
 
                             List<string> arrayElements = GetExpressionsBetweenParenthesesOrOtherImbricableBrackets(expression, ref i, true, OptionsSyntaxRules.InitializerSeparator, "{", "}");
 
-                            if (array == null)
-                                array = Array.CreateInstance(type, arrayElements.Count);
+                            array ??= Array.CreateInstance(type, arrayElements.Count);
 
                             Array.Copy(arrayElements.ConvertAll(Evaluate).ToArray(), array, arrayElements.Count);
                         }

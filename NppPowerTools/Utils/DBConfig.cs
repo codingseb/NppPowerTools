@@ -62,7 +62,7 @@ namespace NppPowerTools.Utils
                 BNpp.Text = exception.Message + "\r\n" + exception.StackTrace;
             }
 
-            DBTypesList.Add(typeof(System.Data.SQLite.SQLiteConnection));
+            //DBTypesList.Add(typeof(System.Data.SQLite.SQLiteConnection));
         }
 
         #region NotifyPropertyChanged

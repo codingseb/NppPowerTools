@@ -130,7 +130,7 @@ namespace NppPowerTools.Utils
                 if (e.Args.Count > 1)
                     Print += string.Format(e.EvaluateArg(0).ToString(), e.Args.Skip(1).ToArray()) + BNpp.CurrentEOL;
                 else
-                    Print += e.EvaluateArg(0).ToString() + BNpp.CurrentEOL;
+                    Print += e.EvaluateArg(0) + BNpp.CurrentEOL;
 
                 e.Value = null;
             }

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
 
 namespace NppPowerTools.Utils.Evaluations
 {
@@ -86,11 +88,8 @@ namespace NppPowerTools.Utils.Evaluations
 
         public void Init(ExpressionEvaluator evaluator)
         {
-            if (extentionTypes == null)
-            {
-                extentionTypes = typeof(QuestPDF.Fluent.GenerateExtensions).Assembly.GetTypes()
+            extentionTypes ??= typeof(QuestPDF.Fluent.GenerateExtensions).Assembly.GetTypes()
                     .Where(t => t.Namespace?.StartsWith("QuestPDF.Fluent") == true && t.Name.EndsWith("Extensions")).ToList();
-            }
 
             evaluator.StaticTypesForExtensionsMethods = evaluator.StaticTypesForExtensionsMethods.Concat(extentionTypes).ToList();
         }
