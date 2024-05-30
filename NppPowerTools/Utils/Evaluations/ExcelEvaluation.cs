@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using OfficeOpenXml;
 using System;
 using System.Collections;
@@ -13,7 +13,7 @@ namespace NppPowerTools.Utils.Evaluations
 {
     public sealed class ExcelEvaluation : IFunctionEvaluation, IVariableEvaluation, IEvaluatorInitializator
     {
-        private static readonly Regex baseExcelRegex = new Regex("(?<new>n(ew)?_?)?(xls?|excel)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex baseExcelRegex = new Regex("(?<new>n(ew)?_?)?(xls?|excel)(?<default>_d(ef(ault)?)?)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex excelSheetVariableRegex = new Regex(@"^(sheet[s]?|sh)(?<index>\d+)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex toExcelRegex = new Regex(@"^to_?(xl[s]?|excel)((?<noheader>_?no?_?h(ead(er)?)?)|(?<fatheader>_?(f(at)?|b(old)?)_?h(ead(er)?)?)|(?<autofilter>_?(a(uto)?)_?f(ilter)?)|(?<freeze>_?fr(eeze)?_?r?(?<freezerow>\d+)(_c|_|c)(?<freezecolumn>\d+))|(?<columnautosize>_?(c(ol(umn)?)?)_?(a(uto)?)_?s(ize)?))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -65,21 +65,24 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 var fileName = e.EvaluateArgs().OfType<string>().FirstOrDefault();
 
-                SaveFileDialog saveFileDialog = new SaveFileDialog
+                if (!excelMatch.Groups["default"].Success)
                 {
-                    Filter = "Excel file|*.xlsx",
-                    AddExtension = true
-                };
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        Filter = "Excel file|*.xlsx",
+                        AddExtension = true
+                    };
 
-                if (fileName == null && saveFileDialog.ShowDialog() == true)
-                    fileName = saveFileDialog.FileName;
+                    if (fileName == null && saveFileDialog.ShowDialog() == true)
+                        fileName = saveFileDialog.FileName;
+                }
 
                 fileName ??= Config.Instance.ExcelDefaultSheetName;
 
                 if (excelMatch.Groups["new"].Success)
                     File.Delete(fileName);
 
-                e.Value = new ExcelPackage(new FileInfo(fileName));
+                e.Value = string.IsNullOrEmpty(fileName) ? new ExcelPackage() : new ExcelPackage(new FileInfo(fileName));
             }
             else if (e.This is IEnumerable rowEnumerable && (toExcelMatch = toExcelRegex.Match(e.Name)).Success)
             {
@@ -129,21 +132,24 @@ namespace NppPowerTools.Utils.Evaluations
             {
                 string fileName = null;
 
-                SaveFileDialog saveFileDialog = new SaveFileDialog
+                if (!excelMatch.Groups["default"].Success)
                 {
-                    Filter = "Excel file|*.xlsx",
-                    AddExtension = true
-                };
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        Filter = "Excel file|*.xlsx",
+                        AddExtension = true
+                    };
 
-                if (fileName == null && saveFileDialog.ShowDialog() == true)
-                    fileName = saveFileDialog.FileName;
+                    if (fileName == null && saveFileDialog.ShowDialog() == true)
+                        fileName = saveFileDialog.FileName;
+                }
 
                 fileName ??= Config.Instance.ExcelDefaultSheetName;
 
                 if (excelMatch.Groups["new"].Success)
                     File.Delete(fileName);
 
-                e.Value = new ExcelPackage(new FileInfo(fileName));
+                e.Value = string.IsNullOrEmpty(fileName)? new ExcelPackage() : new ExcelPackage(new FileInfo(fileName));
             }
             else if ((excelSheetVariableMatch = excelSheetVariableRegex.Match(e.Name)).Success && (e.This is ExcelPackage || e.This is ExcelWorkbook))
             {
