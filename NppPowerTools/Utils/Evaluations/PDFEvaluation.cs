@@ -1,7 +1,11 @@
-﻿using QuestPDF.Fluent;
+﻿using Microsoft.Win32;
+//using PropertyTools.Wpf;
+using QuestPDF.Fluent;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -14,7 +18,7 @@ namespace NppPowerTools.Utils.Evaluations
 
         public bool TryEvaluate(object sender, VariableEvaluationEventArg e)
         {
-            if(e.Name.Equals("pdf", StringComparison.OrdinalIgnoreCase))
+            if (e.Name.Equals("pdf", StringComparison.OrdinalIgnoreCase))
             {
                 if (e.This == null)
                 {
@@ -29,15 +33,32 @@ namespace NppPowerTools.Utils.Evaluations
                 }
                 else if (e.This is string text)
                 {
-                e.Value = new PDFFile()
-                {
-                    FirstAction = container => container.Page(pageDescriptor => pageDescriptor.Content().Text(text))
-                };
+                    e.Value = new PDFFile()
+                    {
+                        FirstAction = container => container.Page(pageDescriptor => pageDescriptor.Content().Text(text))
+                    };
                 }
             }
-            else if (e.This is PDFFile pDFFile && (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
+            else if (e.This is PDFFile pDFFile && (e.Name.Equals("save", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
             {
-                pDFFile.SaveOpen(Config.Instance.PDFDefaultFileName);
+                string fileName = null;
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "PDF Document|*.pdf",
+                    AddExtension = true
+                };
+
+                if (fileName == null && saveFileDialog.ShowDialog() == true)
+                    fileName = saveFileDialog.FileName;
+
+                fileName ??= Config.Instance.PDFDefaultFileName;
+
+                if (e.Name.Equals("save", StringComparison.OrdinalIgnoreCase))
+                    pDFFile.Save(fileName);
+                else
+                    pDFFile.SaveOpen(fileName);
+
                 e.Value = pDFFile;
             }
 
@@ -73,12 +94,26 @@ namespace NppPowerTools.Utils.Evaluations
 
                 e.Value = pdf;
             }
-            else if (e.This is PDFFile pDFFile && (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
+            else if (e.This is PDFFile pDFFile && (e.Name.Equals("save", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
             {
-                if (e.Args.Count > 0 && e.EvaluateArg(0) is string fileName)
-                    pDFFile.SaveOpen(fileName);
+                string fileName = e.EvaluateArgs().OfType<string>().FirstOrDefault();
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "PDF Document|*.pdf",
+                    AddExtension = true
+                };
+
+                if (fileName == null && saveFileDialog.ShowDialog() == true)
+                    fileName = saveFileDialog.FileName;
+
+                fileName ??= Config.Instance.PDFDefaultFileName;
+
+                if (e.Name.Equals("save", StringComparison.OrdinalIgnoreCase))
+                    pDFFile.Save(fileName);
                 else
-                    pDFFile.SaveOpen(Config.Instance.PDFDefaultFileName);
+                    pDFFile.SaveOpen(fileName);
+
 
                 e.Value = pDFFile;
             }

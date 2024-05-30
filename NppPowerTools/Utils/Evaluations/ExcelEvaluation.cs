@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using Microsoft.Win32;
+using OfficeOpenXml;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,21 +35,46 @@ namespace NppPowerTools.Utils.Evaluations
             }
             else if (e.This is ExcelPackage pack4Book)
             {
-                if (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase))
+                if (e.Name.Equals("save", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase))
                 {
-                    pack4Book.File = e.EvaluateArgs().OfType<string>().Select(fileName => new FileInfo(fileName)).FirstOrDefault() ?? new FileInfo(Config.Instance.ExcelDefaultFileName);
+                    pack4Book.File = e.EvaluateArgs().OfType<string>().Select(fileName => new FileInfo(fileName)).FirstOrDefault();
 
-                    if (pack4Book.Workbook.Worksheets.Count == 0)
-                        pack4Book.Workbook.Worksheets.Add(string.Format(Config.Instance.ExcelDefaultSheetName, 1));
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        Filter = "Excel file|*.xlsx",
+                        AddExtension = true
+                    };
 
-                    pack4Book.Save();
-                    Process.Start(pack4Book.File.FullName);
+                    if (pack4Book.File != null || saveFileDialog.ShowDialog() == true)
+                    {
+                        if (pack4Book.Workbook.Worksheets.Count == 0)
+                            pack4Book.Workbook.Worksheets.Add(string.Format(Config.Instance.ExcelDefaultSheetName, 1));
+
+                        pack4Book.File ??= new FileInfo(saveFileDialog.FileName);
+
+                        pack4Book.Save();
+
+                        if (!e.Name.Equals("save", StringComparison.OrdinalIgnoreCase))
+                            Process.Start(pack4Book.File.FullName);
+                    }
+
                     e.Value = pack4Book;
                 }
             }
             else if ((excelMatch = baseExcelRegex.Match(e.Name)).Success && e.This == null)
             {
-                var fileName = e.EvaluateArgs().OfType<string>().FirstOrDefault() ?? Config.Instance.ExcelDefaultFileName;
+                var fileName = e.EvaluateArgs().OfType<string>().FirstOrDefault();
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Excel file|*.xlsx",
+                    AddExtension = true
+                };
+
+                if (fileName == null && saveFileDialog.ShowDialog() == true)
+                    fileName = saveFileDialog.FileName;
+
+                fileName ??= Config.Instance.ExcelDefaultSheetName;
 
                 if (excelMatch.Groups["new"].Success)
                     File.Delete(fileName);
@@ -75,22 +101,44 @@ namespace NppPowerTools.Utils.Evaluations
                 {
                     e.Value = pack4Book.Workbook;
                 }
-                else if (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase))
+                else if (e.Name.Equals("save", StringComparison.OrdinalIgnoreCase) | e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase))
                 {
-                    if(pack4Book.File == null)
-                        pack4Book.File = new FileInfo(Config.Instance.ExcelDefaultFileName);
+                    SaveFileDialog saveFileDialog = new SaveFileDialog
+                    {
+                        Filter = "Excel file|*.xlsx",
+                        AddExtension = true
+                    };
 
-                    if (pack4Book.Workbook.Worksheets.Count == 0)
-                        pack4Book.Workbook.Worksheets.Add(string.Format(Config.Instance.ExcelDefaultSheetName, 1));
+                    if (pack4Book.File != null || saveFileDialog.ShowDialog() == true)
+                    {
+                        if (pack4Book.Workbook.Worksheets.Count == 0)
+                            pack4Book.Workbook.Worksheets.Add(string.Format(Config.Instance.ExcelDefaultSheetName, 1));
 
-                    pack4Book.Save();
-                    Process.Start(pack4Book.File.FullName);
+                        pack4Book.File ??= new FileInfo(saveFileDialog.FileName);
+
+                        pack4Book.Save();
+
+                        if (!e.Name.Equals("save", StringComparison.OrdinalIgnoreCase))
+                            Process.Start(pack4Book.File.FullName);
+                    }
+
                     e.Value = pack4Book;
                 }
             }
             else if ((excelMatch = baseExcelRegex.Match(e.Name)).Success && e.This == null)
             {
-                var fileName = Config.Instance.ExcelDefaultFileName;
+                string fileName = null;
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "Excel file|*.xlsx",
+                    AddExtension = true
+                };
+
+                if (fileName == null && saveFileDialog.ShowDialog() == true)
+                    fileName = saveFileDialog.FileName;
+
+                fileName ??= Config.Instance.ExcelDefaultSheetName;
 
                 if (excelMatch.Groups["new"].Success)
                     File.Delete(fileName);

@@ -1,6 +1,9 @@
 ﻿using ImageProcessor;
+using Microsoft.Win32;
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -33,6 +36,26 @@ namespace NppPowerTools.Utils.Evaluations
                     e.Value = factory.Resize(new Size(x, y));
                 }
             }
+            else if (e.This is Bitmap bitmap && (e.Name.Equals("save", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "PNG Picture|*.png",
+                    AddExtension = true
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    bitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
+
+                    if (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Process.Start(saveFileDialog.FileName);
+                    }
+                }
+
+                e.Value = bitmap;
+            }
 
             return e.FunctionReturnedValue;
         }
@@ -50,6 +73,26 @@ namespace NppPowerTools.Utils.Evaluations
                 using MemoryStream ms = new MemoryStream();
                 factory.Save(ms);
                 e.Value = new Bitmap(ms);
+            }
+            else if (e.This is Bitmap bitmap && (e.Name.Equals("save", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase)))
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "PNG Picture|*.png",
+                    AddExtension = true
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    bitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
+
+                    if (e.Name.Equals("saveandopen", StringComparison.OrdinalIgnoreCase) || e.Name.Equals("saveopen", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Process.Start(saveFileDialog.FileName);
+                    }
+                }
+
+                e.Value = bitmap;
             }
 
             return e.HasValue;
