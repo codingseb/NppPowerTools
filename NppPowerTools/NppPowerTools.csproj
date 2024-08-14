@@ -75,8 +75,8 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodingSeb.Converters, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CodingSeb.Converters.1.0.5\lib\net462\CodingSeb.Converters.dll</HintPath>
+    <Reference Include="CodingSeb.Converters, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodingSeb.Converters.1.0.8\lib\net462\CodingSeb.Converters.dll</HintPath>
     </Reference>
     <Reference Include="CodingSeb.ExpressionEvaluator, Version=1.4.40.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CodingSeb.ExpressionEvaluator.1.4.40\lib\net462\CodingSeb.ExpressionEvaluator.dll</HintPath>
