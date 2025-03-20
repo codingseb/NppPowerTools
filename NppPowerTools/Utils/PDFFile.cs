@@ -1,4 +1,4 @@
-﻿using QuestPDF.Drawing;
+﻿using QuestPDF;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using System;
@@ -8,6 +8,21 @@ namespace NppPowerTools.Utils
 {
     public class PDFFile : IDocument
     {
+        private static bool licenceInitilized = false;
+
+        public static void InitLicence()
+        {
+            if (!licenceInitilized)
+            {
+                Settings.License = LicenseType.Community;
+                licenceInitilized = true;
+            }
+        }
+        public PDFFile()
+        {
+            InitLicence();
+        }
+
         public string FileName { get; set; }
 
         public Action<IDocumentContainer> FirstAction { get; set; }

@@ -1,14 +1,8 @@
 ﻿using Microsoft.Win32;
-//using PropertyTools.Wpf;
 using QuestPDF.Fluent;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Windows;
 
 namespace NppPowerTools.Utils.Evaluations
 {
@@ -24,7 +18,7 @@ namespace NppPowerTools.Utils.Evaluations
                 {
                     e.Value = new PDFFile();
                 }
-                else if (e.This is Bitmap bitmap)
+                else if (e.This is System.Drawing.Bitmap bitmap)
                 {
                     e.Value = new PDFFile()
                     {
@@ -83,7 +77,7 @@ namespace NppPowerTools.Utils.Evaluations
                     pdf = new PDFFile();
                 }
 
-                if (e.This is Bitmap bitmap)
+                if (e.This is System.Drawing.Bitmap bitmap)
                 {
                     pdf.FirstAction = container => container.Page(pageDescriptor => pageDescriptor.Content().Image(bitmap.ToByteArray()));
                 }

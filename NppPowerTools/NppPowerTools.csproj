@@ -89,11 +89,6 @@
     <PackageReference Include="ColorPickerWPF">
       <Version>1.0.9</Version>
     </PackageReference>
-    <PackageReference Include="Costura.Fody">
-      <Version>6.0.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive; compile</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="EPPlus">
       <Version>4.5.3.3</Version>
     </PackageReference>
@@ -118,6 +113,9 @@
     </PackageReference>
     <PackageReference Include="QRCoder">
       <Version>1.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="QuestPDF">
+      <Version>2025.1.6</Version>
     </PackageReference>
     <PackageReference Include="UnmanagedExports.Repack.Upgrade" Version="1.2.1" GeneratePathProperty="true">
       <ExcludeAssets>all</ExcludeAssets>
@@ -185,6 +183,7 @@
     <Compile Include="Utils\Evaluations\LoopEvaluation.cs" />
     <Compile Include="Utils\Evaluations\LoremIspumEvaluation.cs" />
     <Compile Include="Utils\Evaluations\NppTabEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\PDFEvaluation.cs" />
     <Compile Include="Utils\Evaluations\QRCodeEvaluation.cs" />
     <Compile Include="Utils\Evaluations\StringEvaluation.cs" />
     <Compile Include="Utils\Evaluations\TextToSpeechEvaluation.cs" />
@@ -193,6 +192,7 @@
     <Compile Include="Utils\IIndexingEvaluation.cs" />
     <Compile Include="Utils\IniFile.cs" />
     <Compile Include="Utils\LoremIpsum.cs" />
+    <Compile Include="Utils\PDFFile.cs" />
     <Compile Include="Utils\ResultOut.cs" />
     <Compile Include="Utils\XEval.cs" />
     <Compile Include="ViewModel\CommandFindViewModel.cs" />
@@ -288,28 +288,30 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   -->
+  <PropertyGroup>
+    <NPP64BIT>$(NppPath64)\plugins\NppPowerTools</NPP64BIT>
+    <NPP32BIT>$(NppPath32)\plugins\NppPowerTools"</NPP32BIT>
+  </PropertyGroup>
   <Target Name="CopyBin" DependsOnTargets="Build" AfterTargets="Build">
     <!-- copy over the appropriate DLL and test files to the Notepad++ directory.
     Otherwise Notepad++ will just load without the plugin. -->
     <ItemGroup>
-      <RELEASE64 Include="bin\Release-x64\*.*" />
-      <DEBUG64 Include="bin\Debug-x64\*.*" />
-      <RELEASE32 Include="bin\Release\*.*" />
-      <DEBUG32 Include="bin\Debug\*.*" />
-      <NPP64BIT Include="$(NppPath64)\plugins\NppPowerTools" />
-      <NPP32BIT Include="$(NppPath32)\plugins\NppPowerTools" />
+      <RELEASE64 Include="bin\Release-x64\**\*.*" />
+      <DEBUG64 Include="bin\Debug-x64\**\*.*" />
+      <RELEASE32 Include="bin\Release\**\*.*" />
+      <DEBUG32 Include="bin\Debug\**\*.*" />
     </ItemGroup>
-    <MakeDir Directories="@(NPP64BIT)" Condition=" '$(Platform)' == 'x64' " />
-    <MakeDir Directories="@(NPP32BIT)" Condition=" '$(Platform)' == 'x86' " />
+    <MakeDir Directories="$(NPP64BIT)" Condition=" '$(Platform)' == 'x64' " />
+    <MakeDir Directories="$(NPP32BIT)" Condition=" '$(Platform)' == 'x86' " />
     <!-- copy all dependency DLL's to current bin directory -->
     <Copy Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' " SourceFiles="@(DEPENDENCY_DLLS)" DestinationFolder="bin\Release-x64" SkipUnchangedFiles="true" />
     <Copy Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' " SourceFiles="@(DEPENDENCY_DLLS)" DestinationFolder="bin\Release" SkipUnchangedFiles="true" />
     <Copy Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' " SourceFiles="@(DEPENDENCY_DLLS)" DestinationFolder="bin\Debug-x64" SkipUnchangedFiles="true" />
     <Copy Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' " SourceFiles="@(DEPENDENCY_DLLS)" DestinationFolder="bin\Debug" SkipUnchangedFiles="true" />
     <!-- copy all files in current bin directory to NPP plugin dir -->
-    <Copy SourceFiles="@(RELEASE64)" Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' " DestinationFolder="@(NPP64BIT)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(RELEASE32)" Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' " DestinationFolder="@(NPP32BIT)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(DEBUG64)" Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' " DestinationFolder="@(NPP64BIT)" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(DEBUG32)" Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' " DestinationFolder="@(NPP32BIT)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(RELEASE64)" Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' " DestinationFolder="$(NPP64BIT)\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(RELEASE32)" Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' " DestinationFolder="$(NPP32BIT)\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DEBUG64)" Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' " DestinationFolder="$(NPP64BIT)\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DEBUG32)" Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' " DestinationFolder="$(NPP32BIT)\%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>
 </Project>
