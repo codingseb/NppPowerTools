@@ -79,6 +79,10 @@ namespace Kbg.NppPluginNET
             // see https://github.com/oleg-shilo/cs-script.npp/issues/66#issuecomment-1086657272 for more info
             AppDomain.CurrentDomain.AssemblyResolve += LoadDependency;
 
+            NPTCommands.InitCommands();
+            NPTCommands.InitLanguages();
+            DBConfig.InitDBTypesList();
+
             // Initialization of your plugin commands
 
             // with function :
