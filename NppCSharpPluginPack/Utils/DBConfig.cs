@@ -31,6 +31,8 @@ namespace NppPowerTools.Utils
         {
             try
             {
+                Directory.CreateDirectory(connectionsDirectory);
+
                 DBTypesList = Directory.GetFiles(connectionsDirectory, "*.dll")
                     .Select(Assembly.UnsafeLoadFrom)
                     .Aggregate(new List<Type>(),
