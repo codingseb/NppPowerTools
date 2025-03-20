@@ -1,5 +1,5 @@
-﻿using CodingSeb.ExpressionEvaluator;
-using Microsoft.Xaml.Behaviors;
+﻿using Microsoft.Xaml.Behaviors;
+using NppPowerTools.Utils;
 using System;
 using System.Windows;
 

@@ -80,9 +80,6 @@
     <PackageReference Include="CodingSeb.Converters">
       <Version>1.0.8</Version>
     </PackageReference>
-    <PackageReference Include="CodingSeb.ExpressionEvaluator">
-      <Version>1.5.0-alpha0004</Version>
-    </PackageReference>
     <PackageReference Include="CodingSeb.Layouts">
       <Version>1.0.4</Version>
     </PackageReference>
@@ -94,7 +91,7 @@
     </PackageReference>
     <PackageReference Include="Costura.Fody">
       <Version>6.0.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive; compile</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="EPPlus">
@@ -191,6 +188,7 @@
     <Compile Include="Utils\Evaluations\QRCodeEvaluation.cs" />
     <Compile Include="Utils\Evaluations\StringEvaluation.cs" />
     <Compile Include="Utils\Evaluations\TextToSpeechEvaluation.cs" />
+    <Compile Include="Utils\ExpressionEvaluator.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\IIndexingEvaluation.cs" />
     <Compile Include="Utils\IniFile.cs" />

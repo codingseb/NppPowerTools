@@ -1,4 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
+﻿
 using QRCoder;
 using System;
 using System.Drawing;

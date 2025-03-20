@@ -1,5 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
-using Kbg.NppPluginNET;
+﻿using Kbg.NppPluginNET;
 using Kbg.NppPluginNET.PluginInfrastructure;
 using System;
 using System.Collections.Generic;

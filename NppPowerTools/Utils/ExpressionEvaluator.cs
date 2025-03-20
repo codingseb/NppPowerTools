@@ -3329,7 +3329,7 @@ namespace NppPowerTools.Utils
                     List<dynamic> oIndexingArgs = indexingArgs.ConvertAll(Evaluate);
                     PropertyInfo[] itemProperties = null;
 
-                    if (!(left is IDictionary<string, object>))
+                    if (left is not IDictionary<string, object>)
                     {
                         Type type = ((object)left).GetType();
 

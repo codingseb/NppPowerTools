@@ -1,4 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
+﻿
 using Kbg.NppPluginNET;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

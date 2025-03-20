@@ -1,4 +1,4 @@
-﻿using CodingSeb.ExpressionEvaluator;
+﻿
 using Kbg.NppPluginNET;
 using Kbg.NppPluginNET.PluginInfrastructure;
 using NppPowerTools.Utils.Evaluations;
