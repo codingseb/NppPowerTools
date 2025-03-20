@@ -1,0 +1,64 @@
+﻿<Window x:Class="NppPowerTools.CommandFindWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:b="clr-namespace:NppPowerTools.Behaviors"
+        xmlns:local="clr-namespace:NppPowerTools"
+        xmlns:utils="clr-namespace:NppPowerTools.Utils"
+        mc:Ignorable="d" 
+        WindowStyle="None"
+        WindowState="Normal"
+        ShowInTaskbar="False"
+        Background="Transparent"
+        AllowsTransparency="True"
+        SizeToContent="WidthAndHeight"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        Deactivated="Window_Deactivated"
+        Loaded="Window_Loaded"
+        MaxHeight="{Binding CommandPanelHeight, Source={x:Static utils:Config.Instance}}"
+        DataContext="{x:Static local:CommandFindViewModel.Instance}"
+        FocusManager.FocusedElement="{Binding ElementName=FindTextBox}">
+    <Border Padding="5"
+            Width="{Binding CommandPanelWidth, Source={x:Static utils:Config.Instance}}"
+            Background="WhiteSmoke"
+            BorderBrush="Gray"
+            BorderThickness="1"
+            CornerRadius="4">
+        <StackPanelEx MarginBetweenChildren="5">
+            <Border BorderBrush="{Binding BorderBrush, ElementName=FindTextBox}"
+                    BorderThickness="3"
+                    CornerRadius="4">
+                <TextBox x:Name="FindTextBox"
+                         GotFocus="FindTextBox_GotFocus"
+                         PreviewKeyDown="FindTextBox_PreviewKeyDown"
+                         BorderThickness="0"
+                         Text="{Binding Find, UpdateSourceTrigger=PropertyChanged, Delay=300}" 
+                         b:TextBoxExtensions.SelectionStart="{Binding FindSelectionStart}"
+                         b:TextBoxExtensions.SelectionLength="{Binding FindSelectionLength}"
+                         Padding="5" />
+            </Border>
+            <ListBox x:Name="CommandsListBox"
+                     Focusable="False"
+                     ItemsSource="{Binding CommandsList}" 
+                     SelectedIndex="{Binding SelectionIndex}"
+                     PreviewMouseDown="Item_StackPanel_PreviewMouseDown"
+                     Visibility="{Binding CommandsList.Count, Converter={local:CollectionCountToVisibilityConverter} }">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:NPTCommand}" >
+                        <DockPanel Margin="5" 
+                                   ToolTip="{Binding Name}" 
+                                   IsHitTestVisible="False">
+                            <TextBlock DockPanel.Dock="Bottom"
+                                       Text="{Binding ResultOrInfoSup}"
+                                       FontWeight="Bold"
+                                       Foreground="{Binding ResultOrInfoSup, Converter={local:ResultToBrushConverter}}"
+                                       Visibility="{Binding ResultOrInfoSup, Converter={local:NullToVisibilityConverter}}"/>
+                            <TextBlock b:TextBlockExtensions.BindableInlines="{Binding Inlines}"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanelEx>
+    </Border>
+</Window>
