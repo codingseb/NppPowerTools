@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CodingSeb.ExpressionEvaluator;
+using Kbg.NppPluginNET;
+using System;
 using System.Collections;
 using System.Linq;
 

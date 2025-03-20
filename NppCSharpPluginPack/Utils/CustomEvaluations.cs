@@ -1,4 +1,6 @@
-﻿using NppPowerTools.PluginInfrastructure;
+﻿using CodingSeb.ExpressionEvaluator;
+using Kbg.NppPluginNET;
+using Kbg.NppPluginNET.PluginInfrastructure;
 using NppPowerTools.Utils.Evaluations;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace NppPowerTools.Utils
             ClipboardEvaluation.Instance,
             new IpConfigCommands(),
             ChartPlotEvaluation.Instance,
-            PDFEvaluation.Instance,
+            //PDFEvaluation.Instance,
             DBEvaluation.Instance,
             ImageEvaluation.Instance,
             HTMLEvaluation.Instance,
@@ -40,7 +42,7 @@ namespace NppPowerTools.Utils
             IniEvaluation.Instance,
             ClipboardEvaluation.Instance,
             ChartPlotEvaluation.Instance,
-            PDFEvaluation.Instance,
+            //PDFEvaluation.Instance,
             DBEvaluation.Instance,
             ImageEvaluation.Instance,
             HTMLEvaluation.Instance,
@@ -55,7 +57,7 @@ namespace NppPowerTools.Utils
         private static readonly List<IEvaluatorInitializator> evaluatorInitializators = new()
         {
             ExcelEvaluation.Instance,
-            PDFEvaluation.Instance,
+            //PDFEvaluation.Instance,
             ImageEvaluation.Instance,
         };
 

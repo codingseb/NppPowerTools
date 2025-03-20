@@ -94,11 +94,11 @@ namespace NppPowerTools
                     filter = "PNG Picture|*.png|" + filter;
                     filterOffset++;
                 }
-                else if(evaluationResult.Result is PDFFile)
-                {
-                    filter = "PDF Document|*.pdf|" + filter;
-                    filterOffset++;
-                }
+                //else if(evaluationResult.Result is PDFFile)
+                //{
+                //    filter = "PDF Document|*.pdf|" + filter;
+                //    filterOffset++;
+                //}
                 else if(evaluationResult.Result is ExcelPackage)
                 {
                     filter = "Excel file|*.xlsx|" + filter;
@@ -116,10 +116,10 @@ namespace NppPowerTools
                         {
                             bitmap.Save(saveFileDialog.FileName, ImageFormat.Png);
                         }
-                        else if (saveFileDialog.FilterIndex == 1 && evaluationResult.Result is PDFFile pdfFile)
-                        {
-                            pdfFile.Save(saveFileDialog.FileName);
-                        }
+                        //else if (saveFileDialog.FilterIndex == 1 && evaluationResult.Result is PDFFile pdfFile)
+                        //{
+                        //    pdfFile.Save(saveFileDialog.FileName);
+                        //}
                         else if (saveFileDialog.FilterIndex == 1 && evaluationResult.Result is ExcelPackage excelFile)
                         {
                             excelFile.File = new FileInfo(saveFileDialog.FileName);

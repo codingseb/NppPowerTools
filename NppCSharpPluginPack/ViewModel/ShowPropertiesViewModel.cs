@@ -1,4 +1,5 @@
-﻿using NppPowerTools.PluginInfrastructure;
+﻿using Kbg.NppPluginNET;
+using Kbg.NppPluginNET.PluginInfrastructure;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;

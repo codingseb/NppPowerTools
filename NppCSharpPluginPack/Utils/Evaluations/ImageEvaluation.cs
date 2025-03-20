@@ -1,4 +1,5 @@
-﻿using ImageProcessor;
+﻿using CodingSeb.ExpressionEvaluator;
+using ImageProcessor;
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;

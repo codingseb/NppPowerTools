@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json;
-using NppPowerTools.PluginInfrastructure;
+﻿using Kbg.NppPluginNET;
+using Kbg.NppPluginNET.PluginInfrastructure;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

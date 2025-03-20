@@ -1,3 +1,4 @@
+using CodingSeb.ExpressionEvaluator;
 using Microsoft.Win32;
 using OfficeOpenXml;
 using System;
@@ -189,11 +190,11 @@ namespace NppPowerTools.Utils.Evaluations
 
             Dictionary<string, int> headersColumns = new();
 
-            var headersConfig = (config?.FirstOrDefault(kvp => Regex.IsMatch(kvp.Key, "^(headers?(_?names?)?)|(col(umns?)?(_?names?)?)$", RegexOptions.IgnoreCase) && !(kvp.Value is string) && kvp.Value is IEnumerable).Value as IEnumerable)?.OfType<string>()?.ToList();
+            var headersConfig = (config?.FirstOrDefault(kvp => Regex.IsMatch(kvp.Key, "^(headers?(_?names?)?)|(col(umns?)?(_?names?)?)$", RegexOptions.IgnoreCase) && kvp.Value is not string && kvp.Value is IEnumerable).Value as IEnumerable)?.OfType<string>()?.ToList();
 
             List<string> headers = headersConfig
                 ?? args?
-                    .Where(a => !(a is string) && !(a is IDictionary<string, object>))
+                    .Where(a => a is not string && a is not IDictionary<string, object>)
                     .OfType<IEnumerable>()
                     .FirstOrDefault()?
                     .OfType<string>()?

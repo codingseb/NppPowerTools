@@ -1,4 +1,6 @@
-﻿namespace NppPowerTools.Utils.Evaluations
+﻿using CodingSeb.ExpressionEvaluator;
+
+namespace NppPowerTools.Utils.Evaluations
 {
     public interface IEvaluatorInitializator
     {

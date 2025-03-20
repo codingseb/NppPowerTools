@@ -1,4 +1,5 @@
-﻿using NppPowerTools.PluginInfrastructure;
+﻿using Kbg.NppPluginNET;
+using Kbg.NppPluginNET.PluginInfrastructure;
 using NppPowerTools.Utils;
 using PropertyChanged;
 using System.Collections.Generic;

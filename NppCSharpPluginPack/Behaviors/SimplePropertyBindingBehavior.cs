@@ -1,5 +1,5 @@
-﻿using Microsoft.Xaml.Behaviors;
-using NppPowerTools.Utils;
+﻿using CodingSeb.ExpressionEvaluator;
+using Microsoft.Xaml.Behaviors;
 using System;
 using System.Windows;
 
@@ -9,7 +9,7 @@ namespace NppPowerTools
     {
         private readonly ExpressionEvaluator expressionEvaluator = new();
         private string oldEventName = string.Empty;
-        private EventHandler<EventArgs> eventHandler;
+        private readonly EventHandler<EventArgs> eventHandler;
 
         public SimplePropertyBindingBehavior()
         {

@@ -92,6 +92,11 @@
     <PackageReference Include="ColorPickerWPF">
       <Version>1.0.9</Version>
     </PackageReference>
+    <PackageReference Include="Costura.Fody">
+      <Version>6.0.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="EPPlus">
       <Version>4.5.3.3</Version>
     </PackageReference>
@@ -124,6 +129,19 @@
   <ItemGroup>
     <!-- forms -->
     <!-- infrastructure -->
+    <Compile Include="Behaviors\SimplePropertyBindingBehavior.cs" />
+    <Compile Include="Behaviors\TextBlockExtensions.cs" />
+    <Compile Include="Behaviors\TextBoxExtensions.cs" />
+    <Compile Include="Converter\BoolToStringConverter.cs" />
+    <Compile Include="Converter\CollectionCountToVisibilityConverter.cs" />
+    <Compile Include="Converter\CustomBoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\DrawingColorToWPFBrush.cs" />
+    <Compile Include="Converter\ImageTypesToImageSourceConverter.cs" />
+    <Compile Include="Converter\NullToVisibilityConverter.cs" />
+    <Compile Include="Converter\QRCodeTextToImageSourceConverter.cs" />
+    <Compile Include="Converter\ResultToBrushConverter.cs" />
+    <Compile Include="Converter\StringToNullableIntConverter.cs" />
+    <Compile Include="Converter\ToJsonConverter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Npp.cs" />
     <Compile Include="PluginInfrastructure\CLikeStringArray.cs" />
@@ -149,6 +167,57 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TemplatesSelector\ResultTemplateSelector.cs" />
+    <Compile Include="Utils\Config.cs" />
+    <Compile Include="Utils\CustomEvaluations.cs" />
+    <Compile Include="Utils\DBConfig.cs" />
+    <Compile Include="Utils\Evaluation.cs" />
+    <Compile Include="Utils\Evaluations\ChartPlotEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\ClipboardEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\DBEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\ExcelEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\HTMLEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\HttpEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\IEvaluatorInitializator.cs" />
+    <Compile Include="Utils\Evaluations\IFunctionEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\ImageEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\IniEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\IpConfigCommands.cs" />
+    <Compile Include="Utils\Evaluations\IVariableEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\JsonEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\LoopEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\LoremIspumEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\NppTabEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\QRCodeEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\StringEvaluation.cs" />
+    <Compile Include="Utils\Evaluations\TextToSpeechEvaluation.cs" />
+    <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\IIndexingEvaluation.cs" />
+    <Compile Include="Utils\IniFile.cs" />
+    <Compile Include="Utils\LoremIpsum.cs" />
+    <Compile Include="Utils\ResultOut.cs" />
+    <Compile Include="Utils\XEval.cs" />
+    <Compile Include="ViewModel\CommandFindViewModel.cs" />
+    <Compile Include="ViewModel\DBResultViewModel.cs" />
+    <Compile Include="ViewModel\EvaluationResult.cs" />
+    <Compile Include="ViewModel\EvaluationsResultPanelViewModel.cs" />
+    <Compile Include="ViewModel\NPTCommand.cs" />
+    <Compile Include="ViewModel\NPTCommands.cs" />
+    <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="ViewModel\ShowPropertiesViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\CommandFindWindow.xaml.cs">
+      <DependentUpon>CommandFindWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EvaluationsResultsPanel.xaml.cs">
+      <DependentUpon>EvaluationsResultsPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\OptionsWindowContent.xaml.cs">
+      <DependentUpon>OptionsWindowContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ShowPropertiesView.xaml.cs">
+      <DependentUpon>ShowPropertiesView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Choose>
     <When Condition=" '$(Platform)' == ''">
@@ -170,6 +239,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -188,6 +258,32 @@
     <Resource Include="Resources\English.txt" />
     <Resource Include="Resources\French.txt" />
     <Resource Include="Resources\Latin.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="View\CommandFindWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EvaluationsResultsPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\OptionsWindowContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ShowPropertiesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FodyWeavers.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Condition="Exists($(PkgUnmanagedExports_Repack_Upgrade))" Project="$(PkgUnmanagedExports_Repack_Upgrade)\build\UnmanagedExports.Repack.Upgrade.targets" />
