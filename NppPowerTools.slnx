@@ -7,7 +7,7 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project Path="NppPowerTools-old/NppPowerTools.csproj" Id="0ecc0b03-b3ed-4dee-8ea1-532cade842b2">
+  <Project Path="NppPowerTools/NppPowerTools.csproj" Id="eb8fc3a3-93e8-457b-b281-fafa5119611a">
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
