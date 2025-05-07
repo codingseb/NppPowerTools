@@ -1,9 +1,14 @@
 ﻿using Kbg.NppPluginNET;
+using Microsoft.Data.Sqlite;
+using MySqlConnector;
 using Newtonsoft.Json;
+using Npgsql;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -65,7 +70,11 @@ namespace NppPowerTools.Utils
                 Npp.Text = exception.Message + "\r\n" + exception.StackTrace;
             }
 
-            //DBTypesList.Add(typeof(System.Data.SQLite.SQLiteConnection));
+            DBTypesList.Add(typeof(MySqlConnection));
+            DBTypesList.Add(typeof(OracleConnection));
+            DBTypesList.Add(typeof(NpgsqlConnection));
+            DBTypesList.Add(typeof(SqliteConnection));
+            DBTypesList.Add(typeof(SqlConnection));
         }
 
         #region NotifyPropertyChanged
